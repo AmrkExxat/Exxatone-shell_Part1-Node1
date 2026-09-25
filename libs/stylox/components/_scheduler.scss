@@ -1,0 +1,368 @@
+.e-timeline-year-view {
+  .e-schedule-table {
+    .e-resource-column-wrap {
+      .e-resource-column-table {
+        td.e-resource-cells {
+          width: 200px !important;
+          padding: 0px !important;
+          border-bottom: 0px !important;
+          height: 180px !important;
+          > div {
+            height: 100%;
+          }
+        }
+      }
+    }
+    .e-content-wrap {
+      td {
+        border-bottom: 0px !important;
+        height: 180px !important;
+        &:hover {
+          background: transparent !important;
+        }
+      }
+    }
+  }
+}
+
+.e-schedule {
+  padding: 10px 0 0 0;
+  .e-schedule-toolbar-container {
+    .e-schedule-toolbar {
+      box-shadow: none !important;
+      .e-toolbar-items {
+        @apply bg-card;
+        .e-toolbar-left {
+          .e-toolbar-item {
+            button {
+              background: none !important;
+              span.e-tbar-btn-text,
+              span.e-btn-icon {
+                font-size: 18px;
+                @apply text-default;
+              }
+            }
+          }
+        }
+        .e-toolbar-right {
+          height: 32px !important;
+
+          .e-month,
+          .e-week,
+          .e-timeline-day,
+          .e-day {
+            padding: 0 !important;
+            min-height: 32px !important;
+            padding: 0 4px !important;
+            .e-tbar-btn {
+              min-height: auto !important;
+              background: none !important;
+              .e-tbar-btn-text {
+                padding: 0 !important;
+                font-size: 12px;
+                font-weight: 500;
+              }
+              &:hover {
+                background: none !important;
+              }
+              &:focus {
+                box-shadow: None !important;
+              }
+            }
+            &:hover {
+              @apply bg-primary;
+              .e-tbar-btn-text {
+                @apply text-white;
+              }
+            }
+          }
+          .e-month {
+            border: 1px solid #abbace;
+            border-radius: 4px 0 0 4px;
+            border-right: none !important;
+          }
+          .e-week {
+            border: 1px solid #abbace;
+            border-right: none !important;
+          }
+          .e-timeline-day {
+            border: 1px solid #abbace;
+            border-radius: 0 4px 4px 0;
+          }
+          .e-day {
+            border: 1px solid #abbace;
+            border-radius: 0 4px 4px 0;
+          }
+          .e-active-view {
+            @apply bg-primary;
+            @apply text-white;
+            .e-tbar-btn-text {
+              @apply text-white;
+            }
+          }
+          .e-prev,
+          .e-next {
+            padding: 0 !important;
+
+            button {
+              background: none !important;
+              span.e-btn-icon {
+                @apply text-default;
+              }
+
+              &:focus {
+                box-shadow: None !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .e-month-view {
+    .e-date-header-wrap {
+      table td {
+        color: #5d5d5d !important;
+        font-size: 14px !important;
+        text-transform: capitalize !important;
+        font-weight: 600 !important;
+        border-color: #e7e7e7 !important;
+      }
+    }
+    .e-work-cells {
+      color: #262626;
+      font-size: 12px !important;
+      font-weight: 400 !important;
+      @apply border;
+      @apply bg-card;
+      .e-more-indicator {
+        color: #4c1d95;
+        font-size: 12px;
+      }
+      .e-date-header {
+        margin: 5px 10px !important;
+      }
+    }
+    .e-other-month {
+      color: #888888 !important;
+      font-size: 12px !important;
+      font-weight: 400 !important;
+    }
+  }
+}
+
+.e-schedule {
+  .e-vertical-view {
+    .e-all-day-appointment-wrapper {
+      .e-appointment {
+        width: 100% !important;
+        border-radius: 4px !important;
+        background: transparent !important;
+        border-color: transparent !important;
+        margin-bottom: 2px !important;
+      }
+    }
+  }
+
+  .e-month-view {
+    .e-appointment {
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      .e-appointment-details {
+        cursor: pointer !important;
+        margin: 0 10px !important;
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 400;
+        height: 24px !important;
+        width: 100% !important;
+        border-width: 1px;
+        border-radius: 4px;
+        > div:not(.e-indicator) {
+          width: 100% !important;
+        }
+        .e-indicator {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  .e-week-view,
+  .e-day-view {
+    .e-appointment {
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      .e-appointment-details {
+        cursor: pointer !important;
+        margin: 0 10px !important;
+        display: flex;
+        align-items: start;
+        font-size: 12px;
+        font-weight: 400;
+        height: 100%;
+        width: 100% !important;
+        border-width: 1px;
+        border-radius: 4px;
+        > div:not(.e-indicator) {
+          width: 100% !important;
+        }
+        .e-indicator {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  .e-timeline-year-view {
+    .e-appointment {
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      height: 140px !important;
+      margin-top: 12px;
+      .e-appointment-details {
+        cursor: pointer !important;
+        margin: 0 10px !important;
+        font-size: 14px;
+        font-weight: 400;
+        height: 140px !important;
+        width: 100% !important;
+        border-width: 1px;
+        border-radius: 4px;
+        > div:not(.e-indicator) {
+          width: 100% !important;
+        }
+        .e-indicator {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
+.e-schedule {
+  .e-table-container {
+    @apply border-t;
+  }
+}
+
+.e-popup {
+  box-shadow: 0px -1px 3px 0px #0000000f;
+  @apply border;
+  border-radius: 8px;
+  .e-more-event-popup {
+    .e-more-event-header {
+      .e-more-event-date-header {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .e-more-event-content {
+      .e-more-appointment-wrapper {
+        .e-appointment {
+          height: 28px !important;
+          & > div {
+            width: 100% !important;
+            border-radius: 4px;
+            display: flex;
+            border-width: 1px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.e-dlg-header-content {
+  display: none !important;
+}
+
+.e-dlg-content {
+  border-radius: 8px !important;
+}
+
+.e-footer-content {
+  display: none !important;
+}
+
+.calendarViewMonth {
+  .e-schedule {
+    .e-popup {
+      .e-more-event-popup {
+        .e-more-event-content {
+          .e-more-appointment-wrapper {
+            margin: 0 !important;
+            .e-appointment {
+              background: none !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.e-week-view {
+  table.e-schedule-table {
+    .e-appointment-wrapper {
+      .e-appointment {
+        margin: 0 8px !important;
+        .e-appointment-details {
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+}
+
+.e-timeline-day-view {
+  table.e-schedule-table {
+    .e-event-table {
+      .e-appointment-container {
+        .e-appointment-wrapper {
+          .e-appointment {
+            background: none !important;
+            border-radius: 4px !important;
+            height: auto !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.calendarViewMonth {
+  .e-schedule {
+    .e-table-container {
+      .e-day-view {
+        table.e-schedule-table {
+          .e-content-wrap {
+            table.e-schedule-table {
+              .e-day-wrapper {
+                .e-appointment-wrapper {
+                  .e-appointment {
+                    margin: 0 20px;
+                    .e-appointment-details {
+                      margin: 0 !important;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.slot-requests-scheudles-scheduler .e-month-view .e-work-cells {
+  height: 120.5px !important;
+}

@@ -1,0 +1,94 @@
+body {
+  .stepper {
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+
+    li {
+      flex: 1;
+
+      a {
+        color: var(--text-default);
+        padding: 10px 0 10px 55px;
+        background: var(--bg-card);
+        position: relative;
+        display: block;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        min-width: 176px;
+
+        &.active-item {
+          background: var(--color-primary);
+          color: white;
+
+          &::after {
+            border-left-color: var(--color-primary);
+          }
+        }
+
+        &::after {
+          content: " ";
+          display: block;
+          width: 0;
+          height: 0;
+          border-top: 50px solid transparent;
+          border-bottom: 50px solid transparent;
+          border-left: 30px solid var(--bg-card);
+          position: absolute;
+          top: 50%;
+          margin-top: -50px;
+          left: 100%;
+          z-index: 2;
+        }
+
+        &::before {
+          content: " ";
+          display: block;
+          width: 0;
+          height: 0;
+          border-top: 50px solid transparent;
+          border-bottom: 50px solid transparent;
+          border-left: 32px solid var(--bg-container);
+          position: absolute;
+          top: 50%;
+          margin-top: -50px;
+          margin-left: 1px;
+          left: 100%;
+          z-index: 1;
+        }
+      }
+
+      &:first-child a {
+        padding-left: 10px;
+        border-radius: 4px 0px 0px 4px;
+      }
+
+      &:last-child a {
+        padding-right: 10px;
+        border-radius: 0px 4px 4px 0px;
+
+        &::before {
+          border-left: 0;
+        }
+
+        &::after {
+          border: 0;
+        }
+      }
+    }
+  }
+
+  &.dark {
+    .stepper {
+      li {
+        a {
+          &::before {
+            border-left: 32px solid var(--bg-table) !important;
+          }
+        }
+      }
+    }
+  }
+}

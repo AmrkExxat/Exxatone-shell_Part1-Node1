@@ -1,0 +1,23 @@
+trigger: none
+
+pr:
+  branches:
+    include:
+      - dev
+      - main
+  paths:
+    exclude:
+      - package.json
+      - package-lock.json
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  scriptsPath: '.azure-pipelines/scripts'
+
+stages:
+  - stage: UpdateVersionForPR
+    displayName: 'Update Package Version'
+    jobs:
+      - template: templates/pr-version-update.yml

@@ -1,0 +1,19 @@
+.accordion {
+  @apply bg-card rounded-lg border;
+
+  .accordion-header {
+    @apply bg-card hover:bg-hover focus-visible:outline-primary flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 focus:outline-2 focus:outline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    .accordion-header-title {
+      @apply text-lg font-semibold;
+    }
+  }
+
+  .accordion-header-row {
+    @apply focus-within:outline-primary focus-within:outline-2 focus-within:outline-offset-2;
+  }
+
+  .accordion-content {
+    @apply bg-card rounded-b-lg border-t p-4;
+  }
+}

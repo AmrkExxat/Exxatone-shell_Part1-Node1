@@ -1,0 +1,125 @@
+@mixin typography($family, $size, $weight, $lineHeight, $letterSpacing: null) {
+  font-family: $family !important;
+  font-size: $size !important;
+  font-weight: $weight !important;
+  line-height: $lineHeight !important;
+
+  @if $letterSpacing != null {
+    letter-spacing: $letterSpacing !important;
+  }
+}
+
+// Heading Styles
+.heading-page-title-default-jobs {
+  @include typography(
+    var(--heading-page-title-default-family),
+    var(--heading-page-title-default-size),
+    var(--heading-page-title-default-weight),
+    var(--heading-page-title-default-line-height),
+    var(--heading-page-title-default-letter-spacing)
+  );
+}
+
+.heading-subsection-title-jobs {
+  @include typography(
+    var(--heading-subsection-title-family),
+    var(--heading-subsection-title-size),
+    var(--heading-subsection-title-weight),
+    var(--heading-subsection-title-line-height),
+    var(--heading-subsection-title-letter-spacing)
+  );
+}
+
+.heading-minor-title-jobs {
+  @include typography(
+    var(--heading-minor-title-family),
+    var(--heading-minor-title-size),
+    var(--heading-minor-title-weight),
+    var(--heading-minor-title-line-height),
+    var(--heading-minor-title-letter-spacing)
+  );
+}
+
+.heading-group-title-jobs {
+  @include typography(
+    var(--heading-group-title-family),
+    var(--heading-group-title-size),
+    var(--heading-group-title-weight),
+    var(--heading-group-title-line-height),
+    var(--heading-group-title-letter-spacing)
+  );
+}
+
+// Body Styles
+.body-reading-jobs {
+  @include typography(
+    var(--body-reading-family),
+    var(--body-reading-size),
+    var(--body-reading-weight),
+    var(--body-reading-line-height),
+    var(--body-reading-letter-spacing)
+  );
+}
+
+.body-default-jobs {
+  @include typography(
+    var(--body-default-family),
+    var(--body-default-size),
+    var(--body-default-weight),
+    var(--body-default-line-height),
+    var(--body-default-letter-spacing)
+  );
+}
+
+// UI Elements
+.ui-elements-label-jobs {
+  @include typography(
+    var(--ui-elements-label-family),
+    var(--ui-elements-label-size),
+    var(--ui-elements-label-weight),
+    var(--ui-elements-label-line-height),
+    var(--ui-elements-label-letter-spacing)
+  );
+}
+
+// Badge
+.badge-label-jobs {
+  @include typography(
+    var(--badge-label-family),
+    var(--badge-label-size),
+    var(--badge-label-weight),
+    var(--badge-label-line-height)
+  );
+  text-transform: uppercase;
+}
+
+// Caption
+.caption-jobs {
+  @include typography(
+    var(--caption-family),
+    var(--caption-size),
+    var(--caption-weight),
+    var(--caption-line-height)
+  );
+}
+
+// CTA
+.cta-label-jobs {
+  @include typography(
+    var(--cta-label-family),
+    var(--cta-label-size),
+    var(--cta-label-weight),
+    var(--cta-label-line-height)
+  );
+}
+
+// Key Metrics
+.key-metrics-medium-jobs {
+  @include typography(
+    var(--key-metrics-medium-family),
+    var(--key-metrics-medium-size),
+    var(--key-metrics-medium-weight),
+    var(--key-metrics-medium-line-height),
+    var(--key-metrics-medium-letter-spacing)
+  );
+}

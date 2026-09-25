@@ -1,0 +1,36 @@
+import { EmitType } from '@syncfusion/ej2-base';
+import { PageSettingsModel } from '@syncfusion/ej2-react-grids';
+export interface SyncfusionGridPaginationProps {
+  children: React.ReactNode;
+  fetchData: (params: any) => any;
+  columns: any[];
+  pageSize?: number;
+  allowReordering?: boolean;
+  allowSorting?: boolean;
+  allowMultiSorting?: boolean;
+  allowResizing?: boolean;
+  allowPaging?: boolean;
+  allowFiltering?: boolean;
+  allowKeyboard?: boolean;
+  allowSelection?: boolean;
+  checkboxSelection?: boolean;
+  allowTextWrap?: boolean;
+  configureColumns?: boolean;
+  metaData?: any;
+  onCheckboxSelect?: (rowData: any, isSelected: boolean) => void;
+  onColumnSettingsSave?: (cols: any[]) => void;
+  clearSelectedRows?: (param: boolean) => void;
+  showSelectAll?: boolean;
+  pageName?: string;
+  gridHeight?: number;
+  recordPrimaryKey?: string;
+  tableLegends?: any[];
+  pageSettings?: PageSettingsModel;
+  getFetchedData?: (e: any) => void;
+  onlyCountNeeded?: boolean;
+  uniqueEntityName?: string;
+  saveUserInteraction?: boolean;
+  interactionKey?: string;
+  dataBound?: EmitType<Object>;
+  id?: string;
+}

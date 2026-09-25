@@ -1,0 +1,21 @@
+.horizontal-stepper {
+  @keyframes ringPulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  .animate-ring-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    border: 2px solid #494949;
+    animation: ringPulse 1.2s ease-out infinite;
+  }
+}

@@ -1,0 +1,396 @@
+@use "../constants/init" as const;
+
+@use "./functions" as func;
+
+@mixin generate-color-vars($name, $base-color) {
+  --color-#{$name}: #{$base-color};
+
+  @each $step in const.$color-steps {
+    --color-#{$name}-#{$step}: #{func.color-shade($base-color, $step)};
+  }
+}
+
+@mixin generate-color-utilities($name) {
+  /* Base utilities */
+  .bg-#{$name} {
+    background-color: var(--color-#{$name});
+  }
+
+  .fill-#{$name} {
+    fill: var(--color-#{$name});
+  }
+
+  .text-#{$name} {
+    color: var(--color-#{$name});
+  }
+
+  .border-#{$name} {
+    border-color: var(--color-#{$name});
+  }
+
+  .ring-#{$name} {
+    --ring-color: var(--color-#{$name});
+    box-shadow: 0 0 0 3px var(--ring-color);
+  }
+
+  /* Scaled utilities */
+  @each $step in const.$color-steps {
+    .bg-#{$name}-#{$step} {
+      background-color: var(--color-#{$name}-#{$step});
+    }
+
+    .fill-#{$name}-#{$step} {
+      fill: var(--color-#{$name}-#{$step});
+    }
+
+    .text-#{$name}-#{$step} {
+      color: var(--color-#{$name}-#{$step});
+    }
+
+    .border-#{$name}-#{$step} {
+      border-color: var(--color-#{$name}-#{$step});
+    }
+
+    .ring-#{$name}-#{$step} {
+      --ring-color: var(--color-#{$name}-#{$step});
+      box-shadow: 0 0 0 3px var(--ring-color);
+    }
+  }
+}
+
+@mixin generate-bg-utilities($map) {
+  @each $class, $var in $map {
+    .bg-#{$class} {
+      background-color: var(--#{$var}) !important;
+    }
+
+    .hover\:bg-#{$class}:hover {
+      background-color: var(--#{$var}) !important;
+    }
+  }
+}
+
+@mixin generate-text-utilities($map) {
+  @each $class, $var in $map {
+    .text-#{$class} {
+      color: var(--#{$var}) !important;
+    }
+  }
+}
+
+@mixin generate-jobs-color-vars() {
+  /* Brand Colors */
+  --brand-color: oklch(0.55 0.2 270);
+  --brand-color-dark: oklch(0.4 0.2 270);
+  --brand-surface: #f3f3ff;
+  --brand-surface-hover: color-mix(in srgb, #f3f3ff 50%, transparent);
+  --brand-border: oklch(0.91 0.04 270);
+  --brand-shadow: oklch(0 0 0 / 0.1) 0px 1px 3px 0px, oklch(0 0 0 / 0.1) 0px 1px 2px -1px;
+
+  /* Content */
+  --content-primary: #000;
+  --content-near-black: #0a0a0a;
+  --content-secondary: #727279;
+  --content-subdued: #545454;
+  --content-caution: #924602;
+  --content-disabled: #8c8c92;
+  --content-neutral-subtle: #adadb2;
+
+  /* Border */
+  --border-separator: #c6c6ca;
+  --border-secondary: #eaeaeb;
+  --border-focus: #5983ee;
+  --border-positive: #05aa57;
+
+  /* Background */
+  --background-normal-default: #fff;
+  --background-normal-secondary: #f4f4f5;
+
+  /* Surface */
+  --surface-neutral-gray-subtle: #eaeaeb;
+  --surface-neutral-gray-disabled-subtle: #dadadc;
+  --surface-positive-subtle: #11ac78;
+  --surface-neutral-white-no-inv: #fff;
+  /* Surface — informative / warning / negative states */
+  --surface-informative-subtle: #92d7f8;
+  --surface-warning-active: #e5e300;
+  --surface-negative-active: #e50005;
+
+  /* Shadows */
+  --shadow-sm: oklch(0 0 0 / 0.1) 0px 1px 2px 0px;
+  --shadow-md: oklch(0 0 0 / 0.1) 0px 1px 3px 0px, oklch(0 0 0 / 0.1) 0px 1px 2px -1px;
+  --shadow-lg: oklch(0 0 0 / 0.1) 0px 4px 6px -1px, oklch(0 0 0 / 0.1) 0px 2px 4px -2px;
+
+  /* Indicators */
+  --indicators-utility-positive: #088a48;
+  --background-subtle-informative: #dcf2fc;
+  --content-informative: #074c6b;
+
+  /* Danger/info content colors — PDF (red) and DOCX/DOC (blue) type labels,
+  and any other danger/info indicator text in the jobs context */
+  --content-danger-jobs: #b91c1c;
+  --content-info-jobs: #1d4ed8;
+
+  /* Resume card pastel backgrounds (cycling per card index) */
+  --resume-card-bg-1: rgba(255, 243, 239, 0.4);
+  --resume-card-bg-2: rgba(240, 239, 255, 0.4);
+  --resume-card-bg-3: rgba(239, 255, 253, 0.4);
+  --resume-card-bg-4: rgba(255, 239, 239, 0.4);
+  --resume-card-bg-5: rgba(255, 239, 251, 0.4);
+  --resume-card-bg-6: rgba(255, 252, 239, 0.4);
+
+  /* Neutral card surface — uploaded file cards (cover letter, certification) */
+  --surface-neutral-card-jobs: rgba(232, 232, 232, 0.4);
+
+  /* Job Goals bottom sheet gradient background */
+  --job-goals-bg-gradient: linear-gradient(
+    87.8deg,
+    #f86faf 3.5%,
+    #f7b8a1 29.3%,
+    #eddb92 61%,
+    #a4d2f4 92.4%
+  );
+
+  /* Input/form active border */
+  --border-active: #8c8c92;
+
+  /* Heading/Group Title — 14px SemiBold (sub-section labels, form group headers) */
+  --heading-group-title-family: Inter, sans-serif;
+  --heading-group-title-size: 14px;
+  --heading-group-title-weight: 600;
+  --heading-group-title-line-height: 20px;
+  --heading-group-title-letter-spacing: -0.08px;
+
+  /* Badge/tag label — 10px Medium uppercase (type pills, status tags, category badges) */
+  --badge-label-family: Inter, sans-serif;
+  --badge-label-size: 10px;
+  --badge-label-weight: 500;
+  --badge-label-line-height: 15px;
+
+  /* Caption — 11px Regular (secondary metadata, timestamps, helper hints) */
+  --caption-family: Inter, sans-serif;
+  --caption-size: 11px;
+  --caption-weight: 400;
+  --caption-line-height: 14px;
+
+  /* Heading/Page Title Default — 20px Bold (page-level headers, success titles) */
+  --heading-page-title-default-family: Inter, sans-serif;
+  --heading-page-title-default-size: 20px;
+  --heading-page-title-default-weight: 700;
+  --heading-page-title-default-line-height: 28px;
+  --heading-page-title-default-letter-spacing: -0.08px;
+
+  /* Typography — families */
+  --heading-subsection-title-family: Inter, sans-serif;
+  --body-reading-family: Inter, sans-serif;
+  --heading-minor-title-family: Inter, sans-serif;
+  --body-default-family: Inter, sans-serif;
+  --ui-elements-label-family: Inter, sans-serif;
+
+  /* Typography — sizes */
+  --heading-subsection-title-size: 16px;
+  --body-reading-size: 14px;
+  --heading-minor-title-size: 14px;
+  --body-default-size: 14px;
+  --ui-elements-label-size: 14px;
+
+  /* Typography — weights */
+  --heading-subsection-title-weight: 700;
+  --body-reading-weight: 400;
+  --heading-minor-title-weight: 500;
+  --body-default-weight: 400;
+  --ui-elements-label-weight: 500;
+
+  /* Typography — line heights */
+  --heading-subsection-title-line-height: 24px;
+  --body-reading-line-height: 24px;
+  --heading-minor-title-line-height: 20px;
+  --body-default-line-height: 20px;
+  --ui-elements-label-line-height: 16px;
+
+  /* Typography — letter spacing */
+  --heading-subsection-title-letter-spacing: 0px;
+  --body-reading-letter-spacing: 0px;
+  --heading-minor-title-letter-spacing: 0px;
+  --body-default-letter-spacing: 0px;
+  --ui-elements-label-letter-spacing: 0px;
+
+  /* CTA label — 18px Bold (card action labels: "Update profile", "View profile") */
+  --cta-label-family: Inter, sans-serif;
+  --cta-label-size: 18px;
+  --cta-label-weight: 700;
+  --cta-label-line-height: normal;
+
+  /* Key Metrics/Value Medium — 24px Bold (modal titles, metric headings) */
+  --key-metrics-medium-family: Inter, sans-serif;
+  --key-metrics-medium-size: 24px;
+  --key-metrics-medium-weight: 700;
+  --key-metrics-medium-line-height: 32px;
+  --key-metrics-medium-letter-spacing: -0.08px;
+}
+
+@mixin generate-theme-palette($primary, $accent, $warn) {
+  /* ------- Color Palette -------- */
+
+  /* Primary */
+  @include generate-color-vars("primary", $primary);
+
+  /* Accent */
+  @include generate-color-vars("accent", $accent);
+
+  /* Warn */
+  @include generate-color-vars("warn", $warn);
+
+  /* Jobs */
+  @include generate-jobs-color-vars();
+}
+
+@mixin generate-global-variables() {
+  /* ------- Global -------- */
+
+  --transition-base: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  --transition-colors:
+    color var(--transition-base), background-color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+@mixin generate-light-scheme-variables() {
+  /* ------- Background -------- */
+
+  --bg-card: #ffffff;
+
+  --bg-container: #f7f7f7;
+
+  --bg-hover: #f3f4f6;
+
+  --bg-header: #ffffff;
+
+  --bg-table: #ffffff;
+
+  --bg-table-header: rgb(226, 228, 244);
+
+  --bg-alternate-row: #f9fafb;
+
+  --bg-input: #ffffff;
+
+  --bg-disabled: #1a1b1f1f;
+
+  /* ------- Foreground -------- */
+
+  --text-default: #111827;
+
+  --text-secondary: #1f2937;
+
+  --text-hint: #9ba0ab;
+
+  --text-disabled: #9ba0ab;
+
+  --border: #e5e7eb;
+
+  --divider: #e5e7eb;
+
+  --icon: #6b7280;
+
+  --mat-icon: #6b7280;
+
+  @include generate-global-variables();
+}
+
+@mixin generate-dark-scheme-variables() {
+  /* ------- Background -------- */
+
+  --bg-card: #1e1e1e;
+
+  --bg-container: #121212;
+
+  --bg-hover: rgba(white, 0.1);
+
+  --bg-header: #121212;
+
+  --bg-table: #1e1e1e;
+
+  --bg-table-header: #232229;
+
+  --bg-alternate-row: #f9fafb;
+
+  --bg-input: #1e1e1e;
+
+  --bg-disabled: rgba(white, 0.12);
+
+  /* ------- Foreground -------- */
+
+  --text-default: white;
+
+  --text-secondary: rgba(white, 0.7);
+
+  --text-hint: rgba(white, 0.5);
+
+  --text-disabled: rgba(white, 0.5);
+
+  --border: rgba(black, 0.12);
+
+  --divider: rgba(black, 0.12);
+
+  --icon: white;
+
+  --mat-icon: white;
+
+  @include generate-global-variables();
+}
+
+@mixin generate-blue-light-theme-variables() {
+  @include generate-theme-palette(
+    const.$blue-light-theme-primary,
+    const.$blue-light-theme-accent,
+    const.$blue-light-theme-warn
+  );
+
+  @include generate-light-scheme-variables();
+}
+
+@mixin generate-blue-dark-theme-variables() {
+  @include generate-theme-palette(
+    const.$blue-dark-theme-primary,
+    const.$blue-dark-theme-accent,
+    const.$blue-dark-theme-warn
+  );
+
+  @include generate-dark-scheme-variables();
+}
+
+@mixin generate-purple-light-theme-variables() {
+  @include generate-theme-palette(
+    const.$purple-light-theme-primary,
+    const.$purple-light-theme-accent,
+    const.$purple-light-theme-warn
+  );
+
+  @include generate-light-scheme-variables();
+}
+
+@mixin generate-purple-dark-theme-variables() {
+  @include generate-theme-palette(
+    const.$purple-dark-theme-primary,
+    const.$purple-dark-theme-accent,
+    const.$purple-dark-theme-warn
+  );
+
+  @include generate-dark-scheme-variables();
+}
+
+@mixin generate-jobs-color-utilities($map) {
+  @each $class, $value in $map {
+    .bg-#{$class} {
+      background-color: $value;
+    }
+
+    .text-#{$class} {
+      color: $value;
+    }
+
+    .border-#{$class} {
+      border-color: $value;
+    }
+  }
+}

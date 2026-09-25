@@ -1,0 +1,23 @@
+body {
+  &.light {
+    .ui_tooltip {
+      &::before {
+        content: "" !important;
+        position: absolute !important;
+        top: -23px !important;
+        left: 50% !important;
+        margin-left: -15px !important;
+        border-radius: 8px !important;
+        border-color: transparent transparent white transparent !important;
+      }
+
+      &.show_more_tooltip::before {
+        left: 20px !important;
+        border-width: 15px !important;
+      }
+    }
+  }
+  &.dark {
+    // No Code
+  }
+}

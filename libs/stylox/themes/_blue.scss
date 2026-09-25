@@ -1,0 +1,9 @@
+@use "../shared/mixins" as mix;
+
+body[data-theme="blue"][data-color-scheme="light"] {
+  @include mix.generate-blue-light-theme-variables();
+}
+
+body[data-theme="blue"][data-color-scheme="dark"] {
+  @include mix.generate-blue-dark-theme-variables();
+}

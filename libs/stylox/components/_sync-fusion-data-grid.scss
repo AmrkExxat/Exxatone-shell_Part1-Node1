@@ -1,0 +1,266 @@
+.e-grid td.e-active {
+  @apply bg-primary-100;
+}
+
+/* Header Styling */
+.e-gridheader .e-headercontent table.e-table {
+  .e-columnheader {
+    @apply bg-table-header;
+  }
+
+  thead tr th {
+    background: transparent !important;
+    height: 40px;
+
+    .e-headercelldiv {
+      @apply text-default text-[12px] uppercase;
+      font-weight: 500 !important;
+    }
+  }
+}
+
+/* Row Styling (Light Mode) */
+.e-gridcontent .e-content table.e-table tbody tr.e-row {
+  height: 40px;
+
+  &:nth-child(even) {
+    @apply bg-slate-50;
+  }
+}
+
+.e-grid .e-row:nth-child(even) .e-leftfreeze {
+  @apply bg-slate-50;
+}
+
+.e-grid .e-row:nth-child(even) .e-rightfreeze {
+  @apply bg-slate-50;
+}
+
+/* Row Styling (Dark Mode) */
+.dark .e-gridcontent .e-content table.e-table tbody tr.e-row {
+  &:nth-child(odd) {
+    @apply bg-alternate-row;
+  }
+}
+
+/* Pager Styling */
+.e-pager {
+  @apply flex flex-row-reverse;
+
+  .e-parentmsgbar {
+    @apply flex items-center pt-0;
+
+    span.e-pagenomsg {
+      @apply text-default pr-[10px];
+    }
+  }
+
+  .e-pagercontainer {
+    border: none !important;
+
+    .e-icons,
+    .e-numericitem {
+      border: none !important;
+    }
+
+    .e-currentitem {
+      @apply bg-primary h-6 w-8 rounded text-white;
+    }
+  }
+}
+
+.e-table {
+  tr.e-row.row-disabled {
+    @apply bg-[#ececec];
+
+    &:hover td {
+      @apply bg-[#ececec] opacity-90;
+    }
+  }
+}
+
+.e-table {
+  tr.e-row.row-selected {
+    @apply bg-primary-100;
+
+    td {
+      @apply bg-primary-100;
+    }
+
+    &:hover td {
+      @apply bg-primary-100;
+    }
+  }
+}
+
+.enable-horizontal-scroll {
+  .e-grid {
+    .e-gridcontent {
+      overflow-x: auto !important;
+    }
+
+    .e-table {
+      table-layout: fixed !important;
+    }
+  }
+}
+
+.e-grid {
+  .e-checkbox-wrapper {
+    .e-frame {
+      border: 0.13em solid rgba(0, 0, 0, 0.6) !important;
+    }
+
+    &.e-css {
+      .e-frame {
+        border: 0.13em solid rgba(0, 0, 0, 0.6) !important;
+      }
+    }
+
+    &.e-checkbox-disabled,
+    &.e-css.e-checkbox-disabled {
+      cursor: default !important;
+      pointer-events: none;
+
+      .e-frame {
+        background-color: #f3f4f6 !important;
+        border: 0.13em solid #d1d5db !important;
+        color: rgba(0, 0, 0, 0.38) !important;
+      }
+    }
+  }
+
+  .e-rowcell {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
+
+.e-grid {
+  .e-headercell.e-sticky,
+  .e-rowcell.e-sticky {
+    background-color: black !important;
+    z-index: 2 !important;
+    box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+.e-gridheader .e-headercontent table.e-table thead tr th {
+  @apply bg-table-header;
+}
+
+.e-pagesizes {
+  @apply mr-4;
+}
+
+.e-parentmsgbar {
+  margin-bottom: 8px !important;
+}
+
+.left-sticky-column {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 2 !important;
+  @apply bg-gray-100;
+}
+
+.e-emptyrow {
+  @apply text-white;
+}
+
+.pagercontainer {
+  display: flex !important;
+  align-items: center;
+  gap: 16px;
+  justify-content: end !important;
+  flex-wrap: wrap !important;
+}
+.pagercontent {
+  display: flex !important;
+  align-items: center;
+  .disabled-icon {
+    path {
+      fill: #5d5d5d !important;
+    }
+  }
+}
+
+.active-page {
+  background-color: var(--color-primary) !important;
+  span {
+    color: #fff !important;
+  }
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    background-color: var(--color-primary) !important;
+  }
+}
+.pagerDetail {
+  display: flex;
+  flex-direction: row;
+}
+.pagerdropdown {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  select {
+    padding: 4px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    min-width: 90px;
+    &:hover {
+      border-color: #d0d0d0;
+    }
+    &:focus {
+      outline: none;
+      border-color: #0078d4;
+      box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+    }
+  }
+}
+
+.left-sticky-column {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 2 !important;
+  @apply bg-gray-100;
+}
+
+.e-emptyrow {
+  @apply text-white;
+}
+
+.hidden-check-mark {
+  background-color: var(--bg-card);
+  ::before {
+    display: none !important;
+  }
+}
+
+.e-table,
+.e-grid,
+.bg-table {
+  th,
+  td {
+    @apply border-r-2;
+  }
+}
+
+td.e-detailrowcollapse,
+td.e-detailrowexpand {
+  border-right: 0px !important;
+}
+
+.e-table th,
+.e-table td,
+.e-grid th,
+.e-grid td,
+.bg-table th,
+.bg-table td {
+  border-right-width: 2px !important;
+}

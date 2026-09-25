@@ -1,0 +1,29 @@
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected {
+  @apply focus-visible:ring-primary focus-visible:ring;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__month-text--selected {
+  @apply focus-visible:ring focus-visible:ring-black;
+}
+
+.react-datepicker__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  width: 1.7rem !important;
+}

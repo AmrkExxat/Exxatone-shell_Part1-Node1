@@ -1,0 +1,29 @@
+jobs:
+  - job: Build_Library
+    displayName: 'Build and Publish Library'
+
+    steps:
+      - checkout: self
+
+      - task: Npm@1
+        displayName: 'Install Dependencies'
+        inputs:
+          verbose: false
+
+      - script: chmod +x $(scriptsPath)/build-library.sh && $(scriptsPath)/build-library.sh
+        displayName: 'Build and Publish Library'
+        env:
+          SYSTEM_ACCESSTOKEN: $(PAT_TOKEN)
+          GIT_USER_EMAIL: $(GIT_USER_EMAIL)
+          GIT_USER_NAME: $(GIT_USER_NAME)
+          BUILD_SOURCEBRANCH: $(Build.SourceBranch)
+
+      - script: chmod +x $(scriptsPath)/notify-published.sh && $(scriptsPath)/notify-published.sh
+        displayName: 'Notify PR with published version'
+        condition: succeeded()
+        env:
+          SYSTEM_ACCESSTOKEN: $(PAT_TOKEN)
+          AZURE_DEVOPS_ORG_URL: $(System.TeamFoundationCollectionUri)
+          AZURE_DEVOPS_PROJECT: $(System.TeamProject)
+          BUILD_REPOSITORY_ID: $(Build.Repository.ID)
+          BUILD_SOURCEVERSION: $(Build.SourceVersion)

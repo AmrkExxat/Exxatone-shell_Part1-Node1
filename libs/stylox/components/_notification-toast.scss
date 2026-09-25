@@ -1,0 +1,152 @@
+:root {
+  --exxat-notification-toast-z: 100000;
+  --exxat-notification-toast-width: 416px;
+}
+
+/* ── Container positioning (stacked) ─────────────────────── */
+.Toastify__toast-container.Toastify__toast-container--top-right {
+  top: 16px !important;
+  right: 16px !important;
+  left: auto !important;
+  bottom: auto !important;
+  z-index: var(--exxat-notification-toast-z) !important;
+  width: var(--exxat-notification-toast-width) !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+/* Stack host receives hover so pause-on-hover works across expanded/collapsed stack */
+.Toastify__toast-container.exxat-notification-toast-stack {
+  pointer-events: auto;
+}
+
+/* Stacked toasts overlap — no vertical list margin */
+.Toastify__toast-container.Toastify__toast-container--top-right .Toastify__toast {
+  pointer-events: auto;
+  margin-bottom: 0 !important;
+}
+
+.Toastify__toast-container.Toastify__toast-container--top-right .Toastify__toast--stacked {
+  position: absolute !important;
+  width: 100% !important;
+  margin-bottom: 0 !important;
+  /* Vertical stack only — no rotate/skew so bottom edges stay parallel */
+  transform: translate3d(0, var(--y), 0) scale(var(--s)) !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* ── Toast card ─────────────────────────────────────────── */
+.custom-notification-banner {
+  min-height: 140px !important;
+  width: var(--exxat-notification-toast-width) !important;
+  margin: 0 !important;
+  padding: 0px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  word-break: break-word !important;
+  position: relative !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 13px !important;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  overflow: hidden !important;
+}
+
+.Toastify__toast-container--top-right .Toastify__toast.Toastify__slide-exit--top-right {
+  animation: Toastify__slideOutRight 0.3s ease-in forwards !important;
+}
+
+.notification-banner-shell {
+  /* Banner shell fills toast height; progress pinned to bottom edge */
+  position: relative;
+  height: 100%;
+  min-height: 140px;
+  width: 100%;
+}
+
+.notification-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  z-index: 10;
+  background: #e5e7eb;
+  border-bottom-left-radius: 13px;
+  border-bottom-right-radius: 13px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.notification-toast-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: #2563eb;
+  transform-origin: left center;
+  animation: notification-toast-progress-shrink linear forwards;
+}
+
+@keyframes notification-toast-progress-shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* ── Toast body ─────────────────────────────────────────── */
+.custom-notification-banner .Toastify__toast-body {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 140px;
+}
+
+.custom-notification-banner .Toastify__toast-body > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 140px;
+}
+
+/* ── Icon colours ───────────────────────────────────────── */
+.message-icon .fa-primary {
+  fill: #3da709;
+  opacity: 1;
+}
+.message-icon .fa-secondary {
+  fill: black;
+  opacity: 0.3;
+}
+
+.update-icon .fa-primary {
+  fill: #985cf6;
+}
+
+.update-icon .fa-secondary {
+  fill: black;
+  opacity: 0.1;
+}
+
+/* ── Subheading clamp ───────────────────────────────────── */
+.subheading-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  @supports (-webkit-line-clamp: 4) {
+    white-space: initial !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+  }
+}

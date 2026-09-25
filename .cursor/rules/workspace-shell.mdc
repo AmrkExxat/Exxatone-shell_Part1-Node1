@@ -1,0 +1,12 @@
+---
+description: Work only in this workspace copy of the UI shell; never modify the original ExxatOne UI shell.
+alwaysApply: true
+---
+
+# Workspace shell vs original
+
+- All shell product work, reviews, and PRD implementation happen in `shell-app/` inside this workspace.
+- Local review URL: `http://localhost:5174/login` (Vite from `shell-app/`).
+- Do **not** edit, install into, commit, or start servers from the original app at `Documents/New Projects 2026 -27/ExxatOne _ UI shell/`. Treat it as a frozen snapshot.
+- Shared library work that belongs in `@exxat/ui` stays in this workspace root (`app/`, `libs/`, `stories/`), not in the original shell.
+- Partner Category and Publish Preference PRDs live in `PRDs/`. Implement them against `shell-app/` (and library components here) only after the user confirms alignment from a shell review.

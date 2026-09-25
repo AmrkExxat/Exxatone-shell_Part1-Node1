@@ -1,0 +1,61 @@
+@use "../constants/init" as const;
+
+@each $class, $var in const.$bg-utilities {
+  @utility bg-#{$class} {
+    background-color: var(--#{$var}) !important;
+  }
+}
+
+@each $class, $var in const.$text-utilities {
+  @utility text-#{$class} {
+    color: var(--#{$var}) !important;
+  }
+}
+
+@each $color-name in ("primary", "accent", "warn") {
+  /* Base color utilities */
+  @utility bg-#{$color-name} {
+    background-color: var(--color-#{$color-name});
+  }
+
+  @utility text-#{$color-name} {
+    color: var(--color-#{$color-name});
+  }
+
+  @utility border-#{$color-name} {
+    border-color: var(--color-#{$color-name});
+  }
+
+  @utility ring-#{$color-name} {
+    --ring-color: var(--color-#{$color-name});
+    box-shadow: 0 0 0 3px var(--ring-color);
+  }
+
+  @utility outline-#{$color-name} {
+    outline-color: var(--color-#{$color-name});
+  }
+
+  /* Color utilities with steps (50-900) */
+  @each $step in const.$color-steps {
+    @utility bg-#{$color-name}-#{$step} {
+      background-color: var(--color-#{$color-name}-#{$step});
+    }
+
+    @utility text-#{$color-name}-#{$step} {
+      color: var(--color-#{$color-name}-#{$step});
+    }
+
+    @utility border-#{$color-name}-#{$step} {
+      border-color: var(--color-#{$color-name}-#{$step});
+    }
+
+    @utility ring-#{$color-name}-#{$step} {
+      --ring-color: var(--color-#{$color-name}-#{$step});
+      box-shadow: 0 0 0 3px var(--ring-color);
+    }
+
+    @utility outline-#{$color-name}-#{$step} {
+      outline-color: var(--color-#{$color-name}-#{$step});
+    }
+  }
+}

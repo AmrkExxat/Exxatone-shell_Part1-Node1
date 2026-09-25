@@ -1,0 +1,98 @@
+/* DateTimePicker — react-datepicker with showTimeSelect */
+
+.exxat-datetime-picker {
+  .react-datepicker {
+    @apply rounded-md border border-gray-200 shadow-lg;
+    font-family: inherit;
+  }
+
+  .react-datepicker__header {
+    @apply rounded-t-md border-b border-gray-100 bg-gray-50;
+  }
+
+  .react-datepicker__current-month,
+  .react-datepicker-time__header {
+    @apply text-sm font-semibold text-gray-800;
+  }
+
+  .react-datepicker__day--selected,
+  // .react-datepicker__day--keyboard-selected,
+  .react-datepicker__time-list-item--selected {
+    background-color: var(--color-primary) !important;
+    @apply text-white;
+  }
+
+  .react-datepicker__day--keyboard-selected:hover {
+    background-color: var(--color-primary) !important;
+    @apply text-white;
+  }
+
+  input.react-datepicker-time__input {
+    @apply rounded-md border py-1 pr-1 pl-2;
+  }
+
+  .react-datepicker__time-list-item {
+    margin-left: 5px;
+    border-radius: 5px;
+  }
+
+  .reac .react-datepicker__day:not([aria-disabled="true"]):hover,
+  .react-datepicker__time-list-item:hover {
+    @apply bg-primary-50;
+  }
+
+  .react-datepicker__time-container {
+    border-left-color: #e5e7eb;
+  }
+
+  .react-datepicker__time-list-item {
+    @apply focus-visible:outline-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-5px];
+  }
+
+  .react-datepicker__navigation--previous,
+  .react-datepicker__navigation--next {
+    @apply focus-visible:ring-primary focus-visible:ring;
+  }
+}
+
+.exxat-datetime-picker__popper {
+  z-index: 50;
+}
+
+.exxat-datetime-picker__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-top: 0.5px solid #e5e7eb;
+  background: white;
+  margin-left: 2px;
+  padding: 0.25rem 0.5rem;
+  box-sizing: border-box;
+}
+
+.exxat-datetime-picker__footer--close-only {
+  justify-content: flex-end;
+}
+
+.exxat-datetime-picker__header {
+  background: #f9fafb;
+}
+
+.exxat-datetime-picker__header-trigger {
+  border: 0;
+  background: transparent;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.exxat-datetime-picker__header-trigger:hover {
+  color: var(--color-primary);
+}
+
+.exxat-datetime-picker .react-datepicker__header--custom {
+  background: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+  padding: 0;
+}

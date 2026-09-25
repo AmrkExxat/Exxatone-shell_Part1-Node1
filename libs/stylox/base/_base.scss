@@ -1,0 +1,251 @@
+@layer base {
+  html {
+    font-family: var(--font-source-sans-3);
+  }
+
+  * {
+    /* Text rendering */
+    text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -webkit-text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+
+    /* Remove the focus ring */
+    &:focus:not(:focus-visible) {
+      outline: none !important;
+    }
+
+    border-color: var(--border);
+  }
+
+  html,
+  body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 100%;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
+  body {
+    background-color: var(--bg-container);
+
+    color: var(--text-default);
+
+    transition: var(--transition-colors);
+
+    button,
+    [role="button"] {
+      cursor: pointer;
+    }
+
+    strong,
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: var(--text-default);
+    }
+
+    ol > li::before {
+      color: var(--text-secondary);
+    }
+
+    ul > li::before {
+      background-color: var(--text-hint);
+    }
+
+    hr {
+      border-color: var(--border);
+    }
+
+    blockquote {
+      color: var(--text-default);
+      border-left-color: var(--border);
+    }
+
+    figure figcaption {
+      color: var(--text-secondary);
+    }
+
+    code {
+      color: var(--text-default);
+      font-weight: 500;
+    }
+
+    a code {
+      color: var(--color-primary-500);
+    }
+
+    thead {
+      color: var(--text-default);
+      border-bottom-color: var(--border);
+    }
+
+    tbody tr {
+      border-bottom-color: var(--border);
+    }
+
+    [disabled] * {
+      color: var(--text-disabled) !important;
+    }
+
+    /* Style scrollbars on platforms other than MacOS and iOS */
+    @media only screen and (min-width: 960px) {
+      body:not(.os-mac) {
+        ::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+          background-color: rgba(0, 0, 0, 0);
+        }
+
+        ::-webkit-scrollbar:hover {
+          width: 8px;
+          height: 8px;
+          background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        ::-webkit-scrollbar-thumb {
+          border: 2px solid transparent;
+          border-radius: 20px;
+          box-shadow: inset 0 0 0 20px rgba(0, 0, 0, 0.24);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+          border-radius: 20px;
+          box-shadow: inset 0 0 0 20px rgba(0, 0, 0, 0.37);
+        }
+
+        &.dark {
+          ::-webkit-scrollbar-thumb {
+            box-shadow: inset 0 0 0 20px rgba(255, 255, 255, 0.24);
+          }
+
+          ::-webkit-scrollbar-thumb:active {
+            box-shadow: inset 0 0 0 20px rgba(255, 255, 255, 0.37);
+          }
+        }
+      }
+    }
+
+    .checkbox {
+      opacity: 0;
+      position: absolute;
+    }
+
+    .checkbox-label {
+      background-color: #717171;
+      width: 50px;
+      height: 22px;
+      border-radius: 50px;
+      position: relative;
+      padding: 5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fa-moon {
+      color: #f1c40f;
+    }
+
+    .fa-sun {
+      color: #f39c12;
+    }
+
+    .checkbox-label .ball {
+      background-color: #fff;
+      width: 17px;
+      height: 17px;
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      border-radius: 50%;
+      transition: transform 0.2s linear;
+    }
+
+    .checkbox:checked + .checkbox-label .ball {
+      transform: translateX(24px);
+    }
+
+    .react-datepicker-popper {
+      z-index: 100 !important;
+    }
+
+    .hide-header-checkbox .e-headercell .e-checkbox-wrapper {
+      display: none !important;
+    }
+
+    /* Keep our custom "select all" checkbox visible when we hide Syncfusion's built-in one */
+    .hide-header-checkbox .e-headercell .custom-header-checkbox .e-checkbox-wrapper {
+      display: inline-block !important;
+    }
+
+    /* Match header "select all" checkbox to row checkboxes: centered, same border */
+    .custom-header-checkbox {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100%;
+      min-height: 100%;
+
+      /* Remove blue focus "brackets" (outline/ring) so it matches row checkboxes */
+      outline: none !important;
+      box-shadow: none !important;
+
+      .e-checkbox-wrapper,
+      .e-checkbox-wrapper * {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      .e-checkbox-wrapper {
+        border: none !important;
+
+        &.e-checkbox-disabled .e-frame {
+          border: 0.13em solid #d1d5db !important;
+        }
+      }
+
+      &:focus,
+      &:focus-visible,
+      .e-checkbox-wrapper:focus,
+      .e-checkbox-wrapper:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    }
+
+    /* =========================
+   Gradient backgrounds
+   ========================= */
+
+    .bg-gradient-radial {
+      background-image: radial-gradient(var(--tw-gradient-stops));
+    }
+
+    .bg-gradient-conic {
+      background-image: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+    }
+
+    /* =========================
+   Grid layouts
+   ========================= */
+
+    .grid-cols-sidebar {
+      display: grid;
+      grid-template-columns: 250px auto;
+    }
+
+    .grid-cols-sidebar-collapsed {
+      display: grid;
+      grid-template-columns: 64px auto;
+    }
+  }
+}

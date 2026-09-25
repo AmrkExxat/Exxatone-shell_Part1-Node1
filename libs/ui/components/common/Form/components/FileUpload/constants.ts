@@ -1,0 +1,20 @@
+export const MAX_FILE_SIZE = 7 * 1024 * 1024;
+export const ALLOWED_FILE_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'image/jpeg',
+  'image/png',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-excel',
+  'video/mp4',
+  'image/gif',
+  'image/bmp',
+  'application/vnd.ms-excel.sheet.macroenabled.12',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/rtf',
+  'image/tiff',
+  'image/jp2',
+  'application/vnd.ms-excel.sheet.binary.macroenabled.12',
+];

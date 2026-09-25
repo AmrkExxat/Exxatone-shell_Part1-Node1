@@ -1,0 +1,35 @@
+.textArea-border,
+.file-upload-border,
+input:not([type]),
+[type="text"],
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[multiple],
+select {
+  border-color: #888888;
+}
+
+input:not([type]):focus {
+  border-color: var(--color-primary);
+}
+
+[type="checkbox"]:not(:disabled) {
+  border-color: #495f80; //slate-600
+}
+
+[type="radio"]:not(:disabled) {
+  border-color: #495f80; //slate-600
+}
+
+.focus-indicator {
+  @apply focus-visible:ring-primary focus-visible:ring;
+}

@@ -1,0 +1,28 @@
+jobs:
+  - deployment: Update_Version_For_PR
+    displayName: 'Bump Version and Push to PR Branch'
+    # Exclusive lock on this environment ensures only one PR pipeline runs at a time,
+    # preventing concurrent PRs from assigning the same version.
+    environment: version-bump-lock
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+              persistCredentials: true
+
+            - script: |
+                chmod +x $(scriptsPath)/pr-version-update.sh
+                $(scriptsPath)/pr-version-update.sh
+              displayName: 'Bump version, npm install, push to PR branch'
+              env:
+                SYSTEM_ACCESSTOKEN: $(PAT_TOKEN)
+                GIT_USER_EMAIL: $(GIT_USER_EMAIL)
+                GIT_USER_NAME: $(GIT_USER_NAME)
+                PR_SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
+                PR_TARGET_BRANCH: $(System.PullRequest.TargetBranch)
+                PR_ID: $(System.PullRequest.PullRequestId)
+                AZURE_DEVOPS_ORG_URL: $(System.TeamFoundationCollectionUri)
+                AZURE_DEVOPS_PROJECT: $(System.TeamProject)
+                BUILD_REPOSITORY_ID: $(Build.Repository.ID)

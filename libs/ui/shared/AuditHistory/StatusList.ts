@@ -1,0 +1,152 @@
+/* eslint-disable prettier/prettier */
+
+import {
+  faCircleCheck,
+  faCircleDollar,
+  faClock,
+  faHexagonExclamation,
+  faLockKeyhole,
+} from '@fortawesome/pro-solid-svg-icons';
+import { type StatusDetails } from './Status.types';
+
+export const StatusList: Record<string, StatusDetails> = {
+  new: { label: 'New', bgColor: '#2C8180', fgColor: '#FFFFFF', iconColor: '#FFFFFF' },
+  update: { label: 'Update', bgColor: '#FEFBFF', fgColor: '#4355B6', iconColor: '#7789ED' },
+  pending: { label: 'Pending', bgColor: '#F5F7FA', fgColor: '#495F80', iconColor: '#ABBACE' },
+  'get-started': {
+    label: 'Get-Started',
+    bgColor: '#F5F7FA',
+    fgColor: '#495F80',
+    iconColor: '#ABBACE',
+  },
+  getstarted: {
+    label: 'Get Started',
+    bgColor: '#F5F7FA',
+    fgColor: '#495F80',
+    iconColor: '#ABBACE',
+  },
+
+  expired: { label: 'Expired', bgColor: '#FFEDE9', fgColor: '#8B3B1F', iconColor: '#DB7756' },
+  expiring: { label: 'Expiring', bgColor: '#FFEDE9', fgColor: '#8B3B1F', iconColor: '#DB7756' },
+  'pending-review': {
+    label: 'Pending Review',
+    bgColor: '#FBF8FF',
+    fgColor: '#47464A',
+    iconColor: '#929094',
+  },
+  pendingreview: {
+    label: 'Pending Review',
+    bgColor: '#FBF8FF',
+    fgColor: '#47464A',
+    iconColor: '#929094',
+  },
+  'review-in-progress': {
+    label: 'Review In Progress',
+    bgColor: '#FBF8FF',
+    fgColor: '#47464A',
+    iconColor: '#929094',
+  },
+  approved: { label: 'Approved', bgColor: '#F0FFE6', fgColor: '#2F7F0C', iconColor: '#3DA709' },
+  uploaded: { label: 'Uploaded', bgColor: '#F0FFE6', fgColor: '#2F7F0C', iconColor: '#3DA709' },
+  'in-progress': {
+    label: 'In Progress',
+    bgColor: '#FFFBD7',
+    fgColor: '#7B7114',
+    iconColor: '#FFC107',
+  },
+  inprogress: {
+    label: 'In Progress',
+    bgColor: '#FFFBD7',
+    fgColor: '#7B7114',
+    iconColor: '#FFC107',
+  },
+  draft: { label: 'In Progress', bgColor: '#FFFBD7', fgColor: '#7B7114', iconColor: '#FFC107' },
+  rejected: { label: 'Rejected', bgColor: '#FEE2E2', fgColor: '#981C1D', iconColor: '#ED4647' },
+  notapproved: {
+    label: 'Not Approved',
+    bgColor: '#FEE2E2',
+    fgColor: '#981C1D',
+    iconColor: '#ED4647',
+  },
+  uploading: {
+    label: 'Uploading...',
+    bgColor: '#E6D6FE',
+    fgColor: '#262626',
+    iconColor: '#4355B6',
+  },
+  'compliance-pending': {
+    label: 'Compliance Pending',
+    bgColor: '#FEE2E2',
+    fgColor: '#981C1D',
+    iconColor: '#ED4647',
+  },
+  'non-compliant': {
+    label: 'Non-compliant',
+    bgColor: '#FEE2E2',
+    fgColor: '#981C1D',
+    iconColor: '#ED4647',
+  },
+  'failed-upload': {
+    label: 'Failed Upload',
+    bgColor: '#FEF2F2',
+    fgColor: '#981C1D',
+    iconColor: '#ED4647',
+    icon: faHexagonExclamation,
+  },
+  ongoing: {
+    label: 'Ongoing',
+    bgColor: '#F8F3FF',
+    fgColor: '#803AED',
+    iconColor: '#985CF6',
+    icon: faClock,
+  },
+  completed: { label: 'Completed', bgColor: '#F5F7FA', fgColor: '#495F80', iconColor: '#ABBACE' },
+  cancelled: { label: 'Cancelled', bgColor: '#FEE2E2', fgColor: '#981C1D', iconColor: '#ED4647' },
+  initiate: {
+    label: 'Initiate',
+    bgColor: '#F5F7FA',
+    fgColor: '#495F80',
+    iconColor: '#ABBACE',
+  },
+  compliant: {
+    label: 'Compliant',
+    bgColor: '#F0FFE6',
+    fgColor: '#2F7F0C',
+    iconColor: '#3DA709',
+    icon: faCircleCheck,
+  },
+  'one-time-pay': {
+    label: 'One Time Payment',
+    bgColor: '#EDEEF1',
+    fgColor: '#985CF6',
+    iconColor: '#985CF6',
+    icon: faCircleDollar,
+    labelClass: 'font-semibold truncate',
+  },
+  'not-started': { label: 'Not Started', bgColor: '#A9A9A9', fgColor: '#333' },
+  confirmed: { label: 'Confirmed', bgColor: '#F0FFE6', fgColor: '#2F7F0C', iconColor: '#3DA709' },
+  notconfirmed: {
+    label: 'Not Confirmed',
+    bgColor: '#fee2e2',
+    fgColor: '#333',
+  },
+  locked: {
+    label: 'Locked',
+    bgColor: '#FEE2E2',
+    fgColor: '#981C1D',
+    iconColor: '#DA2829',
+    icon: faLockKeyhole,
+  },
+  someactionneeded: {
+    label: 'Some Action Needed',
+    bgColor: '#FEE2E2',
+    fgColor: '#981C1D',
+    iconColor: '#ED4647',
+  },
+  getstartedcompliance: {
+    label: 'Not Started',
+    bgColor: '#F5F7FA',
+    fgColor: '#495F80',
+    iconColor: '#ABBACE',
+  },
+};

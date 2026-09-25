@@ -1,0 +1,14 @@
+@function color-shade($color, $step) {
+  @if $step == 500 {
+    @return $color;
+  } @else if $step < 500 {
+    $amount: (500 - $step) / 10;
+    @return lighten($color, $amount);
+  } @else {
+    $diff: abs($step - 500);
+
+    $amount: ($diff / 400) * 45%;
+
+    @return mix(black, $color, $amount);
+  }
+}

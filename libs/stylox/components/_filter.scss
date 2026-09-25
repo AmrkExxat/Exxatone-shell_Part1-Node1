@@ -1,0 +1,385 @@
+.blue-variant {
+  .react-datepicker__header {
+    background-color: white !important;
+    border: none;
+  }
+  .react-datepicker__day--selected,
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--in-range,
+  .react-datepicker__month-text--selected,
+  .react-datepicker__month-text--in-selecting-range,
+  .react-datepicker__month-text--in-range,
+  .react-datepicker__quarter-text--selected,
+  .react-datepicker__quarter-text--in-selecting-range,
+  .react-datepicker__quarter-text--in-range,
+  .react-datepicker__year-text--selected,
+  .react-datepicker__year-text--in-selecting-range,
+  .react-datepicker__year-text--in-range {
+    border-radius: 40px;
+    background-color: #3f51b5;
+  }
+  //Intended to add a focus indicator when focus is moved ot Focusable date.
+  .react-datepicker__day--selected:focus {
+    border-radius: 40px;
+    background-color: rgba(63, 81, 181, 0.2) !important;
+    box-shadow: 0 0 0 2px #3f51b5;
+    outline: none;
+    background-color: rgba(63, 81, 181, 0.3) !important;
+  }
+  .react-datepicker__day--keyboard-selected:focus {
+    border-radius: 40px;
+    background-color: rgba(63, 81, 181, 0.2) !important;
+    box-shadow: 0 0 0 2px #3f51b5;
+    outline: none;
+    background-color: rgba(63, 81, 181, 0.3) !important;
+  }
+  .react-datepicker {
+    border: none;
+  }
+  .filter-round {
+    border-radius: 0.25rem;
+  }
+
+  .filter-cross-btn {
+    color: #3f51b5;
+  }
+
+  .filter-checkbox-bg {
+    background-color: #3f51b5 !important;
+    border-color: #3f51b5 !important;
+  }
+
+  .selectedDateTab {
+    background-color: #3f51b5 !important;
+    color: white;
+  }
+
+  .filter-selected-text {
+    color: #3f51b5;
+  }
+
+  .filter-text-primary {
+    color: #3f51b5;
+  }
+
+  .selected-opened-filter {
+    background-color: #f0efff;
+    border-color: #bac3fd;
+    color: #3f51b5;
+    .filter-icon {
+      color: #3f51b5 !important;
+    }
+  }
+
+  .selected-filter {
+    border-color: #bac3fd;
+    color: #3f51b5;
+    background-color: #fefbff;
+    .filter-icon {
+      color: #3f51b5 !important;
+    }
+  }
+
+  .selected-filter:disabled {
+    color: gray;
+  }
+
+  .selected-filter:hover {
+    background-color: #f0efff !important;
+  }
+
+  .opened-filter {
+    color: #3f51b5;
+    .filter-icon {
+      color: #3f51b5 !important;
+    }
+
+    border-color: #888888;
+  }
+
+  .newState-filter:hover {
+    background-color: #dadada29 !important;
+  }
+
+  .newState-filter:not(:disabled):not(:focus) {
+    border-color: #8c8c92;
+  }
+
+  .filter-icon {
+    color: #5d779a;
+    height: 1.25rem !important;
+    width: 1.25rem !important;
+  }
+  .filter-text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  .drop-panel-label {
+    color: #6b7280;
+  }
+}
+
+.dark-variant {
+  .react-datepicker__header {
+    background-color: white !important;
+    border: none;
+  }
+  .react-datepicker__day--selected,
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--in-range,
+  .react-datepicker__month-text--selected,
+  .react-datepicker__month-text--in-selecting-range,
+  .react-datepicker__month-text--in-range,
+  .react-datepicker__quarter-text--selected,
+  .react-datepicker__quarter-text--in-selecting-range,
+  .react-datepicker__quarter-text--in-range,
+  .react-datepicker__year-text--selected,
+  .react-datepicker__year-text--in-selecting-range,
+  .react-datepicker__year-text--in-range {
+    border-radius: 40px;
+    background-color: #39393c;
+  }
+  //Intended to add a focus indicator when focus is moved ot Focusable date.
+  .react-datepicker__day--selected:focus {
+    border-radius: 40px;
+    background-color: rgba(54, 54, 54, 0.2) !important;
+    box-shadow: 0 0 0 2px #39393c;
+    outline: none;
+    background-color: rgba(54, 54, 54, 0.3) !important;
+  }
+  .react-datepicker__day--keyboard-selected:focus {
+    border-radius: 40px;
+    background-color: rgba(54, 54, 54, 0.2) !important;
+    box-shadow: 0 0 0 2px #39393c;
+    outline: none;
+    background-color: rgba(54, 54, 54, 0.3) !important;
+  }
+  .react-datepicker__close-icon::after {
+    background-color: #39393c !important;
+  }
+  .react-datepicker__day--in-selecting-range {
+    background-color: #39393c !important;
+    color: white;
+  }
+  .react-datepicker__day--keyboard-selected {
+    background-color: #696969 !important;
+    color: white;
+  }
+  .react-datepicker {
+    border: none;
+  }
+  .filter-round {
+    border-radius: 1rem;
+    // border: #696969 !important;
+  }
+
+  .filter-cross-btn {
+    color: white;
+  }
+
+  .filter-checkbox-bg {
+    background-color: #39393c !important;
+    border-color: #39393c !important;
+  }
+
+  .selectedDateTab {
+    background-color: #39393c !important;
+    color: white;
+  }
+
+  .filter-selected-text {
+    color: white;
+  }
+
+  .filter-text-primary {
+    color: #39393c;
+  }
+
+  .selected-opened-filter {
+    background-color: #49494d;
+    border-color: #888888;
+    color: white;
+    .filter-icon {
+      color: white !important;
+    }
+  }
+
+  .selected-filter {
+    border-color: #39393c;
+    color: white;
+    background-color: #39393c;
+    .filter-icon {
+      color: white !important;
+    }
+  }
+
+  .selected-filter:disabled {
+    color: gray;
+  }
+
+  .selected-filter:hover {
+    background-color: #39393c !important;
+  }
+
+  .opened-filter {
+    color: #39393c;
+    .filter-icon {
+      color: #39393c !important;
+    }
+
+    border-color: #eaeaeb;
+  }
+
+  .newState-filter:hover {
+    background-color: #e8eaf6 !important;
+  }
+
+  .newState-filter:not(:disabled):not(:focus) {
+    border-color: #eaeaeb;
+  }
+
+  .filter-icon {
+    color: #39393c;
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+  .filter-text-sm {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+  }
+  .drop-panel-label {
+    color: black;
+  }
+}
+
+.plain-variant {
+  .react-datepicker__header {
+    background-color: white !important;
+    border: none;
+  }
+  .react-datepicker__day--selected,
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--in-range,
+  .react-datepicker__month-text--selected,
+  .react-datepicker__month-text--in-selecting-range,
+  .react-datepicker__month-text--in-range,
+  .react-datepicker__quarter-text--selected,
+  .react-datepicker__quarter-text--in-selecting-range,
+  .react-datepicker__quarter-text--in-range,
+  .react-datepicker__year-text--selected,
+  .react-datepicker__year-text--in-selecting-range,
+  .react-datepicker__year-text--in-range {
+    border-radius: 40px;
+    background-color: #39393c;
+  }
+  //Intended to add a focus indicator when focus is moved ot Focusable date.
+  .react-datepicker__day--selected:focus {
+    color: black !important;
+    border-radius: 40px;
+    background-color: #f0f0f0 !important;
+    box-shadow: 0 0 0 2px #39393c;
+    outline: none;
+  }
+  .react-datepicker__day--keyboard-selected:focus {
+    border-radius: 40px;
+    background-color: #f0f0f0 !important;
+    box-shadow: 0 0 0 2px #39393c;
+    outline: none;
+  }
+  .react-datepicker__close-icon::after {
+    background-color: #39393c !important;
+  }
+  .react-datepicker__day--in-selecting-range {
+    background-color: #39393c !important;
+    color: white;
+  }
+  .react-datepicker__day--keyboard-selected {
+    background-color: #696969 !important;
+    color: white;
+  }
+  .react-datepicker {
+    border: none;
+  }
+  .filter-round {
+    border-radius: 1rem;
+    // border: #696969 !important;
+  }
+
+  .filter-cross-btn {
+    color: white;
+  }
+
+  .filter-checkbox-bg {
+    background-color: #39393c !important;
+    border-color: #39393c !important;
+  }
+
+  .selectedDateTab {
+    background-color: #39393c !important;
+    color: white;
+  }
+
+  .filter-selected-text {
+    color: white;
+  }
+
+  .filter-text-primary {
+    color: #39393c;
+  }
+
+  .selected-opened-filter {
+    // background-color: #49494d;
+    border-color: #888888;
+    color: black;
+    .filter-icon {
+      color: black !important;
+    }
+  }
+
+  .selected-filter {
+    border-color: #39393c;
+    color: black;
+    // background-color: #39393c;
+    .filter-icon {
+      color: black !important;
+    }
+  }
+
+  .selected-filter:disabled {
+    color: gray;
+  }
+
+  .selected-filter:hover {
+    // background-color: #39393c !important;
+  }
+
+  .opened-filter {
+    color: #39393c;
+    .filter-icon {
+      color: #39393c !important;
+    }
+
+    border-color: #eaeaeb;
+  }
+
+  .newState-filter:hover {
+    // background-color: #e8eaf6 !important;
+  }
+
+  .newState-filter:not(:disabled):not(:focus) {
+    border-color: #eaeaeb;
+  }
+
+  .filter-icon {
+    color: #39393c;
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+  .filter-text-sm {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+  }
+  .drop-panel-label {
+    color: black;
+  }
+}

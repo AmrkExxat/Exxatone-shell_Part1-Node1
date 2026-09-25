@@ -1,0 +1,662 @@
+/* TanStack Grid Styles */
+
+/* Base table styling */
+.tanstack-grid-container {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Table wrapper with custom scrollbar */
+.tanstack-grid-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.tanstack-grid-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.tanstack-grid-wrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.tanstack-grid-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+  border: 2px solid #f1f5f9;
+}
+
+.tanstack-grid-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Table base - fixed layout so column widths never recalculate on virtual row load */
+.tanstack-grid-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tanstack-grid-table th,
+.tanstack-grid-table td {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Header styling */
+.tanstack-grid-header {
+  background: linear-gradient(to bottom, #f9fafb 0%, #f3f4f6 100%);
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tanstack-grid-header-cell {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: #374151;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.tanstack-grid-header-cell:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Pinned column shadow effects */
+.tanstack-grid-pinned-left {
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.08);
+}
+
+.tanstack-grid-pinned-right {
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Sortable column indicator */
+.tanstack-grid-sortable {
+  position: relative;
+}
+
+.tanstack-grid-sortable::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.tanstack-grid-sortable:hover::after {
+  opacity: 0.6;
+}
+
+/* Sort indicators */
+.tanstack-grid-sort-asc,
+.tanstack-grid-sort-desc {
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+/* Column resizer */
+.tanstack-grid-resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+  transition: background-color 0.15s ease;
+  z-index: 10;
+}
+
+.tanstack-grid-resizer:hover {
+  background-color: #3b82f6;
+}
+
+.tanstack-grid-resizer.is-resizing {
+  background-color: #2563eb;
+  opacity: 1;
+}
+
+/* Drag indicator */
+.tanstack-grid-dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.tanstack-grid-drag-handle {
+  cursor: grab;
+  transition: opacity 0.2s ease;
+}
+
+.tanstack-grid-drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Row styling */
+.tanstack-grid-row {
+  transition: background-color 0.15s ease;
+}
+
+.tanstack-grid-row:hover {
+  background-color: #f9fafb;
+}
+
+.tanstack-grid-row-selected {
+  background-color: #c7cbe8 !important;
+}
+
+.tanstack-grid-row-selected:hover {
+  background-color: #b8bddb !important;
+}
+
+/* Cell styling */
+.tanstack-grid-cell {
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Expandable row styling */
+.tanstack-grid-expander {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.tanstack-grid-expander:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+.tanstack-grid-expander:active {
+  transform: scale(0.95);
+}
+
+/* Checkbox and radio styling */
+.tanstack-grid-checkbox,
+.tanstack-grid-radio {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.tanstack-grid-checkbox:disabled,
+.tanstack-grid-radio:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Skeleton loader animation */
+@keyframes tanstack-grid-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.tanstack-grid-skeleton {
+  animation: tanstack-grid-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.tanstack-grid-skeleton-bar {
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  background-size: 200% 100%;
+  animation: tanstack-grid-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes tanstack-grid-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Filler row styling */
+.tanstack-grid-filler-row {
+  pointer-events: none;
+}
+
+.tanstack-grid-filler-cell {
+  background-color: #fafafa;
+}
+
+/* Filter input styling */
+.tanstack-grid-filter-input {
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.tanstack-grid-filter-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tanstack-grid-filter-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Global filter styling */
+.tanstack-grid-global-filter {
+  position: relative;
+}
+
+.tanstack-grid-global-filter-input {
+  padding-left: 36px;
+  padding-right: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background-color: white;
+  width: 100%;
+  max-width: 320px;
+}
+
+.tanstack-grid-global-filter-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tanstack-grid-global-filter-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* Pagination styling */
+.tanstack-grid-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tanstack-grid-pagination-button {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tanstack-grid-pagination-button:hover:not(:disabled) {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.tanstack-grid-pagination-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.tanstack-grid-pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+
+.tanstack-grid-pagination-select {
+  padding: 6px 32px 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  appearance: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}
+
+.tanstack-grid-pagination-select:hover {
+  border-color: #9ca3af;
+}
+
+.tanstack-grid-pagination-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Settings drawer styling */
+.tanstack-grid-settings-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  animation: tanstack-grid-fade-in 0.2s ease;
+}
+
+@keyframes tanstack-grid-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tanstack-grid-settings-drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+  z-index: 51;
+  animation: tanstack-grid-slide-in 0.3s ease;
+  overflow-y: auto;
+}
+
+@keyframes tanstack-grid-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.tanstack-grid-settings-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px;
+  z-index: 10;
+}
+
+.tanstack-grid-settings-content {
+  padding: 24px;
+}
+
+.tanstack-grid-settings-section {
+  margin-bottom: 24px;
+}
+
+.tanstack-grid-settings-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Drag and drop list styling */
+.tanstack-grid-draggable-item {
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: move;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tanstack-grid-draggable-item:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.tanstack-grid-draggable-item.is-dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.tanstack-grid-draggable-item.is-over {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+/* Button styling */
+.tanstack-grid-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  border: none;
+  outline: none;
+}
+
+.tanstack-grid-button-primary {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tanstack-grid-button-primary:hover {
+  background-color: #2563eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tanstack-grid-button-primary:active {
+  transform: scale(0.98);
+}
+
+.tanstack-grid-button-secondary {
+  background-color: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tanstack-grid-button-secondary:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.tanstack-grid-button-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Loading indicator */
+.tanstack-grid-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.tanstack-grid-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: tanstack-grid-spin 0.6s linear infinite;
+}
+
+@keyframes tanstack-grid-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Empty state */
+.tanstack-grid-empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.tanstack-grid-empty-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  color: #d1d5db;
+}
+
+.tanstack-grid-empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.tanstack-grid-empty-message {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Utility classes */
+.tanstack-grid-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tanstack-grid-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tanstack-grid-badge-primary {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.tanstack-grid-badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.tanstack-grid-badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.tanstack-grid-badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .tanstack-grid-settings-drawer {
+    max-width: 100%;
+  }
+
+  .tanstack-grid-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tanstack-grid-global-filter-input {
+    max-width: 100%;
+  }
+}
+
+/* Print styles */
+@media print {
+  .tanstack-grid-wrapper {
+    overflow: visible;
+    max-height: none;
+  }
+
+  .tanstack-grid-pagination,
+  .tanstack-grid-settings-drawer,
+  .tanstack-grid-button {
+    display: none;
+  }
+
+  .tanstack-grid-row:hover {
+    background-color: transparent;
+  }
+}
+
+/* Focus visible styles for accessibility */
+.tanstack-grid-button:focus-visible,
+.tanstack-grid-pagination-button:focus-visible,
+.tanstack-grid-checkbox:focus-visible,
+.tanstack-grid-radio:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .tanstack-grid-header {
+    border-bottom: 3px solid currentColor;
+  }
+
+  .tanstack-grid-row {
+    border-bottom: 2px solid currentColor;
+  }
+
+  .tanstack-grid-button,
+  .tanstack-grid-pagination-button {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,77 @@
+$blue-light-theme-primary: #3f51b5;
+
+$blue-light-theme-accent: #f59e0b;
+
+$blue-light-theme-warn: #ef4444;
+
+$blue-dark-theme-primary: #7c75ff;
+
+$blue-dark-theme-accent: #f59e0b;
+
+$blue-dark-theme-warn: #f44336;
+
+$purple-light-theme-primary: #9333ea;
+
+$purple-light-theme-accent: #f9aa33;
+
+$purple-light-theme-warn: #bb1e1f;
+
+$purple-dark-theme-primary: #9333ea;
+
+$purple-dark-theme-accent: #f59e0b;
+
+$purple-dark-theme-warn: #f44336;
+
+$color-steps: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900);
+
+$bg-utilities: (
+  card: bg-card,
+  container: bg-container,
+  hover: bg-hover,
+  header: bg-header,
+  table: bg-table,
+  table-header: bg-table-header,
+  alternate-row: bg-alternate-row,
+  input: bg-input,
+  disabled: bg-disabled,
+);
+
+$text-utilities: (
+  default: text-default,
+  hint: text-hint,
+  secondary: text-secondary,
+  disabled: text-disabled,
+  divider: text-divider,
+);
+
+$jobs-utilities: (
+  "content-primary-jobs": var(--content-primary),
+  "content-secondary-jobs": var(--content-secondary),
+  "content-subdued-jobs": var(--content-subdued),
+  "content-caution-jobs": var(--content-caution),
+  "content-disabled-jobs": var(--content-disabled),
+  "content-neutral-subtle-jobs": var(--content-neutral-subtle),
+  "border-separator-jobs": var(--border-separator),
+  "border-secondary-jobs": var(--border-secondary),
+  "border-focus-jobs": var(--border-focus),
+  "background-normal-default-jobs": var(--background-normal-default),
+  "background-normal-secondary-jobs": var(--background-normal-secondary),
+  "surface-neutral-gray-subtle-jobs": var(--surface-neutral-gray-subtle),
+  "surface-neutral-gray-disabled-subtle-jobs": var(--surface-neutral-gray-disabled-subtle),
+  "surface-positive-subtle-jobs": var(--surface-positive-subtle),
+  "surface-neutral-white-no-inv-jobs": var(--surface-neutral-white-no-inv),
+  "surface-informative-subtle-jobs": var(--surface-informative-subtle),
+  "surface-warning-active-jobs": var(--surface-warning-active),
+  "surface-negative-active-jobs": var(--surface-negative-active),
+  "indicators-utility-positive-jobs": var(--indicators-utility-positive),
+  "brand-surface": var(--brand-surface),
+  "brand-surface-hover": var(--brand-surface-hover),
+  "brand-border": var(--brand-border),
+  "brand-color": var(--brand-color),
+  "brand-color-dark": var(--brand-color-dark),
+  "content-danger-jobs": var(--content-danger-jobs),
+  "content-info-jobs": var(--content-info-jobs),
+  "surface-neutral-card-jobs": var(--surface-neutral-card-jobs),
+  "border-active-jobs": var(--border-active),
+  "content-near-black-jobs": var(--content-near-black),
+);

@@ -1,0 +1,53 @@
+# Dependencies
+node_modules
+dist
+public
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+out
+build
+dist
+coverage
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# Cache
+.cache
+.parcel-cache
+
+# Misc
+.DS_Store
+*.pem
+.idea
+.npmrc
+.vscode/launch.json
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Storybook
+storybook-static
+
+# Sentry
+.sentryclirc
+
+# Generated files
+public/firebase-messaging-sw.js

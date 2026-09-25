@@ -1,0 +1,9 @@
+@import 'tailwindcss' source(none);
+@source '../../**/*.{js,ts,jsx,tsx}';
+/* @exxat/ui is compiled from source, so its class usage must be scanned too or
+   Tailwind will not generate the utilities its components reference. */
+@source '../../../libs/**/*.{js,ts,jsx,tsx}';
+@import 'tw-animate-css';
+@import './default_theme.css';
+@import './globals.css';
+@import './exxat-ui-theme.css';

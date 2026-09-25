@@ -1,0 +1,136 @@
+:root {
+  --toast-speed: 250ms;
+  --toast-list-scrollbar-width: 0.35em;
+  --toast-list-width: 400px;
+  --toast-list-padding: 1em;
+  --toast-margin: 0.5em;
+  --toast-opacity: 0.99;
+}
+
+.toast-list {
+  position: fixed;
+  padding: var(--toast-list-padding);
+  width: 100%;
+  max-width: var(--toast-list-width);
+  max-height: 100vh;
+  overflow: hidden auto;
+
+  &--top-left {
+    top: 0;
+    left: 0;
+
+    .toast {
+      animation: toast-in-left var(--toast-speed);
+    }
+  }
+
+  &--top-right {
+    top: 0;
+    right: 0;
+
+    .toast {
+      animation: toast-in-right var(--toast-speed);
+    }
+  }
+
+  &--bottom-left {
+    bottom: 0;
+    left: 0;
+
+    .toast {
+      animation: toast-in-left var(--toast-speed);
+    }
+  }
+
+  &--bottom-right {
+    bottom: 0;
+    right: 0;
+
+    .toast {
+      animation: toast-in-right var(--toast-speed);
+    }
+  }
+
+  .toast {
+    transition:
+      transform var(--toast-speed),
+      opacity var(--toast-speed),
+      box-shadow var(--toast-speed) ease-in-out;
+  }
+
+  &::-webkit-scrollbar {
+    width: var(--toast-list-scrollbar-width);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: hsl(var(--secondary-hue) 10% 75%);
+    border-radius: var(--toast-list-scrollbar-width);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: var(--toast-list-scrollbar-width);
+    background-color: hsl(var(--secondary-hue) 10% 65%);
+
+    &-window-inactive {
+      background-color: hsl(var(--secondary-hue) 10% 50%);
+    }
+  }
+}
+
+@keyframes toast-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes toast-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.toast {
+  box-shadow:
+    hsl(var(--secondary-hue) 10% 10% / 10%) 0px 1px 3px 0px,
+    hsl(var(--secondary-hue) 10% 10% / 5%) 0px 1px 2px 0px;
+  opacity: var(--toast-opacity);
+
+  &:hover {
+    opacity: 1;
+    box-shadow:
+      hsl(var(--secondary-hue) 10% 10% / 30%) 0px 1px 3px 0px,
+      hsl(var(--secondary-hue) 10% 10% / 15%) 0px 1px 2px 0px;
+  }
+
+  & + .toast {
+    margin-top: var(--toast-margin);
+  }
+
+  &.toast_success {
+    color: #2f7f0c !important;
+    background-color: #f0ffe6 !important;
+  }
+
+  &.toast_error {
+    color: #981c1d !important;
+    background-color: #fee2e2 !important;
+  }
+
+  &.toast_warning {
+    color: #7b7114 !important;
+    background-color: #fffbd7 !important;
+  }
+
+  &.toast_info {
+    color: #4355b6 !important;
+    background-color: #fefbff !important;
+  }
+}

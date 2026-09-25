@@ -1,0 +1,29 @@
+// ---------------------------------------------------------------------------
+// @exxat/ui — stylox stylesheet, consumed from source.
+//
+// Mirrors what the library's own app does in app/styles.scss, minus the parts
+// that would fight this shell:
+//
+//   * vendors/tailwind.css  — skipped. It is just `@import 'tailwindcss'
+//     important;` plus a small @theme block. Importing it would emit Tailwind
+//     a second time AND flip every utility in the app to !important. The
+//     @theme tokens are mirrored into exxat-ui-theme.css instead.
+//   * vendors/sync-fusion   — skipped. Pulls the full Syncfusion stylesheet;
+//     nothing routed in this shell renders a Syncfusion component yet.
+//   * base/init             — skipped. It sets `html, body { display: flex }`
+//     and other global resets that conflict with the shell's own layout.
+//
+// Everything else is the real library styling: tokens, themes, utilities and
+// component styles.
+// ---------------------------------------------------------------------------
+
+@use './tailwind-reference';
+
+// Explicit namespaces: every stylox entry point is named `_init.scss`, so
+// without `as` they would all claim the default namespace "init" and Sass
+// would reject the second one.
+@use '../../../libs/stylox/shared/keyframes' as exxat-keyframes;
+@use '../../../libs/stylox/constants/init' as exxat-constants;
+@use '../../../libs/stylox/themes/init' as exxat-themes;
+@use '../../../libs/stylox/utilities/init' as exxat-utilities;
+@use '../../../libs/stylox/components/init' as exxat-components;

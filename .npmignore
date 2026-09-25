@@ -1,0 +1,9 @@
+# Exclude node_modules
+node_modules
+
+# Exclude test results and reports
+test-results
+playwright-report
+
+# Exclude .npmrc
+.npmrc

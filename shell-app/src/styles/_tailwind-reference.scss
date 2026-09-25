@@ -1,0 +1,12 @@
+// Tailwind v4 `@reference` — makes the theme (utilities, variables, @apply)
+// available to a stylesheet without re-emitting any CSS.
+//
+// Ten of the stylox component partials use `@apply`. Because those are
+// compiled as their own Sass entry rather than inside the shell's Tailwind
+// stylesheet, they need this reference or `@apply` has nothing to resolve
+// against.
+//
+// This lives in its own partial purely for Sass ordering: `@use` rules must
+// precede all other rules, so the reference is pulled in *as* the first @use
+// rather than written above them.
+@reference "tailwindcss";

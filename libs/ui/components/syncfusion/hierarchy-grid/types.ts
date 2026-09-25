@@ -1,0 +1,33 @@
+export interface SyncfusionHierarchyGridProps {
+  children: React.ReactNode;
+  fetchData: (params: any) => any;
+  fetchChildData: (params: any) => any;
+  columns: any[];
+  childGridColumns: any[];
+  pageSize?: number;
+  allowReordering?: boolean;
+  allowSorting?: boolean;
+  allowMultiSorting?: boolean;
+  allowResizing?: boolean;
+  allowPaging?: boolean;
+  allowFiltering?: boolean;
+  allowKeyboard?: boolean;
+  allowSelection?: boolean;
+  checkboxSelection?: boolean;
+  configureColumns?: boolean;
+  metaData?: any;
+  onCheckboxSelect?: (rowData: any, isSelected: boolean) => void;
+  onColumnSettingsSave?: (cols: any[]) => void;
+  clearSelectedRows?: (param: boolean) => void;
+  showSelectAll?: boolean;
+  pageName?: string;
+  gridHeight?: number;
+  recordPrimaryKey?: string;
+  parentKey?: string;
+  tableLegends?: any[];
+  traverseChildren?: boolean;
+  onChildGridCheckboxSelect?: (args: any) => void;
+  onChildGridCheckboxDeselect?: (args: any) => void;
+  sortingOptions?: any;
+  defaultCurrentPage?: number;
+}

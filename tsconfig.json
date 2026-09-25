@@ -1,0 +1,66 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "target": "es2016",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    "outDir": "dist",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "emitDeclarationOnly": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@utilities": [
+        "./libs/utilities/index.ts"
+      ],
+      "@ui/components": [
+        "./libs/ui/components/index.ts"
+      ],
+      "@ui/shared": [
+        "./libs/ui/shared/index.ts"
+      ],
+      "@models": [
+        "./libs/models/index.ts"
+      ],
+      "@exxaat/ui": [
+        "./node_modules/@exxaat/ui/index.d.ts"
+      ],
+      "@exxaat/ui/types": [
+        "./node_modules/@exxaat/ui/types/index.d.ts"
+      ]
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": true
+  },
+  "include": [
+    "./libs/**/*",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

@@ -1,0 +1,15 @@
+.icon-btn {
+  @apply hover:bg-hover flex h-[1.8rem] w-[1.8rem] items-center justify-center rounded-lg;
+
+  &:focus {
+    outline-style: none !important;
+  }
+}
+
+.link {
+  @apply text-primary disabled:text-disabled flex min-w-[32px] cursor-pointer items-center justify-center px-3 text-sm font-normal hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed;
+}
+
+.reactEasyCrop_CropArea:focus-visible {
+  border: 4px double #3f51b5 !important;
+}

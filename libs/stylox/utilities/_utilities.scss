@@ -1,0 +1,40 @@
+@use "../constants/init" as const;
+
+@use "../shared/mixins" as mix;
+
+@layer utilities {
+  @include mix.generate-color-utilities("primary");
+
+  @include mix.generate-color-utilities("accent");
+
+  @include mix.generate-color-utilities("warn");
+
+  @include mix.generate-jobs-color-utilities(const.$jobs-utilities);
+
+  /* ------- Background -------- */
+
+  @include mix.generate-bg-utilities(const.$bg-utilities);
+
+  /* ------- Foreground -------- */
+
+  @include mix.generate-text-utilities(const.$text-utilities);
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  @for $i from 1 through 20 {
+    .bg-opacity-#{$i * 5} {
+      opacity: $i * 0.05 !important;
+    }
+  }
+}

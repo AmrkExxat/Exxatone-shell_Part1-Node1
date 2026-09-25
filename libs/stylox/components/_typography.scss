@@ -1,0 +1,4 @@
+.link-text,
+.guidelines-content > a {
+  @apply focus-visible:ring-primary cursor-pointer text-[#4355B6] hover:underline focus-visible:ring;
+}
