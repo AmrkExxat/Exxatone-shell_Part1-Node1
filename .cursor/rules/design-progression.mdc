@@ -1,0 +1,27 @@
+---
+description: Part1 design nodes (Node-1 frozen vs Node-1a active), ports, and review workflow
+alwaysApply: true
+---
+
+# Design progression (Part 1)
+
+Read **`DESIGN_PROGRESSION.md`** (repo root) for the full manifest, checklist, and changelog.
+
+## Defaults
+
+- **Active node:** `Part1_Node-1a` (branch `part1/node-1a`, this workspace).
+- **Frozen baseline:** tag `Part1_Node-1`, git worktree `../Exxat-UI-Shell-Part1_Node-1` — product edits only when the user names **Part1_Node-1**.
+- **Dev URLs:** active `http://localhost:5175` (`shell-app`: `npm run dev:1a`); baseline `http://localhost:5174` (worktree: `npm run dev`).
+
+## Shell work
+
+- Product work stays in `shell-app/` per `workspace-shell.mdc`.
+- Do not edit the frozen original ExxatOne UI shell path.
+
+## IA-changing partner work
+
+For `shell-app/src/app/screens/partners/**` when the job is more than a one-line fix: load **exxat-senior-ux**, post the design brief, wait for **Ready to build — confirm or edit** before code changes.
+
+## After each review batch on 1a
+
+Append a dated bullet to the **Changelog** section in `DESIGN_PROGRESSION.md`.

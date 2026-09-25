@@ -69,6 +69,8 @@ export default defineConfig({
     exclude: ['@exxat/ui'],
   },
   server: {
+    port: Number(process.env.SHELL_DEV_PORT ?? 5174),
+    strictPort: true,
     fs: {
       // Vite refuses to serve files outside its root by default; the library
       // source and its node_modules both live above shell-app.
