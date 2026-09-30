@@ -82,6 +82,19 @@ export const availabilityCreateDrawer = {
   schedulePublishingDateCol: 'min-w-0',
   schedulePublishingFooter:
     'flex justify-end gap-3 border-t border-[#eceef1] px-6 py-4',
+  selectedSchoolsPanel:
+    'rounded-[8px] border border-[#c5cae9] bg-white p-4 shadow-[0_1px_2px_rgba(63,81,181,0.06)]',
+  selectedSchoolsHeader: 'flex flex-wrap items-center justify-between gap-2',
+  selectedSchoolsLink: 'text-[14px] font-normal leading-5 text-[#3f51b5] hover:underline',
+  selectedSchoolsSearch:
+    'h-[38px] w-full rounded-[6px] border border-[#888888] bg-white py-2 pl-9 pr-3 text-[14px] text-[#212121] shadow-[0_1px_3px_rgba(0,0,0,0.1)] outline-none placeholder:text-[#5d5d5d]',
+  selectedSchoolsHint: 'mt-2 text-[12px] font-normal leading-4 text-[#757575]',
+  selectedSchoolsSectionLabel:
+    'mt-3 border-b border-[#eceef1] bg-[#fafafa] px-2 py-1.5 text-[11px] font-medium uppercase tracking-wide text-[#757575]',
+  selectedSchoolsList: 'max-h-[220px] overflow-y-auto',
+  selectedSchoolsRow: 'border-b border-[#eceef1] last:border-b-0',
+  selectedSchoolsCollapsedTrigger:
+    'flex h-[38px] w-full items-center gap-2 rounded-[6px] border border-[#888888] bg-white px-3 text-left shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)]',
   /** Due date field + popover — compact width (Figma publish preference). */
   datePickerWrap: 'relative w-full max-w-[252px]',
   datePickerTrigger:

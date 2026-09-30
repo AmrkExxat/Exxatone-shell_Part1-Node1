@@ -1,6 +1,6 @@
 /** Create Availability — step 5 (Figma publish preference flow; not full PRD yet). */
 
-export type PublishAudience = 'public' | 'all-partners' | 'tiered-partners';
+export type PublishAudience = 'public' | 'all-partners' | 'school-partners' | 'tiered-partners';
 
 export type PublishWhen = 'now' | 'scheduled' | 'do-not-publish';
 
@@ -13,6 +13,7 @@ export interface PublishPreferenceRow {
   id: string;
   audience: PublishAudience | null;
   tierCategoryIds: string[];
+  schoolPartnerIds: string[];
   publishWhen: PublishWhen | null;
   /** Card-level publish on (non–tiered partners + Scheduled). */
   publishOn: string | null;
@@ -24,8 +25,29 @@ export interface PublishPreferenceRow {
 export const PUBLISH_AUDIENCE_OPTIONS: { id: PublishAudience; label: string }[] = [
   { id: 'public', label: 'Public' },
   { id: 'all-partners', label: 'All Partners' },
+  { id: 'school-partners', label: 'School Partners' },
   { id: 'tiered-partners', label: 'Tiered Partners' },
 ];
+
+/** Prototype school list for School Partners audience (Figma ref). */
+export const PUBLISH_SCHOOL_PARTNER_OPTIONS = [
+  { id: 'bowie-state', label: 'Bowie State University' },
+  { id: 'eastwood-state', label: 'Eastwood State University' },
+  { id: 'exxat-qa-pt', label: 'Exxat-QA-PT' },
+  { id: 'cedar-valley', label: 'Cedar Valley College' },
+  { id: 'harbor-point', label: 'Harbor Point University' },
+  { id: 'northgate', label: 'Northgate Institute' },
+] as const;
+
+export const DEFAULT_SCHOOL_PARTNER_IDS: string[] = ['bowie-state', 'eastwood-state', 'exxat-qa-pt'];
+
+export function schoolPartnerLabel(schoolId: string): string {
+  return PUBLISH_SCHOOL_PARTNER_OPTIONS.find((s) => s.id === schoolId)?.label ?? schoolId;
+}
+
+export function schoolPartnersSummary(schoolIds: string[]): string {
+  return schoolIds.map((id) => schoolPartnerLabel(id)).join(', ');
+}
 
 export const PUBLISH_WHEN_OPTIONS: { id: PublishWhen; label: string }[] = [
   { id: 'now', label: 'Now' },
@@ -58,6 +80,7 @@ export function createEmptyPublishPreference(): PublishPreferenceRow {
     id: `pp-${typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : String(Date.now())}`,
     audience: null,
     tierCategoryIds: [],
+    schoolPartnerIds: [],
     publishWhen: null,
     publishOn: null,
     dueDate: null,
@@ -86,10 +109,14 @@ export function ensureTierPublishDates(
 export function isPublishPreferenceValid(row: PublishPreferenceRow): boolean {
   if (!row.audience) return false;
   if (row.audience === 'tiered-partners' && row.tierCategoryIds.length === 0) return false;
+  if (row.audience === 'school-partners' && row.schoolPartnerIds.length === 0) return false;
   if (!row.publishWhen) return false;
   if (row.publishWhen === 'scheduled') {
     if (row.audience === 'tiered-partners') {
       return row.tierCategoryIds.every((id) => Boolean(row.tierPublishDatesByCategoryId[id]?.publishOn));
+    }
+    if (row.audience === 'school-partners') {
+      return row.schoolPartnerIds.every((id) => Boolean(row.tierPublishDatesByCategoryId[id]?.publishOn));
     }
     return Boolean(row.publishOn);
   }
@@ -121,6 +148,7 @@ export function showsPublishWhen(row: PublishPreferenceRow): boolean {
 function isAudienceComplete(row: PublishPreferenceRow): boolean {
   if (!row.audience) return false;
   if (row.audience === 'tiered-partners') return row.tierCategoryIds.length > 0;
+  if (row.audience === 'school-partners') return row.schoolPartnerIds.length > 0;
   return true;
 }
 
@@ -128,11 +156,16 @@ export function showsDueDate(row: PublishPreferenceRow): boolean {
   if (!showsPublishWhen(row) || !row.publishWhen) return false;
   if (row.publishWhen === 'do-not-publish') return false;
   if (row.audience === 'tiered-partners' && row.publishWhen === 'scheduled') return false;
+  if (row.audience === 'school-partners' && row.publishWhen === 'scheduled') return false;
   return true;
 }
 
 export function showsPublishOn(row: PublishPreferenceRow): boolean {
-  return row.publishWhen === 'scheduled' && row.audience !== 'tiered-partners';
+  return (
+    row.publishWhen === 'scheduled' &&
+    row.audience !== 'tiered-partners' &&
+    row.audience !== 'school-partners'
+  );
 }
 
 export function showsTierScheduledDates(row: PublishPreferenceRow): boolean {
@@ -143,10 +176,19 @@ export function showsTierScheduledDates(row: PublishPreferenceRow): boolean {
   );
 }
 
+export function showsSchoolScheduledDates(row: PublishPreferenceRow): boolean {
+  return (
+    row.audience === 'school-partners' &&
+    row.publishWhen === 'scheduled' &&
+    row.schoolPartnerIds.length > 0
+  );
+}
+
 export function hasPublishPreferenceContent(row: PublishPreferenceRow): boolean {
   return (
     Boolean(row.audience) ||
     row.tierCategoryIds.length > 0 ||
+    row.schoolPartnerIds.length > 0 ||
     Boolean(row.publishWhen) ||
     Boolean(row.publishOn) ||
     Boolean(row.dueDate) ||

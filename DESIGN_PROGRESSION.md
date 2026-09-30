@@ -29,9 +29,9 @@ First-time worktree setup: from the frozen worktree root, run `npm install` in `
 - Partner detail: cover, meta, tabs (About built; other tabs placeholder)
 - Detail About: cards, Related Documents empty state, Program Contacts table
 - Edit Category drawer (Figma-aligned shell tokens)
-- Availability: Overview, List (sticky table), module chrome; **Create Single Availability** wide sheet — step 1 Location; **step 5 Publish Preferences** (Public / All Partners / Tiered Partners; tier scheduled dates + modal; **no** School Partners audience in publish step)
+- Availability: Overview, List (sticky table), module chrome; **Create Single Availability** — step 1 Location; **step 5 Publish Preferences** on 1a (incl. School Partners audience; steps 2–4 placeholders)
 
-**Tag sync (2026-09-30):** `Part1_Node-1` is ahead of `part1/node-1a` for publish preferences through step 5 (excluding School Partners publish UI, which stays on 1a only).
+**Tag sync (2026-09-30):** `Part1_Node-1` (tag `e0478ce`, worktree `../Exxat-UI-Shell-Part1_Node-1`) includes step 5 publish preferences **without** School Partners audience; `part1/node-1a` adds School Partners publish UI on top.
 
 ### Out of scope (until post-review sign-off)
 

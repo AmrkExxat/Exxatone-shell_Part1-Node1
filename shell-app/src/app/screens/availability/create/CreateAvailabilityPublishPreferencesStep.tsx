@@ -14,7 +14,9 @@ import {
   showsDueDate,
   showsPublishOn,
   showsPublishWhen,
+  showsSchoolScheduledDates,
   showsTierScheduledDates,
+  schoolPartnerLabel,
   tierCategoryLabel,
   type PublishAudience,
   type PublishPreferenceRow,
@@ -26,6 +28,7 @@ import { availabilityCreateDrawer } from './availabilityCreateDrawer';
 import { PublishPreferenceDatePickerField } from './publishPreferenceDatePickerField';
 import { PublishOnInfoTooltip } from './PublishOnInfoTooltip';
 import { SchedulePublishingModal } from './SchedulePublishingModal';
+import { SelectedSchoolsField } from './SelectedSchoolsPanel';
 
 type Props = {
   preferences: PublishPreferenceRow[];
@@ -33,7 +36,12 @@ type Props = {
 };
 
 /** Only one dropdown / date popover open across all publish preference cards. */
-type PublishPreferenceOverlay = 'who-sees' | 'publish-when' | 'publish-on' | 'due-date';
+type PublishPreferenceOverlay =
+  | 'who-sees'
+  | 'selected-schools'
+  | 'publish-when'
+  | 'publish-on'
+  | 'due-date';
 
 type OpenOverlayState = { rowId: string; overlay: PublishPreferenceOverlay } | null;
 
@@ -194,6 +202,16 @@ function PublishPreferenceCard({
             row.tierPublishDatesByCategoryId ?? {},
           ),
         });
+      } else if (row.audience === 'school-partners') {
+        onUpdate({
+          publishWhen: value,
+          publishOn: null,
+          dueDate: null,
+          tierPublishDatesByCategoryId: ensureTierPublishDates(
+            row.schoolPartnerIds,
+            row.tierPublishDatesByCategoryId ?? {},
+          ),
+        });
       } else {
         onUpdate({
           publishWhen: value,
@@ -235,8 +253,31 @@ function PublishPreferenceCard({
         preferenceIndex={preferenceIndex}
         panelOpen={isOverlayOpen('who-sees')}
         onPanelOpenChange={(open) => setOverlayOpen('who-sees', open)}
+        onSchoolPartnersSelected={() => setOverlayOpen('selected-schools', true)}
         onUpdate={onUpdate}
       />
+
+      {row.audience === 'school-partners' ? (
+        <SelectedSchoolsField
+          fieldId={`selected-schools-${row.id}`}
+          selectedIds={row.schoolPartnerIds}
+          onChange={(schoolPartnerIds) => {
+            if (row.publishWhen === 'scheduled') {
+              onUpdate({
+                schoolPartnerIds,
+                tierPublishDatesByCategoryId: ensureTierPublishDates(
+                  schoolPartnerIds,
+                  row.tierPublishDatesByCategoryId ?? {},
+                ),
+              });
+              return;
+            }
+            onUpdate({ schoolPartnerIds });
+          }}
+          open={isOverlayOpen('selected-schools')}
+          onOpenChange={(open) => setOverlayOpen('selected-schools', open)}
+        />
+      ) : null}
 
       {showsPublishWhen(row) ? (
         <div className="mt-4">
@@ -316,6 +357,23 @@ function PublishPreferenceCard({
           getEntityLabel={tierCategoryLabel}
           buttonLabel="Set Preferred Dates for Tiers"
           accordionTitle="Tiered Partners"
+          listExpanded={tierDatesListExpanded}
+          onListExpandedChange={(expanded) => {
+            if (expanded) closeAllOverlays();
+            setTierDatesListExpanded(expanded);
+          }}
+          onDismissOverlays={closeAllOverlays}
+          onUpdate={onUpdate}
+        />
+      ) : null}
+
+      {showsSchoolScheduledDates(row) ? (
+        <PreferredScheduledDatesBlock
+          row={row}
+          entityIds={row.schoolPartnerIds}
+          getEntityLabel={schoolPartnerLabel}
+          buttonLabel="Set Preferred Dates for Schools"
+          accordionTitle="School Partners"
           listExpanded={tierDatesListExpanded}
           onListExpandedChange={(expanded) => {
             if (expanded) closeAllOverlays();
@@ -452,12 +510,14 @@ function WhoSeesField({
   preferenceIndex,
   panelOpen,
   onPanelOpenChange,
+  onSchoolPartnersSelected,
   onUpdate,
 }: {
   row: PublishPreferenceRow;
   preferenceIndex: number;
   panelOpen: boolean;
   onPanelOpenChange: (open: boolean) => void;
+  onSchoolPartnersSelected: () => void;
   onUpdate: (patch: Partial<PublishPreferenceRow>) => void;
 }) {
   const [tierExpanded, setTierExpanded] = useState(row.audience === 'tiered-partners');
@@ -465,7 +525,8 @@ function WhoSeesField({
 
   const audienceComplete =
     Boolean(row.audience) &&
-    (row.audience !== 'tiered-partners' || row.tierCategoryIds.length > 0);
+    (row.audience !== 'tiered-partners' || row.tierCategoryIds.length > 0) &&
+    (row.audience !== 'school-partners' || row.schoolPartnerIds.length > 0);
 
   const selectAudience = (audience: PublishAudience) => {
     if (audience === 'tiered-partners') {
@@ -476,6 +537,7 @@ function WhoSeesField({
       onUpdate({
         audience,
         tierCategoryIds,
+        schoolPartnerIds: [],
         publishWhen: null,
         publishOn: null,
         dueDate: null,
@@ -485,9 +547,28 @@ function WhoSeesField({
       onPanelOpenChange(false);
       return;
     }
+    if (audience === 'school-partners') {
+      const wasSchoolPartners = row.audience === 'school-partners';
+      const schoolPartnerIds =
+        wasSchoolPartners && row.schoolPartnerIds.length > 0 ? row.schoolPartnerIds : [];
+      onUpdate({
+        audience,
+        schoolPartnerIds,
+        tierCategoryIds: [],
+        publishWhen: null,
+        publishOn: null,
+        dueDate: null,
+        tierPublishDatesByCategoryId: {},
+      });
+      setTierExpanded(false);
+      onPanelOpenChange(false);
+      if (!wasSchoolPartners) onSchoolPartnersSelected();
+      return;
+    }
     onUpdate({
       audience,
       tierCategoryIds: [],
+      schoolPartnerIds: [],
       publishWhen: null,
       publishOn: null,
       dueDate: null,
@@ -551,7 +632,7 @@ function WhoSeesField({
                 {row.tierCategoryIds.length}
               </span>
             ) : null}
-            {audienceComplete && row.audience !== 'tiered-partners' ? (
+            {audienceComplete && row.audience !== 'tiered-partners' && row.audience !== 'school-partners' ? (
               <span className="rounded-[4px] bg-[#e8eaf6] px-1.5 py-0.5 text-[12px] font-medium leading-none text-[#3f51b5]">
                 {preferenceIndex}
               </span>
@@ -574,14 +655,22 @@ function WhoSeesField({
                         role="option"
                         aria-selected={selected}
                         className={`flex min-h-[40px] flex-1 items-center gap-2 rounded px-2 text-left hover:bg-[#f5f5f5] ${
-                          selected ? 'bg-[#fafafa]' : ''
+                          selected
+                            ? option.id === 'school-partners'
+                              ? 'bg-[#eef0fa]'
+                              : 'bg-[#fafafa]'
+                            : ''
                         }`}
                         onClick={() => selectAudience(option.id)}
                       >
                         <RadioDot selected={selected} />
                         <span
                           className={
-                            selected ? partnersDrawer.optionSelected : partnersDrawer.optionDefault
+                            selected && option.id === 'school-partners'
+                              ? 'text-[14px] font-normal text-[#3f51b5]'
+                              : selected
+                                ? partnersDrawer.optionSelected
+                                : partnersDrawer.optionDefault
                           }
                         >
                           {option.label}
