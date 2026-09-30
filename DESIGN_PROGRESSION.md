@@ -29,6 +29,9 @@ First-time worktree setup: from the frozen worktree root, run `npm install` in `
 - Partner detail: cover, meta, tabs (About built; other tabs placeholder)
 - Detail About: cards, Related Documents empty state, Program Contacts table
 - Edit Category drawer (Figma-aligned shell tokens)
+- Availability: Overview, List (sticky table), module chrome; **Create Single Availability** wide sheet — step 1 Location (steps 2–5 placeholders)
+
+**Tag sync (2026-09-30):** `Part1_Node-1` and worktree `../Exxat-UI-Shell-Part1_Node-1` match `part1/node-1a` HEAD until the next 1a-only commit.
 
 ### Out of scope (until post-review sign-off)
 
