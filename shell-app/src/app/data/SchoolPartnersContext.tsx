@@ -14,7 +14,7 @@ import {
 interface SchoolPartnersContextValue {
   partners: SchoolPartner[];
   getPartner: (id: string) => SchoolPartner | undefined;
-  updatePartnerCategory: (id: string, category: string) => void;
+  updatePartnerCategories: (id: string, categories: string[]) => void;
 }
 
 const SchoolPartnersContext = createContext<SchoolPartnersContextValue | null>(null);
@@ -27,15 +27,15 @@ export function SchoolPartnersProvider({ children }: { children: ReactNode }) {
     [partners],
   );
 
-  const updatePartnerCategory = useCallback((id: string, category: string) => {
+  const updatePartnerCategories = useCallback((id: string, categories: string[]) => {
     setPartners((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, category } : p)),
+      prev.map((p) => (p.id === id ? { ...p, categories: [...categories] } : p)),
     );
   }, []);
 
   const value = useMemo(
-    () => ({ partners, getPartner, updatePartnerCategory }),
-    [partners, getPartner, updatePartnerCategory],
+    () => ({ partners, getPartner, updatePartnerCategories }),
+    [partners, getPartner, updatePartnerCategories],
   );
 
   return (

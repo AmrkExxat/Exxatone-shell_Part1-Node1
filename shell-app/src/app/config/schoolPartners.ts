@@ -18,7 +18,7 @@ export interface SchoolPartner {
   websiteUrl: string;
   address: string;
   addressMeta: string;
-  category: string;
+  categories: string[];
   discipline: string;
   state: string;
   contracts: ContractCounts;
@@ -27,7 +27,13 @@ export interface SchoolPartner {
   contacts: ProgramContact[];
 }
 
-/** Tenant category values (single-select until PRD Part 1). */
+export function partnerCategoriesSummary(count: number): string {
+  if (count === 0) return 'Please select an option';
+  if (count === 1) return '1 Category Selected';
+  return `${count} Categories Selected`;
+}
+
+/** Tenant partner category values (multi-select prototype). */
 export const PARTNER_CATEGORY_OPTIONS = [
   'International Partner29012026174215',
   'premium',
@@ -53,7 +59,7 @@ export const initialSchoolPartners: SchoolPartner[] = [
     address:
       '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'International Partner29012026174215',
+    categories: ['International Partner29012026174215', 'gold', 'Tier 1', 'Prime'],
     discipline: 'Physical Therapy',
     state: 'Maharashtra',
     contracts: { active: 5, expired: 1 },
@@ -88,12 +94,12 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'Prime',
+    categories: ['Prime'],
     discipline: 'Physical Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 1 },
     programContactPrimary: 'Mark Johnsonnn',
-    programContactExtra: 2,
+    programContactExtra: 0,
     contacts: [
       {
         id: 'c1',
@@ -111,20 +117,13 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['gold', 'Silver', 'Tier 2', 'Bronze', 'Non-Tiered Partner'],
     discipline: 'Occupational Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
-    programContactPrimary: 'Mark Johnsonnn',
-    programContactExtra: 2,
-    contacts: [
-      {
-        id: 'c1',
-        name: 'Mark Johnsonnn',
-        email: 'mark.j@exxat-qa.edu',
-        phone: '(555) 111-2222',
-      },
-    ],
+    programContactPrimary: '--',
+    programContactExtra: 0,
+    contacts: [],
   },
   {
     id: 'exxat-qa-pt-2',
@@ -134,20 +133,13 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['Bronze', 'Non-Tiered Partner'],
     discipline: 'Physical Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
-    programContactPrimary: 'Mark Johnsonnn',
-    programContactExtra: 2,
-    contacts: [
-      {
-        id: 'c1',
-        name: 'Mark Johnsonnn',
-        email: 'mark.j@exxat-qa.edu',
-        phone: '(555) 111-2222',
-      },
-    ],
+    programContactPrimary: '--',
+    programContactExtra: 0,
+    contacts: [],
   },
   {
     id: 'exxat-qa-ot-2',
@@ -157,20 +149,13 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['International Partner29012026174215', 'gold', 'Silver', 'Prime'],
     discipline: 'Occupational Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
-    programContactPrimary: 'Mark Johnsonnn',
-    programContactExtra: 2,
-    contacts: [
-      {
-        id: 'c1',
-        name: 'Mark Johnsonnn',
-        email: 'mark.j@exxat-qa.edu',
-        phone: '(555) 111-2222',
-      },
-    ],
+    programContactPrimary: '--',
+    programContactExtra: 0,
+    contacts: [],
   },
   {
     id: 'exxat-qa-pt-3',
@@ -180,20 +165,13 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['International Partner29012026174215', 'gold', 'Silver', 'Prime'],
     discipline: 'Physical Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
-    programContactPrimary: 'Mark Johnsonnn',
-    programContactExtra: 2,
-    contacts: [
-      {
-        id: 'c1',
-        name: 'Mark Johnsonnn',
-        email: 'mark.j@exxat-qa.edu',
-        phone: '(555) 111-2222',
-      },
-    ],
+    programContactPrimary: '--',
+    programContactExtra: 0,
+    contacts: [],
   },
   {
     id: 'exxat-qa-ot-3',
@@ -203,7 +181,7 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['International Partner29012026174215', 'gold', 'Silver', 'Prime'],
     discipline: 'Occupational Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
@@ -226,7 +204,7 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['International Partner29012026174215', 'gold', 'Silver', 'Prime'],
     discipline: 'Physical Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
@@ -249,7 +227,7 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: '',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'premium',
+    categories: ['premium'],
     discipline: 'Occupational Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },
@@ -272,7 +250,7 @@ export const initialSchoolPartners: SchoolPartner[] = [
     websiteUrl: 'https://www.exxat.com',
     address: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
     addressMeta: '401, 4th Floor, I-Space IT Park, Mumbai Pune Bypass Rd, Bavdhan, Pune, Maharashtra, 411021, US',
-    category: 'gold',
+    categories: ['International Partner29012026174215', 'gold', 'Silver', 'Prime'],
     discipline: 'Physical Therapy',
     state: 'Maharashtra',
     contracts: { active: 4, expired: 0 },

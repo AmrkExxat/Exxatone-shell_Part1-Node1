@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
 import {
   ChevronUp,
@@ -23,6 +23,7 @@ import {
 import { Input } from '../../components/ui/input';
 import { useSchoolPartners } from '../../data/SchoolPartnersContext';
 import { EditCategorySheet } from './EditCategorySheet';
+import { PartnerCategoryTwoLineBadges } from './partnerCategoryBadges';
 import { ContractSummaryBadges } from './partnersShared';
 import { partnersFont, partnersSurfaces, partnersType } from './partnersTypography';
 import { partnersTableGrid } from './partnersTable';
@@ -37,9 +38,22 @@ const DETAIL_TABS = [
 
 type DetailTab = (typeof DETAIL_TABS)[number];
 
+/** Two-line address block aligned to Basic Information ref (street segment, then city line). */
+function partnerAddressLines(address: string): { line1: string; line2: string } {
+  const marker = ', Pune,';
+  const idx = address.indexOf(marker);
+  if (idx >= 0) {
+    return {
+      line1: address.slice(0, idx),
+      line2: address.slice(idx + marker.length),
+    };
+  }
+  return { line1: address, line2: '' };
+}
+
 export function SchoolPartnerDetailPage() {
   const { siteId, partnerId } = useParams<{ siteId: string; partnerId: string }>();
-  const { getPartner, updatePartnerCategory } = useSchoolPartners();
+  const { getPartner, updatePartnerCategories } = useSchoolPartners();
   const partner = partnerId ? getPartner(partnerId) : undefined;
   const [activeTab, setActiveTab] = useState<DetailTab>('About');
   const [contactQuery, setContactQuery] = useState('');
@@ -108,10 +122,15 @@ export function SchoolPartnerDetailPage() {
                   {partner.website}
                 </a>
               )}
-              <span className="inline-flex items-center gap-1.5">
-                <IdCard className="h-3.5 w-3.5 shrink-0 text-[#757575]" strokeWidth={1.75} />
-                {partner.category}
-              </span>
+              {partner.categories.length > 0 ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <IdCard className="h-3.5 w-3.5 shrink-0 text-[#757575]" strokeWidth={1.75} />
+                  <span className="text-[#212121]">
+                    {partner.categories.length}{' '}
+                    {partner.categories.length === 1 ? 'category' : 'categories'}
+                  </span>
+                </span>
+              ) : null}
               <button
                 type="button"
                 className="inline-flex items-center gap-1.5 text-[13px] font-normal leading-5 text-[#2563eb] hover:underline"
@@ -160,10 +179,24 @@ export function SchoolPartnerDetailPage() {
                     <Pencil className="h-4 w-4" strokeWidth={1.75} />
                   </button>
                 </div>
-                <dl className="grid grid-cols-1 gap-x-8 gap-y-6 px-6 py-6 md:grid-cols-2">
+                <dl className="grid grid-cols-1 items-start gap-x-8 gap-y-8 px-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
                   <InfoItem label="Name" value={partner.schoolName} />
                   <InfoItem label="Alias name" value={partner.aliasName} />
-                  <InfoItem label="Category" value={partner.category} />
+                  <InfoItem
+                    label="Category"
+                    value={
+                      partner.categories.length > 0 ? (
+                        <PartnerCategoryTwoLineBadges
+                          categories={partner.categories}
+                          variant="inline"
+                          className="mt-0"
+                          widthClassName="max-w-full"
+                        />
+                      ) : (
+                        '--'
+                      )
+                    }
+                  />
                   <InfoItem
                     label="Website"
                     value={
@@ -177,7 +210,19 @@ export function SchoolPartnerDetailPage() {
                     }
                   />
                   <InfoItem label="Associated Discipline" value={partner.discipline} />
-                  <InfoItem label="Address" value={partner.address} className="md:col-span-2" />
+                  <InfoItem
+                    label="Address"
+                    className="sm:col-span-2 lg:col-span-3 lg:col-start-2"
+                    value={(() => {
+                      const { line1, line2 } = partnerAddressLines(partner.address);
+                      return (
+                        <>
+                          <span className="block">{line1}</span>
+                          {line2 ? <span className="mt-0 block">{line2}</span> : null}
+                        </>
+                      );
+                    })()}
+                  />
                 </dl>
               </section>
 
@@ -300,7 +345,7 @@ export function SchoolPartnerDetailPage() {
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         partner={partner}
-        onUpdate={(category) => updatePartnerCategory(partner.id, category)}
+        onUpdate={(categories) => updatePartnerCategories(partner.id, categories)}
       />
     </div>
   );
@@ -312,13 +357,13 @@ function InfoItem({
   className = '',
 }: {
   label: string;
-  value: React.ReactNode;
+  value: ReactNode;
   className?: string;
 }) {
   return (
-    <div className={className}>
+    <div className={`min-w-0 ${className}`}>
       <dt className={`${partnersType.fieldLabel} mb-1.5`}>{label}</dt>
-      <dd className={partnersType.fieldValue}>{value}</dd>
+      <dd className={`${partnersType.fieldValue} break-words`}>{value}</dd>
     </div>
   );
 }

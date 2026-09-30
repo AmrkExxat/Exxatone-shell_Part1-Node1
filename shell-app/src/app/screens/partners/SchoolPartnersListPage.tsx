@@ -22,6 +22,8 @@ import { useSchoolPartners } from '../../data/SchoolPartnersContext';
 import type { SchoolPartner } from '../../config/schoolPartners';
 import { AddProgramPartnerSheet } from './AddProgramPartnerSheet';
 import { EditCategorySheet } from './EditCategorySheet';
+import { PartnerCategoryTableCell } from './partnerCategoryBadges';
+import { ProgramContactsDialog } from './ProgramContactsDialog';
 import { ContractPills } from './partnersShared';
 import {
   partnersFont,
@@ -35,12 +37,15 @@ const PAGE_SIZE = 50;
 
 export function SchoolPartnersListPage() {
   const { siteId } = useParams<{ siteId: string }>();
-  const { partners, getPartner, updatePartnerCategory } = useSchoolPartners();
+  const { partners, getPartner, updatePartnerCategories } = useSchoolPartners();
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(0);
   const [editPartnerId, setEditPartnerId] = useState<string | null>(null);
   const [editSheetOpen, setEditSheetOpen] = useState(false);
   const [addSheetOpen, setAddSheetOpen] = useState(false);
+  const [contactsDialogPartner, setContactsDialogPartner] = useState<SchoolPartner | null>(
+    null,
+  );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -50,7 +55,7 @@ export function SchoolPartnersListPage() {
         p.schoolName.toLowerCase().includes(q) ||
         p.website.toLowerCase().includes(q) ||
         p.address.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
+        p.categories.some((c) => c.toLowerCase().includes(q)) ||
         p.discipline.toLowerCase().includes(q),
     );
   }, [partners, query]);
@@ -173,6 +178,7 @@ export function SchoolPartnersListPage() {
                     row={row}
                     base={base}
                     onEdit={() => openEdit(row.id)}
+                    onOpenContacts={() => setContactsDialogPartner(row)}
                   />
                 ))}
               </tbody>
@@ -229,9 +235,17 @@ export function SchoolPartnersListPage() {
         open={editSheetOpen}
         onOpenChange={setEditSheetOpen}
         partner={editPartner ?? null}
-        onUpdate={(category) => {
-          if (editPartnerId) updatePartnerCategory(editPartnerId, category);
+        onUpdate={(categories) => {
+          if (editPartnerId) updatePartnerCategories(editPartnerId, categories);
         }}
+      />
+
+      <ProgramContactsDialog
+        open={contactsDialogPartner !== null}
+        onOpenChange={(open) => {
+          if (!open) setContactsDialogPartner(null);
+        }}
+        contacts={contactsDialogPartner?.contacts ?? []}
       />
     </div>
   );
@@ -241,11 +255,17 @@ function PartnerRow({
   row,
   base,
   onEdit,
+  onOpenContacts,
 }: {
   row: SchoolPartner;
   base: string;
   onEdit: () => void;
+  onOpenContacts: () => void;
 }) {
+  const programContactBlank =
+    !row.programContactPrimary ||
+    row.programContactPrimary === '--' ||
+    row.contacts.length === 0;
   return (
     <tr className={partnersTableGrid.bodyRow}>
       <td className={partnersTableGrid.bodyCell}>
@@ -265,19 +285,29 @@ function PartnerRow({
       <td className={partnersTableGrid.bodyCell}>
         <span className="line-clamp-4 text-[14px] leading-5 text-[#424242]">{row.address}</span>
       </td>
-      <td className={partnersTableGrid.bodyCell}>
-        <span className="text-[14px] leading-5 text-[#424242]">{row.category}</span>
+      <td className={`${partnersTableGrid.bodyCell} max-w-0 overflow-hidden align-middle`}>
+        <PartnerCategoryTableCell categories={row.categories} />
       </td>
       <td className={partnersTableGrid.bodyCell}>
         <ContractPills contracts={row.contracts} />
       </td>
       <td className={partnersTableGrid.bodyCell}>
-        <button type="button" className={`text-left ${partnersType.link}`}>
-          {row.programContactPrimary}
-          {row.programContactExtra > 0 && (
-            <span className="text-[#2563eb]"> +{row.programContactExtra} View All</span>
-          )}
-        </button>
+        {programContactBlank ? (
+          <span className="text-[14px] text-[#757575]">--</span>
+        ) : (
+          <button
+            type="button"
+            className={`text-left ${partnersType.link}`}
+            onClick={onOpenContacts}
+            aria-haspopup="dialog"
+            aria-label={`All contacts for ${row.schoolName}`}
+          >
+            {row.programContactPrimary}
+            {row.programContactExtra > 0 ? (
+              <span className="whitespace-nowrap"> +{row.programContactExtra}</span>
+            ) : null}
+          </button>
+        )}
       </td>
       <td className={partnersTableGrid.bodyCell}>
         <span className="text-[14px] leading-5 text-[#424242]">{row.discipline}</span>
@@ -327,7 +357,7 @@ function PartnerTableHeaderRow() {
       <th className={partnersTableGrid.headCellWrap}>School name</th>
       <th className={partnersTableGrid.headCell}>Website</th>
       <th className={partnersTableGrid.headCell}>Address</th>
-      <th className={partnersTableGrid.headCell}>Category</th>
+      <th className={`${partnersTableGrid.headCell} max-w-0`}>Category</th>
       <th className={partnersTableGrid.headCell}>Contracts</th>
       <th className={partnersTableGrid.headCellWrap}>Program contact</th>
       <th className={partnersTableGrid.headCellWrap}>Associated Discipline</th>

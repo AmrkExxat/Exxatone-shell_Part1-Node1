@@ -69,6 +69,15 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-09-30 — School Partners: collapsed Selected Schools + exclusive overlay w/ Who sees nested picker`
 - `Part1_Node-1a — 2026-09-30 — School Partners: Who sees closes on select; Selected Schools independent field opens`
 - `Part1_Node-1a — 2026-09-30 — School Partners + Scheduled: preferred dates button (no card Publish on/Due Date)`
+- `Part1_Node-1a — 2026-09-30 — School Partners list: category badges + hover popover; Edit Category multi-select`
+- `Part1_Node-1a — 2026-09-30 — Partner detail Basic Information: 4-column grid + two-line address (ref layout)`
+- `Part1_Node-1a — 2026-09-30 — Partner category badges: capped wrapper + ellipsis for long labels (table + Basic Information)`
+- `Part1_Node-1a — 2026-09-30 — Partners list Category column: clip to cell width (no spill into Contracts)`
+- `Part1_Node-1a — 2026-09-30 — Partner detail Basic Information: full category badge labels (no truncation)`
+- `Part1_Node-1a — 2026-09-30 — Partner cover-card meta: category count text (not badge list)`
+- `Part1_Node-1a — 2026-09-30 — Partners list Program contact: name/+N opens All Contacts dialog`
+- `Part1_Node-1a — 2026-09-30 — Partners list Program contact: “--” empty state + sample rows without contacts`
+- `Part1_Node-1a — 2026-09-30 — Edit Category: zero-selection error state + footer message; Update disabled`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
 

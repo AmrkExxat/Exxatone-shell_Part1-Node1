@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Check, ChevronDown, X } from 'lucide-react';
-import {
-  PARTNER_CATEGORY_OPTIONS,
-  type SchoolPartner,
-} from '../../config/schoolPartners';
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-} from '../../components/ui/sheet';
+import { X } from 'lucide-react';
+import type { SchoolPartner } from '../../config/schoolPartners';
+import { Sheet, SheetContent, SheetTitle } from '../../components/ui/sheet';
+import { PartnerCategoryMultiSelect } from './PartnerCategoryMultiSelect';
 import { partnersDrawer, partnersFont } from './partnersTypography';
 
 interface EditCategorySheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   partner: SchoolPartner | null;
-  onUpdate: (category: string) => void;
+  onUpdate: (categories: string[]) => void;
 }
 
 export function EditCategorySheet({
@@ -24,21 +18,23 @@ export function EditCategorySheet({
   partner,
   onUpdate,
 }: EditCategorySheetProps) {
-  const [category, setCategory] = useState('');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   useEffect(() => {
     if (partner) {
-      setCategory(partner.category);
-      setDropdownOpen(false);
+      setCategories([...partner.categories]);
+      setPanelOpen(false);
     }
   }, [partner, open]);
 
   if (!partner) return null;
 
+  const categoryInvalid = categories.length === 0;
+
   const handleUpdate = () => {
-    if (!category.trim()) return;
-    onUpdate(category);
+    if (categoryInvalid) return;
+    onUpdate(categories);
     onOpenChange(false);
   };
 
@@ -62,8 +58,8 @@ export function EditCategorySheet({
           <button
             type="button"
             onClick={handleUpdate}
-            disabled={!category.trim()}
-            className={partnersDrawer.updateBtn}
+            disabled={categoryInvalid}
+            className={`${partnersDrawer.updateBtn} disabled:cursor-not-allowed`}
           >
             Update
           </button>
@@ -86,72 +82,13 @@ export function EditCategorySheet({
               </div>
             </div>
 
-            <div className="relative mt-12">
-              <p className={`${partnersDrawer.categoryLabel} mb-1`}>Partner Category</p>
-              <button
-                type="button"
-                onClick={() => setDropdownOpen((v) => !v)}
-                className={partnersDrawer.selectTrigger}
-                aria-expanded={dropdownOpen}
-                aria-haspopup="listbox"
-              >
-                <span className={partnersDrawer.selectValue}>
-                  {category || 'Select category'}
-                </span>
-                <ChevronDown
-                  className={`${partnersDrawer.selectChevron} transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
-                  strokeWidth={2}
-                />
-              </button>
-
-              {dropdownOpen && (
-                <div
-                  role="listbox"
-                  className="absolute left-0 right-0 z-10 mt-1 max-h-[320px] overflow-y-auto rounded-[6px] border border-[#e5e7eb] bg-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]"
-                >
-                  {PARTNER_CATEGORY_OPTIONS.map((opt) => {
-                    const selected = opt === category;
-                    return (
-                      <button
-                        key={opt}
-                        type="button"
-                        role="option"
-                        aria-selected={selected}
-                        onClick={() => {
-                          setCategory(opt);
-                          setDropdownOpen(false);
-                        }}
-                        className={`flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left hover:bg-[#f5f5f5] ${
-                          selected ? 'bg-[#fafafa]' : ''
-                        }`}
-                      >
-                        <span
-                          className={`truncate ${selected ? partnersDrawer.optionSelected : partnersDrawer.optionDefault}`}
-                        >
-                          {opt}
-                        </span>
-                        {selected && (
-                          <Check
-                            className="size-4 shrink-0 text-[#155dfc]"
-                            strokeWidth={2.5}
-                            aria-hidden
-                          />
-                        )}
-                      </button>
-                    );
-                  })}
-                  <div className="sticky bottom-0 border-t border-[#e5e7eb] bg-white px-3 py-2 text-right">
-                    <button
-                      type="button"
-                      className="text-[14px] font-normal leading-5 text-[#155dfc] hover:underline"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            <PartnerCategoryMultiSelect
+              selected={categories}
+              onChange={setCategories}
+              panelOpen={panelOpen}
+              onPanelOpenChange={setPanelOpen}
+              invalid={categoryInvalid}
+            />
           </div>
         </div>
       </SheetContent>
