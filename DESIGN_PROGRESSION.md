@@ -29,9 +29,9 @@ First-time worktree setup: from the frozen worktree root, run `npm install` in `
 - Partner detail: cover, meta, tabs (About built; other tabs placeholder)
 - Detail About: cards, Related Documents empty state, Program Contacts table
 - Edit Category drawer (Figma-aligned shell tokens)
-- Availability: Overview, List (sticky table), module chrome; **Create Single Availability** wide sheet — step 1 Location (steps 2–5 placeholders)
+- Availability: Overview, List (sticky table), module chrome; **Create Single Availability** wide sheet — step 1 Location; **step 5 Publish Preferences** (Public / All Partners / Tiered Partners; tier scheduled dates + modal; **no** School Partners audience in publish step)
 
-**Tag sync (2026-09-30):** `Part1_Node-1` and worktree `../Exxat-UI-Shell-Part1_Node-1` match `part1/node-1a` HEAD until the next 1a-only commit.
+**Tag sync (2026-09-30):** `Part1_Node-1` is ahead of `part1/node-1a` for publish preferences through step 5 (excluding School Partners publish UI, which stays on 1a only).
 
 ### Out of scope (until post-review sign-off)
 
@@ -53,7 +53,24 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-09-29 — Availability mock data: Figma 1045:7509 row patterns; anonymized locations and creators for prototype sharing`
 - `Part1_Node-1a — 2026-09-29 — Create Availability wide sheet: chevron stepper, Location step 1, steps 2–5 placeholders`
 - `Part1_Node-1a — 2026-09-30 — Create Availability location table polish (sticky chrome, ref colors); stepper bar layout`
+- `Part1_Node-1a — 2026-09-30 — Create Availability step 5 Publish Preferences (Figma 1045:54395 experience; Save gating)`
+- `Part1_Node-1a — 2026-09-30 — Create Availability step 5: compact Due Date popover (252px, smaller calendar grid)`
+- `Part1_Node-1a — 2026-09-30 — Create Availability step 5: Publish on uses shared date picker; clear opens calendar`
+- `Part1_Node-1a — 2026-09-30 — Create Availability step 5: unified date picker trigger; Due Date clear (×) + alignment`
+- `Part1_Node-1a — 2026-09-30 — Create Availability step 5: Remove CTA enabled (#3f51b5) vs disabled (no hover)`
+- `Part1_Node-1a — 2026-09-30 — Tiered Partners publish-when: Now/Do Not Publish/Scheduled tier dates panel`
+- `Part1_Node-1a — 2026-09-30 — Tiered Partners: default all tiers selected; scheduled tier list collapsed by default`
+- `Part1_Node-1a — 2026-09-30 — Publish Preferences: exclusive overlay (one dropdown/date popover at a time)`
+- `Part1_Node-1a — 2026-09-30 — Publish Preferences: click-outside dismisses overlays and tier dates accordion`
+- `Part1_Node-1a — 2026-09-30 — Publish preference grid: cards content-height (no stretch to tallest sibling)`
+- `Part1_Node-1a — 2026-09-30 — Schedule Publishing modal for Set Preferred Dates for Tiers (Figma ref)`
+- `Part1_Node-1a — 2026-09-30 — Publish on filled picker (#f5f6fc) + schedule time info tooltip`
+- `Part1_Node-1a — 2026-09-30 — School Partners audience + Selected Schools panel (Figma ref)`
+- `Part1_Node-1a — 2026-09-30 — School Partners: collapsed Selected Schools + exclusive overlay w/ Who sees nested picker`
+- `Part1_Node-1a — 2026-09-30 — School Partners: Who sees closes on select; Selected Schools independent field opens`
+- `Part1_Node-1a — 2026-09-30 — School Partners + Scheduled: preferred dates button (no card Publish on/Due Date)`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
+- `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
 
 **Availability review (site `bedlam-hospital`):**
 

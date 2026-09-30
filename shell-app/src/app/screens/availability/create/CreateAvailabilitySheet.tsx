@@ -1,6 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { X } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle } from '../../../components/ui/sheet';
+import {
+  areAllPublishPreferencesValid,
+  createEmptyPublishPreference,
+  type PublishPreferenceRow,
+} from '../../../config/availabilityPublishPreferences';
 import { partnersDrawer, partnersFont } from '../../partners/partnersTypography';
 import {
   availabilityCreateDrawer,
@@ -9,6 +14,7 @@ import {
 } from './availabilityCreateDrawer';
 import { CreateAvailabilityChevronStepper } from './CreateAvailabilityChevronStepper';
 import { CreateAvailabilityLocationStep } from './CreateAvailabilityLocationStep';
+import { CreateAvailabilityPublishPreferencesStep } from './CreateAvailabilityPublishPreferencesStep';
 
 const LAST_STEP_INDEX = CREATE_AVAILABILITY_STEPS.length - 1;
 
@@ -22,12 +28,16 @@ export function CreateAvailabilitySheet({ open, onOpenChange }: CreateAvailabili
   const [currentStep, setCurrentStep] = useState(0);
   const [maxVisitedStep, setMaxVisitedStep] = useState(0);
   const [selectedLocationIds, setSelectedLocationIds] = useState<Set<string>>(new Set());
+  const [publishPreferences, setPublishPreferences] = useState<PublishPreferenceRow[]>(() => [
+    createEmptyPublishPreference(),
+  ]);
 
   useEffect(() => {
     if (!open) {
       setCurrentStep(0);
       setMaxVisitedStep(0);
       setSelectedLocationIds(new Set());
+      setPublishPreferences([createEmptyPublishPreference()]);
       setDraftName('');
       return;
     }
@@ -38,7 +48,10 @@ export function CreateAvailabilitySheet({ open, onOpenChange }: CreateAvailabili
   const isLastStep = currentStep === LAST_STEP_INDEX;
 
   const isNextDisabled = isStep1 && selectedLocationIds.size === 0;
-  const isSaveDisabled = true;
+  const isSaveDisabled = useMemo(
+    () => !areAllPublishPreferencesValid(publishPreferences),
+    [publishPreferences],
+  );
 
   const goNext = () => {
     if (isNextDisabled) return;
@@ -56,8 +69,44 @@ export function CreateAvailabilitySheet({ open, onOpenChange }: CreateAvailabili
     console.log('Create availability save stub', {
       name: draftName,
       locationIds: [...selectedLocationIds],
+      publishPreferences,
     });
     onOpenChange(false);
+  };
+
+  const renderStepBody = () => {
+    if (currentStep === 0) {
+      return (
+        <div className={availabilityCreateDrawer.bodyScrollLocation}>
+          <CreateAvailabilityLocationStep
+            selectedIds={selectedLocationIds}
+            onSelectionChange={setSelectedLocationIds}
+          />
+        </div>
+      );
+    }
+    if (currentStep === LAST_STEP_INDEX) {
+      return (
+        <div className={availabilityCreateDrawer.bodyScroll}>
+          <CreateAvailabilityPublishPreferencesStep
+            preferences={publishPreferences}
+            onChange={setPublishPreferences}
+          />
+        </div>
+      );
+    }
+    return (
+      <div className={availabilityCreateDrawer.bodyScroll}>
+        <div className={availabilityCreateDrawer.placeholderPanel}>
+          <p className="font-medium text-[#424242]">
+            {CREATE_AVAILABILITY_STEPS[currentStep].numberedLabel}
+          </p>
+          <p className="mt-2">
+            Step content will be added in the next slice. Use Next to continue reviewing the flow.
+          </p>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -115,28 +164,7 @@ export function CreateAvailabilitySheet({ open, onOpenChange }: CreateAvailabili
           />
         </div>
 
-        <div className={availabilityCreateDrawer.body}>
-          {currentStep === 0 ? (
-            <div className={availabilityCreateDrawer.bodyScrollLocation}>
-              <CreateAvailabilityLocationStep
-                selectedIds={selectedLocationIds}
-                onSelectionChange={setSelectedLocationIds}
-              />
-            </div>
-          ) : (
-            <div className={availabilityCreateDrawer.bodyScroll}>
-              <div className={availabilityCreateDrawer.placeholderPanel}>
-                <p className="font-medium text-[#424242]">
-                  {CREATE_AVAILABILITY_STEPS[currentStep].numberedLabel}
-                </p>
-                <p className="mt-2">
-                  Step content will be added in the next slice. Use Next to continue reviewing the
-                  flow.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+        <div className={availabilityCreateDrawer.body}>{renderStepBody()}</div>
       </SheetContent>
     </Sheet>
   );
