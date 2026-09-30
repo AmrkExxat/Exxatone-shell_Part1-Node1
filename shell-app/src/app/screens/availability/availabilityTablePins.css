@@ -1,0 +1,14 @@
+/**
+ * Pinned column edge — Exxat grid (e-sticky): outer shadow, no layout overflow.
+ */
+.avail-pin-shadow-right {
+  box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.avail-pin-shadow-left {
+  box-shadow: -2px 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.avail-pin-actions-divider {
+  border-left: 1px solid #eceef1;
+}

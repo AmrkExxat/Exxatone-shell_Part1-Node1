@@ -19,6 +19,10 @@ import { PlaceholderPage } from './screens/PlaceholderPage';
 import { SchoolPartnersLayout } from './screens/partners/SchoolPartnersLayout';
 import { SchoolPartnersListPage } from './screens/partners/SchoolPartnersListPage';
 import { SchoolPartnerDetailPage } from './screens/partners/SchoolPartnerDetailPage';
+import { AvailabilityLayout } from './screens/availability/AvailabilityLayout';
+import { AvailabilityOverviewPage } from './screens/availability/AvailabilityOverviewPage';
+import { AvailabilityListPage } from './screens/availability/AvailabilityListPage';
+import { AvailabilityTabPlaceholder } from './screens/availability/AvailabilityTabPlaceholder';
 import { JobsPage } from './components/JobsPage';
 import type { ProductKind } from './data/session';
 
@@ -123,7 +127,23 @@ export const router = createBrowserRouter([
               { path: ':partnerId', element: <SchoolPartnerDetailPage /> },
             ],
           },
-          { path: 'availability', element: <PlaceholderPage title="Availability" /> },
+          {
+            path: 'availability',
+            element: <AvailabilityLayout />,
+            children: [
+              { index: true, element: <Navigate to="overview" replace /> },
+              { path: 'overview', element: <AvailabilityOverviewPage /> },
+              { path: 'list', element: <AvailabilityListPage /> },
+              {
+                path: 'map',
+                element: <AvailabilityTabPlaceholder title="Map View" />,
+              },
+              {
+                path: 'reports',
+                element: <AvailabilityTabPlaceholder title="Reports" />,
+              },
+            ],
+          },
           { path: 'slot-requests', element: <PlaceholderPage title="Slot Requests" /> },
           { path: 'schedules', element: <PlaceholderPage title="Schedules" /> },
           { path: 'reports', element: <PlaceholderPage title="Reports" /> },

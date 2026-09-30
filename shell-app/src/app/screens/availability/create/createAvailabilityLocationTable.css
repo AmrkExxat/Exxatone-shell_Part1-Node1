@@ -1,0 +1,54 @@
+/* Location step — sticky stack + grid (ref #F4F5FF / #E8F0FE / #eceef1) */
+.create-loc-scroll {
+  --create-loc-filter-h: 3.25rem;
+  --create-loc-banner-h: 2.375rem;
+  --create-loc-head-top: var(--create-loc-filter-h);
+}
+
+.create-loc-scroll[data-has-selection='true'] {
+  --create-loc-head-top: calc(var(--create-loc-filter-h) + var(--create-loc-banner-h));
+}
+
+.create-loc-filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: 0 1px 0 #eceef1;
+}
+
+.create-loc-selection-bar {
+  position: sticky;
+  top: var(--create-loc-filter-h);
+  z-index: 25;
+  box-shadow: 0 1px 0 #eceef1;
+}
+
+.create-loc-table-head th {
+  position: sticky;
+  top: var(--create-loc-head-top);
+  z-index: 20;
+  box-shadow: 0 1px 0 #eceef1;
+}
+
+.create-loc-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.create-loc-table th,
+.create-loc-table td {
+  border-bottom: 1px solid #eceef1;
+  border-right: 1px solid #eceef1;
+}
+
+.create-loc-table th:last-child,
+.create-loc-table td:last-child {
+  border-right: none;
+}
+
+.create-loc-checkbox {
+  accent-color: #3f51b5;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}

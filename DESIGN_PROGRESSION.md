@@ -41,6 +41,21 @@ First-time worktree setup: from the frozen worktree root, run `npm install` in `
 Append one line per completed review batch on **Part1_Node-1a**:
 
 - `Part1_Node-1a — 2026-09-25 — Design node versioning: dual ports (5174 baseline worktree / 5175 active), manifest + Cursor rule`
+- `Part1_Node-1a — 2026-09-28 — Availability module: Overview, List (sticky columns), Map/Reports placeholders`
+- `Part1_Node-1a — 2026-09-29 — Availability list: Figma 571:20809 column widths + wrap headers; header row 45px`
+- `Part1_Node-1a — 2026-09-29 — Availability list: pinned-column shadows, single-line headers, DS status pills, partners grid lines`
+- `Part1_Node-1a — 2026-09-29 — Availability list: sticky sub-tabs + filters + table header under module chrome`
+- `Part1_Node-1a — 2026-09-29 — Availability list: single-table horizontal scroll + pinned columns (fix split-table jitter)`
+- `Part1_Node-1a — 2026-09-29 — Availability overview: KPI/activities/breakdown/high-demand aligned to Figma refs`
+- `Part1_Node-1a — 2026-09-29 — Availability mock data: Figma 1045:7509 row patterns; anonymized locations and creators for prototype sharing`
+- `Part1_Node-1a — 2026-09-29 — Create Availability wide sheet: chevron stepper, Location step 1, steps 2–5 placeholders`
+- `Part1_Node-1a — 2026-09-30 — Create Availability location table polish (sticky chrome, ref colors); stepper bar layout`
+- `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
+
+**Availability review (site `bedlam-hospital`):**
+
+- Overview: `/site/bedlam-hospital/availability/overview`
+- List: `/site/bedlam-hospital/availability/list`
 
 ## Agent handoff
 
