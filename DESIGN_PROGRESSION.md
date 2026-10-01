@@ -8,6 +8,7 @@
 |------|-----|--------|-------------|-----|
 | **Part1_Node-1** (frozen baseline) | tag `Part1_Node-1` | Sibling worktree: `../Exxat-UI-Shell-Part1_Node-1` | `cd shell-app && npm run dev` | http://localhost:5174/login |
 | **Part1_Node-1a** (active) | branch `part1/node-1a` | This workspace | `cd shell-app && npm run dev:1a` | http://localhost:5175/login |
+| **Part1_Node-1a** (Pages preview) | branch `part1/node-1a` | Cloudflare Pages | Git push or `shell-app`: `npm run pages:deploy` | See `shell-app/docs/review/cloudflare-pages.md` |
 
 **Partners review paths (site `bedlam-hospital`):**
 

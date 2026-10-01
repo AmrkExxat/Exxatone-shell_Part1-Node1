@@ -6,7 +6,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "dev:1a": "SHELL_DEV_PORT=5175 vite"
+    "dev:1a": "SHELL_DEV_PORT=5175 vite",
+    "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=exxat-shell-part1-1a"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -75,6 +76,7 @@
     "playwright": "^1.49.1",
     "tailwindcss": "4.1.12",
     "typescript": "^5.8.2",
-    "vite": "6.3.5"
+    "vite": "6.3.5",
+    "wrangler": "^4.145.0"
   }
 }

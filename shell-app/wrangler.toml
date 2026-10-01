@@ -1,0 +1,4 @@
+# Cloudflare Pages — static shell-app (Vite SPA). Deploy: npm run pages:deploy
+name = "exxat-shell-part1-1a"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-01-01"
