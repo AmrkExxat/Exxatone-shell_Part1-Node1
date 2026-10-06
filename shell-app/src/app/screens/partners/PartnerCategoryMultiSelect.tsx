@@ -71,7 +71,13 @@ export function PartnerCategoryMultiSelect({
 
       {invalid && !panelOpen ? <CategoryValidationMessage className="mt-1.5" /> : null}
 
-      {!panelOpen ? <PartnerCategoryCollapsedBadges categories={selected} /> : null}
+      {selected.length > 0 ? (
+        <PartnerCategoryCollapsedBadges
+          categories={selected}
+          className={panelOpen ? 'mt-2 mb-1' : 'mt-2'}
+          onRemoveCategory={(label) => toggle(label)}
+        />
+      ) : null}
 
       {panelOpen ? (
         <div

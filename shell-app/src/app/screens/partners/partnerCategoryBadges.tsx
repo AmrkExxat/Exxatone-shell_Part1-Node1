@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { X } from 'lucide-react';
 import { partnersType } from './partnersTypography';
 
 const categoryBadge =
@@ -236,20 +237,52 @@ export function PartnerCategoryTableCell({ categories }: { categories: string[] 
   return <PartnerCategoryTwoLineBadges categories={categories} variant="table" />;
 }
 
+function CategoryRemovableBadge({
+  label,
+  onRemove,
+}: {
+  label: string;
+  onRemove: (label: string) => void;
+}) {
+  return (
+    <span className="inline-flex max-w-full items-center gap-0.5 rounded-full bg-[#e8eaf6] py-0.5 pl-2.5 pr-1 text-[12px] font-medium leading-4 text-[#3949ab]">
+      <span className="min-w-0 truncate">{label}</span>
+      <button
+        type="button"
+        className="ml-0.5 flex size-[18px] shrink-0 items-center justify-center rounded-full text-[#5c6bc0] hover:bg-[#c5cae9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[#3f51b5]"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(label);
+        }}
+        aria-label={`Remove ${label}`}
+      >
+        <X className="size-3.5" strokeWidth={2} aria-hidden />
+      </button>
+    </span>
+  );
+}
+
 /** All badges wrapped (Edit Category drawer collapsed state). */
 export function PartnerCategoryCollapsedBadges({
   categories,
   className = 'mt-2',
+  onRemoveCategory,
 }: {
   categories: string[];
   className?: string;
+  /** Edit Category drawer — show remove control on each badge. */
+  onRemoveCategory?: (label: string) => void;
 }) {
   if (categories.length === 0) return null;
   return (
     <div className={`flex flex-wrap gap-1.5 ${className}`}>
-      {categories.map((label) => (
-        <CategoryBadge key={label} label={label} />
-      ))}
+      {categories.map((label) =>
+        onRemoveCategory ? (
+          <CategoryRemovableBadge key={label} label={label} onRemove={onRemoveCategory} />
+        ) : (
+          <CategoryBadge key={label} label={label} />
+        ),
+      )}
     </div>
   );
 }
