@@ -25,7 +25,12 @@ import { useSchoolPartners } from '../../data/SchoolPartnersContext';
 import { EditCategorySheet } from './EditCategorySheet';
 import { PartnerCategoryTwoLineBadges } from './partnerCategoryBadges';
 import { ContractSummaryBadges } from './partnersShared';
-import { partnersFont, partnersSurfaces, partnersType } from './partnersTypography';
+import {
+  partnersFont,
+  partnersListChrome,
+  partnersSurfaces,
+  partnersType,
+} from './partnersTypography';
 import { partnersTableGrid } from './partnersTable';
 
 const DETAIL_TABS = [
@@ -256,7 +261,10 @@ export function SchoolPartnerDetailPage() {
                 <h2 className="sr-only">Program Contacts</h2>
                 <div className="flex items-center justify-between gap-3 border-b border-[#eceef1] px-4 py-3">
                   <div className="relative w-full max-w-[280px]">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9ca3af]" />
+                    <Search
+                      className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${partnersListChrome.searchFieldIcon}`}
+                      aria-hidden
+                    />
                     <Input
                       value={contactQuery}
                       onChange={(e) => setContactQuery(e.target.value)}

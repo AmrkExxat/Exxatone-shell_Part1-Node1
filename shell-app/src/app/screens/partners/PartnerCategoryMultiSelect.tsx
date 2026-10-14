@@ -91,7 +91,7 @@ export function PartnerCategoryMultiSelect({
           <div className="border-b border-[#eceef1] p-2">
             <div className="relative">
               <Search
-                className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-[#9ca3af]"
+                className={`pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 ${partnersDrawer.searchFieldIcon}`}
                 aria-hidden
               />
               <input
@@ -99,13 +99,14 @@ export function PartnerCategoryMultiSelect({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search categories"
+                aria-label="Search categories"
                 className="h-[36px] w-full rounded-[6px] border border-[#888888] bg-white py-2 pl-9 pr-3 text-[14px] text-[#212121] outline-none placeholder:text-[#5d5d5d]"
               />
             </div>
           </div>
 
           <div className="flex items-center justify-between bg-[#fafafa] px-3 py-2">
-            <span className="text-[11px] font-medium uppercase tracking-wide text-[#757575]">
+            <span className={partnersDrawer.dropdownSectionLabel}>
               Selected ({selected.length})
             </span>
             {selected.length > 0 ? (

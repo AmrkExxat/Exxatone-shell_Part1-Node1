@@ -132,7 +132,10 @@ export function AddProgramPartnerSheet({ open, onOpenChange }: AddProgramPartner
                     </div>
                     <div className="p-3">
                       <div className="relative">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9ca3af]" />
+                        <Search
+                          className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${partnersDrawer.searchFieldIcon}`}
+                          aria-hidden
+                        />
                         <Input
                           value={programSearch}
                           onChange={(e) => setProgramSearch(e.target.value)}

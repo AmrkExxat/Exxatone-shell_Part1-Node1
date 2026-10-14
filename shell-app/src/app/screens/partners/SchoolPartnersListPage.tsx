@@ -89,7 +89,10 @@ export function SchoolPartnersListPage() {
   const filterRow = (
     <div className={`${partnersListChrome.filterBarInner} flex items-center gap-2`}>
       <div className="relative w-full max-w-[280px] shrink-0">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9ca3af]" />
+        <Search
+          className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${partnersListChrome.searchFieldIcon}`}
+          aria-hidden
+        />
         <Input
           value={query}
           onChange={(e) => {

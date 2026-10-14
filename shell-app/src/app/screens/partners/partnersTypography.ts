@@ -2,6 +2,9 @@
 /** Matches Figma / live Exxat One partner screens (loaded in index.html). */
 export const partnersFont = "font-['Source_Sans_3',sans-serif]";
 
+/** WCAG AA on white — avoid #9ca3af (~2.5:1). */
+export const partnersSearchFieldIcon = 'text-[#616161]' as const;
+
 export const partnersType = {
   pageTitle: 'text-lg font-medium leading-6 text-[#212121]',
   primaryButton:
@@ -72,6 +75,9 @@ export const partnersDrawer = {
   programSelectBtn:
     'flex h-[38px] w-full items-center gap-2 rounded-[6px] border border-[#888888] bg-white px-3 text-left shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)]',
   programSelectPlaceholder: 'text-[14px] font-normal leading-5 text-[#5d5d5d]',
+  searchFieldIcon: partnersSearchFieldIcon,
+  dropdownSectionLabel:
+    'text-[11px] font-medium uppercase tracking-wide text-[#616161]',
   dropdownPanel:
     'absolute left-0 right-0 z-20 mt-1 overflow-hidden rounded-[6px] border border-[#e5e7eb] bg-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]',
   dropdownFooter:
@@ -89,6 +95,7 @@ export const partnersListChrome = {
   tableCardBottom:
     '-mt-px overflow-hidden rounded-b-lg border border-t-0 border-[#eceef1] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]',
   filterBarInner: 'border-b border-[#eceef1] px-4 py-3',
+  searchFieldIcon: partnersSearchFieldIcon,
   /** Sync horizontal scroll with body; no visible scrollbar on header strip. */
   headScroll:
     'overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden',
