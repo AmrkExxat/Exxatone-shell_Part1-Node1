@@ -106,6 +106,7 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-10-28 — Email Templates editor: title bar sticks while the config column scrolls`
 - `Part1_Node-1a — 2026-10-28 — Email Templates: scratch name uses the event; Add dialog lists Customized only; split @ hints; upload icon`
 - `Part1_Node-1a — 2026-10-28 — Site Configuration nav: Attachment Templates renamed to Template Editor`
+- `Part1_Node-1a — 2026-10-28 — Email Setup defaults: display name Bedlam Medical Network, reply-to clinical.placements@bedlammedical.org`
 - `Part1_Node-1a — 2026-10-28 — Email Templates tree: selected event is bold only (no band fill); count pills meet WCAG AA contrast`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
