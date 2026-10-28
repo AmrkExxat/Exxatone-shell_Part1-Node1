@@ -1,4 +1,5 @@
 import { RouterProvider } from 'react-router';
+import { Toaster } from './components/ui/sonner';
 import { router } from './routes';
 
 /**
@@ -6,5 +7,10 @@ import { router } from './routes';
  * Styles load via src/styles/index.css from main.tsx.
  */
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster position="top-center" richColors closeButton />
+    </>
+  );
 }

@@ -23,6 +23,16 @@ import { AvailabilityLayout } from './screens/availability/AvailabilityLayout';
 import { AvailabilityOverviewPage } from './screens/availability/AvailabilityOverviewPage';
 import { AvailabilityListPage } from './screens/availability/AvailabilityListPage';
 import { AvailabilityTabPlaceholder } from './screens/availability/AvailabilityTabPlaceholder';
+import { SchedulesLayout } from './screens/schedules/SchedulesLayout';
+import { SchedulesOverviewPage } from './screens/schedules/SchedulesOverviewPage';
+import { SchedulesListPage } from './screens/schedules/SchedulesListPage';
+import { SchedulesTabPlaceholder } from './screens/schedules/SchedulesTabPlaceholder';
+import { SiteConfigurationLayout } from './screens/site-configuration/SiteConfigurationLayout';
+import { BasicDetailsPage } from './screens/site-configuration/BasicDetailsPage';
+import { SiteConfigurationSectionPlaceholder } from './screens/site-configuration/SiteConfigurationSectionPlaceholder';
+import { EmailSetupPage } from './screens/site-configuration/email-setup/EmailSetupPage';
+import { EmailTemplatesPage } from './screens/site-configuration/email-templates/EmailTemplatesPage';
+import { EmailTemplateEditorPage } from './screens/site-configuration/email-templates/EmailTemplateEditorPage';
 import { JobsPage } from './components/JobsPage';
 import type { ProductKind } from './data/session';
 
@@ -145,9 +155,103 @@ export const router = createBrowserRouter([
             ],
           },
           { path: 'slot-requests', element: <PlaceholderPage title="Slot Requests" /> },
-          { path: 'schedules', element: <PlaceholderPage title="Schedules" /> },
+          {
+            path: 'schedules',
+            element: <SchedulesLayout />,
+            children: [
+              { index: true, element: <Navigate to="overview" replace /> },
+              { path: 'overview', element: <SchedulesOverviewPage /> },
+              { path: 'list', element: <Navigate to="all" replace /> },
+              { path: 'list/all', element: <SchedulesListPage listKind="all" /> },
+              { path: 'list/group', element: <SchedulesListPage listKind="group" /> },
+              { path: 'list/individual', element: <SchedulesListPage listKind="individual" /> },
+              {
+                path: 'calendar',
+                element: <SchedulesTabPlaceholder title="Calendar" />,
+              },
+              {
+                path: 'report',
+                element: <SchedulesTabPlaceholder title="Report" />,
+              },
+            ],
+          },
           { path: 'reports', element: <PlaceholderPage title="Reports" /> },
-          { path: 'site-configuration', element: <PlaceholderPage title="Site Configuration" /> },
+          {
+            path: 'site-configuration',
+            element: <SiteConfigurationLayout />,
+            children: [
+              { index: true, element: <Navigate to="site-details/basic-details" replace /> },
+              { path: 'site-details/basic-details', element: <BasicDetailsPage /> },
+              {
+                path: 'site-details/designations',
+                element: <SiteConfigurationSectionPlaceholder title="Designations" />,
+              },
+              {
+                path: 'site-details/location-grouping',
+                element: <SiteConfigurationSectionPlaceholder title="Location Grouping" />,
+              },
+              {
+                path: 'availability-details/discipline-specialization',
+                element: (
+                  <SiteConfigurationSectionPlaceholder title="Discipline & Specialization" />
+                ),
+              },
+              {
+                path: 'availability-details/program-type',
+                element: <SiteConfigurationSectionPlaceholder title="Program Type" />,
+              },
+              {
+                path: 'availability-details/schedule-details',
+                element: <SiteConfigurationSectionPlaceholder title="Schedule Details" />,
+              },
+              {
+                path: 'availability-details/shifts',
+                element: <SiteConfigurationSectionPlaceholder title="Shifts" />,
+              },
+              {
+                path: 'program-partners/category',
+                element: <SiteConfigurationSectionPlaceholder title="Category" />,
+              },
+              {
+                path: 'configure-activities/onboarding-requirements',
+                element: <SiteConfigurationSectionPlaceholder title="Onboarding Requirements" />,
+              },
+              {
+                path: 'configure-activities/ongoing-activities',
+                element: <SiteConfigurationSectionPlaceholder title="Ongoing Activities" />,
+              },
+              {
+                path: 'configure-activities/offboarding-activities',
+                element: <SiteConfigurationSectionPlaceholder title="Offboarding Activities" />,
+              },
+              {
+                path: 'notification/email-setup',
+                element: <EmailSetupPage />,
+              },
+              {
+                path: 'notification/email-templates',
+                element: <EmailTemplatesPage />,
+              },
+              {
+                path: 'notification/email-templates/editor',
+                element: <EmailTemplateEditorPage />,
+              },
+              {
+                path: 'notification/attachment-templates',
+                element: <SiteConfigurationSectionPlaceholder title="Template Editor" />,
+              },
+              {
+                path: 'notification/notification-configuration',
+                element: (
+                  <SiteConfigurationSectionPlaceholder title="Notification Configuration" />
+                ),
+              },
+              {
+                path: 'notification/my-notifications',
+                element: <SiteConfigurationSectionPlaceholder title="My Notifications" />,
+              },
+            ],
+          },
         ],
       },
 

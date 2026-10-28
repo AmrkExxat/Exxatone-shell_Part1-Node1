@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="80" viewBox="0 0 360 80" fill="none">
+  <rect x="4" y="8" width="64" height="64" rx="14" fill="#0b5cab"/>
+  <path d="M28 22h16v14h14v16H44v14H28V52H14V36h14V22z" fill="#ffffff"/>
+  <text x="84" y="40" font-family="Source Sans 3, Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b2e4f">Bedlam Hospital</text>
+  <text x="85" y="62" font-family="Source Sans 3, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="2.4" fill="#5b7a99">OKLAHOMA CITY · OK</text>
+</svg>

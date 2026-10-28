@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="80" viewBox="0 0 380 80" fill="none">
+  <circle cx="40" cy="40" r="32" fill="#0f766e"/>
+  <path d="M40 20c-8 10-14 16-14 24a14 14 0 0028 0c0-8-6-14-14-24z" fill="#ffffff"/>
+  <circle cx="40" cy="45" r="5" fill="#0f766e"/>
+  <text x="86" y="40" font-family="Source Sans 3, Helvetica, Arial, sans-serif" font-size="28" font-weight="700" fill="#134e4a">Bedlam Health Network</text>
+  <text x="87" y="62" font-family="Source Sans 3, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="2.4" fill="#4d7c76">SHARED PROFILE</text>
+</svg>

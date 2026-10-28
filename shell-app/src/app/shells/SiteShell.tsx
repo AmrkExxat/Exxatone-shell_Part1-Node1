@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router';
 import { RubixHeader } from '../components/RubixHeader';
 import { RubixSidebar } from '../components/RubixSidebar';
@@ -41,6 +41,14 @@ export function SiteShell() {
   const currentPath =
     pathForNav === '' || pathForNav === '/' ? '/home' : pathForNav.startsWith('/') ? pathForNav : `/${pathForNav}`;
 
+  const inSiteConfiguration = currentPath.startsWith('/site-configuration');
+
+  useEffect(() => {
+    if (inSiteConfiguration) {
+      setIsSidebarCollapsed(true);
+    }
+  }, [inSiteConfiguration]);
+
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-neutral-50">
       <RubixHeader
@@ -73,7 +81,13 @@ export function SiteShell() {
           navGroups={siteNavGroups}
           siteName={siteName}
         />
-        <main className="flex-1 overflow-y-auto bg-neutral-50">
+        <main
+          className={
+            inSiteConfiguration
+              ? 'flex min-h-0 flex-1 flex-col overflow-hidden bg-neutral-50'
+              : 'flex-1 overflow-y-auto bg-neutral-50'
+          }
+        >
           <Outlet context={{ showEmptyStates, emptyStateCase, siteName }} />
         </main>
       </div>

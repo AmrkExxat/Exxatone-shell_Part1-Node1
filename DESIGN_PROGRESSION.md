@@ -80,6 +80,33 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-09-30 — Partners list Program contact: “--” empty state + sample rows without contacts`
 - `Part1_Node-1a — 2026-09-30 — Edit Category: zero-selection error state + footer message; Update disabled`
 - `Part1_Node-1a — 2026-10-14 — Partner module search icons: shared #616161 token (list, detail contacts, Add Partner, Edit Category)
+- `Part1_Node-1a — 2026-10-23 — Schedules module shell: Overview, List (All/Group/Individual), sticky wide table; Calendar/Report placeholders`
+- `Part1_Node-1a — 2026-10-23 — Schedules Overview: full-width Discipline filter bar aligned with KPI column; solid pies + Recent Activities rail`
+- `Part1_Node-1a — 2026-10-23 — Schedules List: timeline tabs on grey rail + Needs Attention triage card (ref layout)`
+- `Part1_Node-1a — 2026-10-23 — Schedules List filter bar: per-kind facets, search combo, +N more, toolbar actions (All/Group/Individual refs)`
+- `Part1_Node-1a — 2026-10-23 — Schedules List: row-select checkbox column (Group/Individual only); Bulk Email CTA gated on selection`
+- `Part1_Node-1a — 2026-10-23 — Bulk Email 3-step drawer (Recipients → Compose → Preview): persona recipients, templates + merge fields, token validation, send-now/schedule delivery`
+- `Part1_Node-1a — 2026-10-27 — Bulk Email: attachment chips carried to Preview, stepper drops edit icons; Write-from-scratch header/footer radios (grey stroke) drive site-logo header band (above Subject) and Exxat-logo footer band (above Attachments), mirrored in Preview`
+- `Part1_Node-1a — 2026-10-27 — Bulk Email: inline SVG site header logos (fix broken Bedlam render); Preview card order — Exxat footer band above Attachments`
+- `Part1_Node-1a — 2026-10-28 — Site Configuration (gear nav): secondary Configuration sidebar, Basic Details + logo upload rail, prod IA stubs for remaining sections; auto-collapse main sidebar on entry`
+- `Part1_Node-1a — 2026-10-28 — Site Configuration polish: nav default (Site Details only expanded), prod typography/surfaces, GPTW logo rail asset, 4-col Basic Information grid`
+- `Part1_Node-1a — 2026-10-28 — Site Configuration Figma 48:30767 alignment: white config card, typography/grid/logo rail from MCP assets, Program Partners → Category`
+- `Part1_Node-1a — 2026-10-28 — Site Configuration: Notification accordion (Email Setup, Email Templates, Attachment Templates, Notification Configuration, My Notifications) with placeholder routes`
+- `Part1_Node-1a — 2026-10-28 — Email Setup: display name, reply-to chips (validate/dedupe), tenant logo upload, footer disclaimer + Save Settings`
+- `Part1_Node-1a — 2026-10-28 — Email Setup UI polish: full-width config card, page intro, narrow inputs (#e5e7eb → #3f51b5 focus), Save Now in-card`
+- `Part1_Node-1a — 2026-10-28 — Email Setup: unified 640px field width, shared control border shell, logo upload = footer width, Save Settings CTA (no divider)`
+- `Part1_Node-1a — 2026-10-28 — Site Configuration: single scroll (shell main locked; content column + config nav scroll only)`
+- `Part1_Node-1a — 2026-10-28 — Email Templates: event tree (Automated + Bulk), URL ?group/category/event, template cards, add/clone/delete/preview dialogs, Sonner toasts`
+- `Part1_Node-1a — 2026-10-28 — Email Templates tree: full event catalog, quiet sticky group bands that stack`
+- `Part1_Node-1a — 2026-10-28 — Email Templates tree: lighter event rows, consistent selected state, count pill on every event`
+- `Part1_Node-1a — 2026-10-28 — Email Templates: separate cards, right-aligned actions, event-specific mock copy, editor route placeholder`
+- `Part1_Node-1a — 2026-10-28 — Email Templates editor: Add dialog, Create vs Edit page, merge fields, attachments, header/footer`
+- `Part1_Node-1a — 2026-10-28 — Email Templates editor header: back, Customized, Set as default, Preview, Save, Delete; light-grey fields; Subject width matches Template name`
+- `Part1_Node-1a — 2026-10-28 — Email Templates: header logo replaces display name; Preview follows header/footer layout; @ merge menu is a pinned overlay`
+- `Part1_Node-1a — 2026-10-28 — Email Templates editor: title bar sticks while the config column scrolls`
+- `Part1_Node-1a — 2026-10-28 — Email Templates: scratch name uses the event; Add dialog lists Customized only; split @ hints; upload icon`
+- `Part1_Node-1a — 2026-10-28 — Site Configuration nav: Attachment Templates renamed to Template Editor`
+- `Part1_Node-1a — 2026-10-28 — Email Templates tree: selected event is bold only (no band fill); count pills meet WCAG AA contrast`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
 
@@ -87,6 +114,8 @@ Append one line per completed review batch on **Part1_Node-1a**:
 
 - Overview: `/site/bedlam-hospital/availability/overview`
 - List: `/site/bedlam-hospital/availability/list`
+- Schedules overview: `/site/bedlam-hospital/schedules/overview`
+- Schedules list (all / group / individual): `/site/bedlam-hospital/schedules/list/all` (also `…/group`, `…/individual`)
 
 ## Agent handoff
 
