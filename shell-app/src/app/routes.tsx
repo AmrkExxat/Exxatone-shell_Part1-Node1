@@ -33,6 +33,9 @@ import { SiteConfigurationSectionPlaceholder } from './screens/site-configuratio
 import { EmailSetupPage } from './screens/site-configuration/email-setup/EmailSetupPage';
 import { EmailTemplatesPage } from './screens/site-configuration/email-templates/EmailTemplatesPage';
 import { EmailTemplateEditorPage } from './screens/site-configuration/email-templates/EmailTemplateEditorPage';
+import { AttachmentTemplatesPage } from './screens/site-configuration/attachment-templates/AttachmentTemplatesPage';
+import { NotificationConfigurationPage } from './screens/site-configuration/notifications/NotificationConfigurationPage';
+import { MyNotificationsPage } from './screens/site-configuration/notifications/MyNotificationsPage';
 import { JobsPage } from './components/JobsPage';
 import type { ProductKind } from './data/session';
 
@@ -238,17 +241,15 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'notification/attachment-templates',
-                element: <SiteConfigurationSectionPlaceholder title="Template Editor" />,
+                element: <AttachmentTemplatesPage />,
               },
               {
                 path: 'notification/notification-configuration',
-                element: (
-                  <SiteConfigurationSectionPlaceholder title="Notification Configuration" />
-                ),
+                element: <NotificationConfigurationPage />,
               },
               {
                 path: 'notification/my-notifications',
-                element: <SiteConfigurationSectionPlaceholder title="My Notifications" />,
+                element: <MyNotificationsPage />,
               },
             ],
           },

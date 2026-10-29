@@ -71,7 +71,7 @@ export const SITE_CONFIG_NAV_SECTIONS: SiteConfigNavSection[] = [
       { id: 'email-templates', label: 'Email Templates', segment: 'notification/email-templates' },
       {
         id: 'attachment-templates',
-        label: 'Template Editor',
+        label: 'Attachment Templates',
         segment: 'notification/attachment-templates',
       },
       {

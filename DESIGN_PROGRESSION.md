@@ -107,6 +107,15 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-10-28 — Email Templates: scratch name uses the event; Add dialog lists Customized only; split @ hints; upload icon`
 - `Part1_Node-1a — 2026-10-28 — Site Configuration nav: Attachment Templates renamed to Template Editor`
 - `Part1_Node-1a — 2026-10-28 — Email Setup defaults: display name Bedlam Medical Network, reply-to clinical.placements@bedlammedical.org`
+- `Part1_Node-1a — 2026-10-29 — Notification: Attachment Templates, Notification Configuration, My Notifications`
+- `Part1_Node-1a — 2026-10-29 — Notification polish: clickable attachment cards, shared merge-field menu, quieter locks, sheet actions in the header`
+- `Part1_Node-1a — 2026-10-29 — Attachment Templates drawer: close on the left, 45-field insert menu with rounded search`
+- `Part1_Node-1a — 2026-10-29 — Attachment Templates drawer: grey canvas and white form card; @ in the document opens merge fields`
+- `Part1_Node-1a — 2026-10-29 — Notification Configuration: recipients drawer matches the grey canvas; User lists the five roles`
+- `Part1_Node-1a — 2026-10-29 — Notification locks: Messages keeps the badge; other categories use a filled lock and a light veil`
+- `Part1_Node-1a — 2026-10-29 — Digest Notifications default to in-app off; lock veil lightened; notification screens named, focusable, and described`
+- `Part1_Node-1a — 2026-10-29 — Lock tooltips are two lines; My Notifications uses the Locked badge and has no lock control`
+- `Part1_Node-1a — 2026-10-29 — My Notifications: one content scroll; lock text no longer stretches the page`
 - `Part1_Node-1a — 2026-10-28 — Email Templates tree: selected event is bold only (no band fill); count pills meet WCAG AA contrast`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`

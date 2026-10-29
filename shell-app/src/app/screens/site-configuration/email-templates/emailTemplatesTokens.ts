@@ -24,7 +24,7 @@ export const et = {
   paneHeader: 'mb-4 flex flex-wrap items-center justify-between gap-3',
   paneTitle: 'text-[18px] font-semibold leading-6 text-[#101828]',
   btnPrimary:
-    'inline-flex h-9 items-center justify-center gap-1.5 rounded-[6px] bg-[#3f51b5] px-4 text-[14px] font-medium text-white hover:bg-[#3544a5]',
+    'inline-flex h-9 items-center justify-center gap-1.5 rounded-[6px] bg-[#3f51b5] px-4 text-[14px] font-medium text-white hover:bg-[#3544a5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3f51b5] focus-visible:ring-offset-2',
   cardStack: 'flex flex-col gap-3',
   templateCard:
     'rounded-[8px] bg-white p-4 shadow-[0_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)]',
@@ -53,9 +53,9 @@ export const et = {
   dialogBody: 'px-6 py-4',
   dialogFooter: 'flex justify-end gap-2 border-t border-[#eceef1] px-6 py-4',
   dialogBtnSecondary:
-    'inline-flex h-9 items-center justify-center rounded-[6px] border border-[#3f51b5] bg-white px-4 text-[14px] font-medium text-[#3f51b5] hover:bg-[#f5f7ff]',
+    'inline-flex h-9 items-center justify-center rounded-[6px] border border-[#3f51b5] bg-white px-4 text-[14px] font-medium text-[#3f51b5] hover:bg-[#f5f7ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3f51b5] focus-visible:ring-offset-2',
   dialogBtnPrimary:
-    'inline-flex h-9 items-center justify-center rounded-[6px] bg-[#3f51b5] px-4 text-[14px] font-medium text-white hover:bg-[#3544a5] disabled:cursor-not-allowed disabled:bg-[#eeeeee] disabled:text-[#9e9e9e]',
+    'inline-flex h-9 items-center justify-center rounded-[6px] bg-[#3f51b5] px-4 text-[14px] font-medium text-white hover:bg-[#3544a5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3f51b5] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#eeeeee] disabled:text-[#9e9e9e]',
   pickCard:
     'flex w-full flex-col gap-1 rounded-[6px] border border-[#eceef1] bg-white p-3 text-left hover:border-[#c5cae9] hover:bg-[#fafbff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3f51b5]',
   scratchBtn:
