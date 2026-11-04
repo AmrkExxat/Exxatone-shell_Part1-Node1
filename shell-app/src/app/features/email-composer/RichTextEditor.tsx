@@ -28,8 +28,6 @@ interface Props {
   below?: React.ReactNode;
   /** Where to draw the toolbar. When set, it is portalled there (a bar pinned under the scrolling area). */
   toolbarTarget?: HTMLElement | null;
-  /** Rendered at the start of the toolbar (e.g. the Write with Leo button). */
-  toolbarStart?: React.ReactNode;
   /** What a tag becomes for the person being previewed (shown in the tag's details). */
   describe?: DescribeTag;
   /** Shown in the message area while a blank template has no content yet. */
@@ -45,7 +43,7 @@ interface Props {
  * The message is uncontrolled while typing (the caret never jumps). `value` is plain stored
  * HTML; merge tags are drawn as coloured chips in the DOM and turned back into text on the way out.
  */
-export function RichTextEditor({ value, onChange, tags, onAttach, top, bottom, below, toolbarTarget, toolbarStart, describe, placeholder, disabled, className }: Props) {
+export function RichTextEditor({ value, onChange, tags, onAttach, top, bottom, below, toolbarTarget, describe, placeholder, disabled, className }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -92,7 +90,7 @@ export function RichTextEditor({ value, onChange, tags, onAttach, top, bottom, b
   };
   const isH1 = () => (document.queryCommandValue('formatBlock') || '').toLowerCase() === 'h1';
 
-  const tool = 'size-8 text-muted-foreground hover:text-foreground';
+  const tool = 'size-8 shrink-0 text-muted-foreground hover:text-foreground';
   const keep = (e: React.MouseEvent) => e.preventDefault();
 
   // Arrow keys move between toolbar buttons (a toolbar is one tab stop's worth of controls).
@@ -107,9 +105,8 @@ export function RichTextEditor({ value, onChange, tags, onAttach, top, bottom, b
   };
 
   const toolbar = (
-      <div ref={bar} role="toolbar" aria-label="Formatting" aria-orientation="horizontal" onKeyDown={onBarKey} className="mb-2 flex flex-nowrap items-center gap-0.5 overflow-x-auto">
-        {toolbarStart}
-        {toolbarStart && <span className="mx-1 h-4 w-px bg-border" aria-hidden />}
+      <div ref={bar} role="toolbar" aria-label="Formatting" aria-orientation="horizontal" onKeyDown={onBarKey} className="mb-2 flex min-w-0 items-center gap-1">
+        <div className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto">
         <IconButton label="Heading" tooltipSide="top" className={tool} onMouseDown={keep} onClick={() => exec('formatBlock', isH1() ? 'p' : 'h1')} disabled={disabled}>
           <Heading1 />
         </IconButton>
@@ -161,14 +158,14 @@ export function RichTextEditor({ value, onChange, tags, onAttach, top, bottom, b
             e.target.value = '';
           }}
         />
-        <span className="flex-1" />
+        </div>
         <DropdownMenu onOpenChange={(open) => { if (!open) setTagQuery(''); }}>
           <DropdownMenuTrigger asChild>
             <Button
               type="button"
               variant="outline"
               size="sm"
-              className="h-7 border-[#c5cae9] px-2.5 text-xs font-medium text-[#3f51b5] hover:bg-[#eef0fb] hover:text-[#283593]"
+              className="h-7 shrink-0 whitespace-nowrap border-[#c5cae9] px-2.5 text-xs font-medium text-[#3f51b5] hover:bg-[#eef0fb] hover:text-[#283593]"
               onMouseDown={() => remember()}
               disabled={disabled}
             >

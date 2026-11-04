@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, Clock, Maximize, Minimize, Paperclip, Send, X } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { ChevronDown, Clock, Maximize, Minimize, Paperclip, Plus, Send, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../../components/ui/button';
 import { IconButton } from '../../components/ui/icon-button';
@@ -27,7 +27,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../../components/ui/dropdown-menu';
 import { SheetContent, SheetFooter } from '../../components/ui/sheet';
@@ -157,49 +156,47 @@ function Row({ label, children, className, required }: { label: string; children
 
 /** Matches the "Default" badge on Email Templates cards. */
 const defaultBadge = 'inline-flex items-center rounded-full bg-[#e8f5e9] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#2e7d32]';
+const selectedBadge = 'inline-flex items-center rounded-full bg-[#e8eaf6] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#283593]';
+const letterText = (html: string) => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
 
-function NameLines({
+function PersonChips({
   people,
-  onMore,
+  onRemove,
 }: {
   people: { id: string; name: string; email: string }[];
-  onMore: () => void;
+  onRemove: (id: string) => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [hidden, setHidden] = useState(0);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const limit = el.clientHeight;
-    let count = 0;
-    Array.from(el.children).forEach((child) => {
-      const node = child as HTMLElement;
-      if (node.offsetTop + 4 >= limit) count += 1;
-    });
-    setHidden(count);
-  }, [people]);
+  const [open, setOpen] = useState(false);
   if (!people.length) return null;
+  const visible = 6;
+  const shown = open ? people : people.slice(0, visible);
+  const more = people.length - visible;
   return (
-    <div className="relative mt-1">
-      <div ref={ref} className="flex max-h-[4.5rem] flex-wrap items-center gap-x-1 overflow-hidden text-sm leading-6">
-        {people.map((person, index) => (
-          <Tooltip key={person.id}>
+    <>
+      {shown.map((person) => (
+        <Badge key={person.id} variant="secondary" className="gap-0.5 py-0.5 pl-2 pr-0.5 text-[13px] font-normal">
+          <Tooltip>
             <TooltipTrigger asChild>
-              <span className="cursor-default text-[#212121]">
-                {person.name}
-                {index < people.length - 1 ? ',' : ''}
-              </span>
+              <span className="max-w-[180px] truncate">{person.name}</span>
             </TooltipTrigger>
             <TooltipContent>{person.email || 'No email address'}</TooltipContent>
           </Tooltip>
-        ))}
-      </div>
-      {hidden > 0 && (
-        <button type="button" className="absolute bottom-0 right-0 bg-white pl-2 text-sm font-medium text-[#3f51b5]" onClick={onMore}>
-          +{hidden} more
-        </button>
+          <IconButton
+            label={`Remove ${person.name}`}
+            tooltipSide="top"
+            className="size-4 rounded-sm text-muted-foreground hover:text-foreground"
+            onClick={() => onRemove(person.id)}
+          >
+            <X className="size-3" />
+          </IconButton>
+        </Badge>
+      ))}
+      {more > 0 && (
+        <Button type="button" variant="link" size="sm" className="h-auto p-0 text-xs" onClick={() => setOpen((value) => !value)}>
+          {open ? 'Show less' : `+${more} more`}
+        </Button>
       )}
-    </div>
+    </>
   );
 }
 
@@ -259,7 +256,6 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
   const [hiddenTemplates, setHiddenTemplates] = useState<Set<string>>(new Set());
   const [templateQuery, setTemplateQuery] = useState('');
   const [templateEvent, setTemplateEvent] = useState('all');
-  const [managingTemplates, setManagingTemplates] = useState(false);
   const [view, setView] = useState<'edit' | 'preview'>('edit');
   const [expanded, setExpanded] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -270,6 +266,8 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
   );
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [dlg, setDlg] = useState<null | 'now' | 'later'>(null);
+  const [discardOpen, setDiscardOpen] = useState(false);
+  const [pendingRemove, setPendingRemove] = useState<string | null>(null);
   const [date, setDate] = useState('2026-11-03');
   const [time, setTime] = useState('09:00');
 
@@ -327,8 +325,8 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
     over[p.id] ?? { subject: resolveSubjectFor(p, subjectBy[p.role]), body: resolveFor(p, bodyBy[p.role]) };
   const subject = locked ? '' : fp ? shownFor(fp).subject : subjectBy[role!];
   const body = locked ? '' : fp ? shownFor(fp).body : bodyBy[role!];
-  const tpl = role ? TPL[role].find((t) => t.id === tplBy[role]) : undefined;
-  const dirty = !!role && !fp && !!tpl && (tpl.id === 'blank' || tpl.body !== bodyBy[role] || tpl.subject !== subjectBy[role]);
+  const tpl = role && tplBy[role] ? TPL[role].find((t) => t.id === tplBy[role]) : undefined;
+  const dirty = !!role && !fp && (tpl ? tpl.id === 'blank' || tpl.body !== body || tpl.subject !== subject : letterText(subject) !== '' || letterText(body) !== '');
 
   const setSubject = (v: string) => {
     if (!role) return;
@@ -368,6 +366,30 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
     }
     setTemplateOpen(false);
   };
+  const askRemove = (id: string) => {
+    setPendingRemove(id);
+    setTemplateOpen(false);
+  };
+  const confirmRemove = () => {
+    const id = pendingRemove;
+    setPendingRemove(null);
+    if (!id || !role) return;
+    setHiddenTemplates((current) => new Set(current).add(id));
+    if (tplBy[role] !== id) return;
+    setTplBy((m) => ({ ...m, [role]: '' }));
+    setSubjectBy((s) => ({ ...s, [role]: '' }));
+    setBodyBy((b) => ({ ...b, [role]: BLANK_BODY }));
+    setHdr('none');
+    setFtr('none');
+    setOver({});
+    setAttBy((m) => ({ ...m, [role]: (m[role] ?? []).filter((a) => !a.fromTemplate) }));
+  };
+  const showTemplate = (id: string) =>
+    setHiddenTemplates((current) => {
+      const next = new Set(current);
+      next.delete(id);
+      return next;
+    });
   const closeCc = () => {
     setShowCc(false);
     setCc([]);
@@ -437,7 +459,7 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
         : 'one per person';
   const summaryRows = (when: 'now' | 'later') => {
     const rows: { label: string; value: string }[] = [
-      { label: 'Template', value: tpl?.label || 'Blank email' },
+      { label: 'Template', value: tpl?.label || 'Please select a template' },
       { label: 'To', value: role ? `${audienceCount(eligible.length, role)}${extras.length ? ` and ${extras.length} added` : ''}` : '—' },
       { label: 'Emails', value: `${units}${when === 'now' ? ' now' : ''} — ${deliveryShape}` },
       { label: 'Subject', value: subject.replace(/<[^>]+>/g, '').trim() || 'No subject' },
@@ -488,9 +510,35 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
         'gap-0 p-0 transition-[width,max-width] duration-300 [&>button.absolute]:hidden',
         expanded ? 'w-screen max-w-none sm:max-w-none' : 'w-[680px] sm:max-w-[680px]',
       )}
-      onEscapeKeyDown={(e) => (typeahead.open || tagDetails.open || suggest.open) && e.preventDefault()}
+      onEscapeKeyDown={(e) => {
+        if (typeahead.open || tagDetails.open || suggest.open || templateOpen) {
+          e.preventDefault();
+          return;
+        }
+        if (discardOpen) {
+          e.preventDefault();
+          setDiscardOpen(false);
+          return;
+        }
+        if (pendingRemove) {
+          e.preventDefault();
+          setPendingRemove(null);
+          return;
+        }
+        if (dlg) return;
+        e.preventDefault();
+        setDiscardOpen(true);
+      }}
+      onPointerDownOutside={(e) => {
+        const el = e.target instanceof Element ? e.target : null;
+        if (el?.closest('[role="menu"], [data-radix-popper-content-wrapper], [data-slot="dialog-overlay"], [data-slot="dialog-content"], [data-slot="alert-dialog-overlay"], [data-slot="alert-dialog-content"]')) return;
+        e.preventDefault();
+        if (dlg || discardOpen || pendingRemove) return;
+        setDiscardOpen(true);
+      }}
     >
       <DrawerHeader
+        onClose={() => setDiscardOpen(true)}
         title={stage === 'review' ? 'Recipients and options' : 'New email'}
         badge={selectionBadge}
         description={
@@ -524,24 +572,16 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
             hidden={hiddenTemplates}
             query={templateQuery}
             event={templateEvent}
-            managing={managingTemplates}
             onQuery={setTemplateQuery}
             onEvent={setTemplateEvent}
-            onManaging={setManagingTemplates}
             onPick={applyTemplate}
-            onHide={(id) => setHiddenTemplates((current) => new Set(current).add(id))}
-            onShow={(id) =>
-              setHiddenTemplates((current) => {
-                const next = new Set(current);
-                next.delete(id);
-                return next;
-              })
-            }
+            onHide={askRemove}
+            onShow={showTemplate}
           />
         )}
 
-        <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <div className="relative flex min-w-0 flex-1 flex-col">
+        <div className={cn('flex min-h-0 flex-1 flex-col overflow-y-auto', stage === 'compose' && view === 'edit' && 'pb-14')}>
           {stage === 'review' && role ? (
             reviewVisit === 'copy' && ccBrowse ? (
               <RecipientsReview
@@ -604,30 +644,36 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
                 )}
               </span>
             </div>
-            <NameLines
-              people={eligible.map((person) => ({ id: person.id, name: person.name, email: person.email }))}
-              onMore={() => openRecipients('to')}
-            />
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <PersonChips
+                people={eligible.map((person) => ({ id: person.id, name: person.name, email: person.email }))}
+                onRemove={(id) => setMany([id], false)}
+              />
+              <ChipInput
+                list={extras}
+                onChange={setExtras}
+                label="Add To"
+                placeholder="Add name or email"
+                suggestions={people_dir}
+                className="min-w-[12rem] flex-1"
+              />
+            </div>
           </div>
           {showCc && (
             <Row label="Cc">
-              <div className="flex min-w-0 flex-col gap-1.5">
-                <div className="flex min-w-0 items-center gap-2">
-                  <Button type="button" variant="link" size="sm" className="h-auto p-0 text-xs" onClick={() => openRecipients('cc')} disabled={!copyRoles.length}>
-                    Add recipients
-                  </Button>
-                  <button
-                    type="button"
-                    className="ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded text-[#616161] hover:bg-[#f5f5f5] hover:text-[#424242]"
-                    aria-label="Close Cc"
-                    onClick={closeCc}
-                  >
-                    <X className="size-4" />
-                  </button>
-                </div>
-                <NameLines
+              <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                <IconButton
+                  label="Add recipients"
+                  tooltipSide="top"
+                  className="size-7"
+                  disabled={!copyRoles.length}
+                  onClick={() => openRecipients('cc')}
+                >
+                  <Plus className="size-4" />
+                </IconButton>
+                <PersonChips
                   people={ccEligible.map((person) => ({ id: person.id, name: person.name, email: person.email }))}
-                  onMore={() => openRecipients('cc')}
+                  onRemove={(id) => setManyCc([id], false)}
                 />
                 <ChipInput
                   list={cc}
@@ -635,8 +681,16 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
                   label="Add Cc"
                   placeholder="Add name or email"
                   suggestions={people_dir}
-                  className="w-full flex-none"
+                  className="min-w-[12rem] flex-1"
                 />
+                <button
+                  type="button"
+                  className="ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded text-[#616161] hover:bg-[#f5f5f5] hover:text-[#424242]"
+                  aria-label="Close Cc"
+                  onClick={closeCc}
+                >
+                  <X className="size-4" />
+                </button>
               </div>
             </Row>
           )}
@@ -670,8 +724,8 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
                   <button type="button" className={cn('grid w-full grid-cols-[84px_1fr] items-center gap-3 border-b px-4 py-2 text-left text-sm hover:bg-accent/40', expanded && 'lg:hidden')}>
                     <span className="text-muted-foreground">Template</span>
                     <span className="flex min-w-0 items-center justify-between gap-2">
-                      <span className="truncate font-medium" title={tpl?.label}>
-                        {fp && over[fp.id] ? 'Edited for one person' : tpl?.label ?? ''}
+                      <span className={cn('truncate', tpl ? 'font-medium' : 'text-[#9e9e9e]')} title={tpl?.label}>
+                        {fp && over[fp.id] ? 'Edited for one person' : tpl?.label || 'Please select a template'}
                       </span>
                       <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
                     </span>
@@ -690,32 +744,38 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
                       />
                     </div>
                   )}
-                  {role && (
-                    <CheckItem selected={tplBy[role] === 'blank'} onSelect={() => applyTemplate('blank')} className="items-start">
-                      <span className="min-w-0 break-words">
-                        Write your own
-                        <small className="block text-xs text-muted-foreground">Start with an empty email</small>
-                      </span>
-                    </CheckItem>
-                  )}
-                  <DropdownMenuSeparator />
                   {(role ? TPL[role] : [])
                     .filter((item) => item.id !== 'blank' && !hiddenTemplates.has(item.id))
                     .filter((item) => {
                       const q = templateQuery.trim().toLowerCase();
                       return !q || `${item.label} ${item.subject}`.toLowerCase().includes(q);
                     })
-                    .map((t) => (
-                      <CheckItem key={t.id} selected={!!role && tplBy[role] === t.id} onSelect={() => applyTemplate(t.id)} className="items-start">
-                        <span className="min-w-0 break-words">
-                          <span className="inline-flex items-center gap-2">
-                            {t.label}
-                            {t.isDefault && <span className={defaultBadge}>Default</span>}
+                    .map((t) => {
+                      const selected = !!role && tplBy[role] === t.id;
+                      return (
+                      <div key={t.id} className={cn('flex items-start border-l-2', selected ? 'border-l-[#3f51b5] bg-[#eef0fb]' : 'border-l-transparent')}>
+                        <CheckItem selected={selected} showCheck={false} onSelect={() => applyTemplate(t.id)} className="min-w-0 flex-1 items-start bg-transparent">
+                          <span className="min-w-0 break-words">
+                            <span className="inline-flex flex-wrap items-center gap-2">
+                              {t.label}
+                              {selected && <span className={selectedBadge}>Selected</span>}
+                              {t.isDefault && <span className={defaultBadge}>Default</span>}
+                            </span>
+                            {t.subject && <small className="line-clamp-1 block text-xs text-muted-foreground">{t.subject}</small>}
                           </span>
-                          {t.subject && <small className="line-clamp-1 block text-xs text-muted-foreground">{t.subject}</small>}
-                        </span>
-                      </CheckItem>
-                    ))}
+                        </CheckItem>
+                        <IconButton
+                          label={`Remove ${t.label} from list`}
+                          tooltipSide="left"
+                          className="mt-1 size-6 shrink-0"
+                          onPointerDown={(event) => event.stopPropagation()}
+                          onClick={() => askRemove(t.id)}
+                        >
+                          <X className="size-3.5" />
+                        </IconButton>
+                      </div>
+                      );
+                    })}
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
@@ -761,24 +821,6 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
                       <FooterBlock kind={ftr} brand={brand} />
                     </HeaderFooterPicker>
                   }
-                  toolbarStart={
-                    role && (
-                      <LeoWrite
-                        role={role}
-                        brandName={brand.name}
-                        count={n}
-                        disabled={locked}
-                        onInsert={(d) => {
-                          if (fp) setOver((o) => ({ ...o, [fp.id]: { subject: resolveSubjectFor(fp, d.subject), body: resolveFor(fp, d.body) } }));
-                          else {
-                            setSubjectBy((m) => ({ ...m, [role]: d.subject }));
-                            setBodyBy((m) => ({ ...m, [role]: d.body }));
-                          }
-                          toast('Draft from Leo added. Review it before you send.');
-                        }}
-                      />
-                    )
-                  }
                   below={
                     attachments.length > 0 ? (
                       <ul className="flex flex-wrap gap-1.5 pt-2" aria-label="Attachments">
@@ -810,6 +852,28 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
           </>
           )}
         </div>
+        {stage === 'compose' && view === 'edit' && role && (
+          <div className="pointer-events-none absolute right-4 bottom-3 z-20">
+            <div className="pointer-events-auto rounded-md bg-white shadow-md">
+              <LeoWrite
+                role={role}
+                brandName={brand.name}
+                count={n}
+                disabled={locked}
+                contentSide="top"
+                contentAlign="end"
+                onInsert={(d) => {
+                  if (fp) setOver((o) => ({ ...o, [fp.id]: { subject: resolveSubjectFor(fp, d.subject), body: resolveFor(fp, d.body) } }));
+                  else {
+                    setSubjectBy((m) => ({ ...m, [role]: d.subject }));
+                    setBodyBy((m) => ({ ...m, [role]: d.body }));
+                  }
+                  toast('Draft from Leo added. Review it before you send.');
+                }}
+              />
+            </div>
+          </div>
+        )}
         </div>
       </div>
 
@@ -819,7 +883,7 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
             <Button disabled={reviewVisit === 'start' && !n} onClick={() => (reviewVisit === 'start' ? setStage('compose') : backToLetter())}>
               {reviewVisit === 'start' ? 'Compose' : 'Done'}
             </Button>
-            <Button variant="outline" onClick={onClose}>
+            <Button variant="outline" onClick={() => setDiscardOpen(true)}>
               Cancel
             </Button>
           </>
@@ -856,6 +920,25 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
         </>
         )}
       </SheetFooter>
+
+      <ConfirmPop
+        open={discardOpen}
+        titleId="discard-email-title"
+        title="This action will discard all the changes you have made so far. Are you sure?"
+        description="Closing the email discards the draft. Cancel keeps it open."
+        confirm="Discard"
+        onCancel={() => setDiscardOpen(false)}
+        onConfirm={() => { setDiscardOpen(false); onClose(); }}
+      />
+      <ConfirmPop
+        open={!!pendingRemove}
+        titleId="remove-template-title"
+        title="Are you sure to remove this template from list?"
+        description="Removing the selected template clears the letter. Removing another template leaves the letter as it is."
+        confirm="Remove"
+        onCancel={() => setPendingRemove(null)}
+        onConfirm={confirmRemove}
+      />
 
       <AlertDialog open={dlg === 'now'} onOpenChange={(o) => !o && setDlg(null)}>
         <AlertDialogContent className="sm:max-w-xl">
@@ -912,16 +995,47 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
   );
 }
 
+function ConfirmPop({
+  open,
+  titleId,
+  title,
+  description,
+  confirm,
+  onConfirm,
+  onCancel,
+}: {
+  open: boolean;
+  titleId: string;
+  title: string;
+  description: string;
+  confirm: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close dialog" onClick={onCancel} />
+      <div role="dialog" aria-modal="true" aria-labelledby={titleId} className="relative z-10 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg">
+        <h2 id={titleId} className="text-base font-semibold leading-6 text-[#212121]">{title}</h2>
+        <p className="sr-only">{description}</p>
+        <div className="mt-4 flex justify-end gap-2">
+          <Button variant="outline" onClick={onCancel}>Cancel</Button>
+          <Button onClick={onConfirm}>{confirm}</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TemplateLibrary({
   templates,
   selectedId,
   hidden,
   query,
   event,
-  managing,
   onQuery,
   onEvent,
-  onManaging,
   onPick,
   onHide,
   onShow,
@@ -931,10 +1045,8 @@ function TemplateLibrary({
   hidden: Set<string>;
   query: string;
   event: string;
-  managing: boolean;
   onQuery: (value: string) => void;
   onEvent: (value: string) => void;
-  onManaging: (value: boolean) => void;
   onPick: (id: string) => void;
   onHide: (id: string) => void;
   onShow: (id: string) => void;
@@ -950,12 +1062,7 @@ function TemplateLibrary({
   const concealed = letters.filter((item) => hidden.has(item.id) && matches(item));
   return (
     <aside className="hidden w-[320px] shrink-0 flex-col gap-3 overflow-y-auto border-r p-4 md:flex">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="text-sm font-semibold">Templates</h2>
-        <Button type="button" variant="link" size="sm" className="h-auto p-0 text-xs" onClick={() => onManaging(!managing)}>
-          {managing ? 'Done' : 'Manage'}
-        </Button>
-      </div>
+      <h2 className="text-sm font-semibold">Templates</h2>
       <Input value={query} onChange={(e) => onQuery(e.target.value)} placeholder="Search templates" aria-label="Search templates" className="h-8" />
       <select
         value={event}
@@ -969,47 +1076,33 @@ function TemplateLibrary({
           </option>
         ))}
       </select>
-      <button
-        type="button"
-        onClick={() => onPick('blank')}
-        aria-current={selectedId === 'blank'}
-        className={cn(
-          'grid gap-0.5 rounded-lg border p-3 text-left',
-          selectedId === 'blank' ? 'border-[#3f51b5] bg-[#eef0fb]' : 'border-[#e5e7eb] hover:bg-muted',
-        )}
-      >
-        <span className="text-sm font-semibold text-[#212121]">Write your own</span>
-        <span className="text-xs text-[#616161]">Start with an empty email</span>
-      </button>
       {shown.map((item) => (
         <div
           key={item.id}
           className={cn(
-            'rounded-lg border p-3',
-            selectedId === item.id ? 'border-[#3f51b5] bg-[#eef0fb]' : 'border-[#e5e7eb] hover:bg-muted',
+            'relative rounded-lg border border-l-4 p-3 pr-8',
+            selectedId === item.id ? 'border-[#3f51b5] border-l-[#3f51b5] bg-[#eef0fb]' : 'border-[#e5e7eb] border-l-transparent hover:bg-muted',
           )}
         >
           <button type="button" onClick={() => onPick(item.id)} className="grid w-full gap-0.5 text-left">
             <span className="inline-flex flex-wrap items-center gap-2 text-sm font-semibold text-[#212121]">
               {item.label}
+              {selectedId === item.id && <span className={selectedBadge}>Selected</span>}
               {item.isDefault && <span className={defaultBadge}>Default</span>}
             </span>
             <span className="line-clamp-2 text-xs text-[#616161]">{item.subject || 'No subject'}</span>
           </button>
-          {managing && item.id !== 'blank' && (
-            <Button
-              type="button"
-              variant="link"
-              size="sm"
-              className="mt-1 h-auto p-0 text-xs font-medium text-[#3f51b5] hover:text-[#283593]"
-              onClick={() => onHide(item.id)}
-            >
-              Remove from list
-            </Button>
-          )}
+          <IconButton
+            label={`Remove ${item.label} from list`}
+            tooltipSide="left"
+            className="absolute top-1.5 right-1.5 size-6"
+            onClick={() => onHide(item.id)}
+          >
+            <X className="size-3.5" />
+          </IconButton>
         </div>
       ))}
-      {managing && concealed.length > 0 && (
+      {concealed.length > 0 && (
         <div className="grid gap-2">
           <h3 className="text-xs font-semibold text-muted-foreground">Hidden</h3>
           {concealed.map((item) => (

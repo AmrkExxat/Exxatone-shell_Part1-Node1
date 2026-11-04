@@ -14,6 +14,8 @@ interface Props {
   /** How many recipients Leo is writing for, shown in its thinking copy. */
   count: number;
   disabled?: boolean;
+  contentSide?: 'top' | 'bottom';
+  contentAlign?: 'start' | 'end';
   onInsert: (draft: LeoDraft) => void;
 }
 
@@ -47,7 +49,7 @@ type Phase = { name: 'idle' } | { name: 'thinking'; prompt: string; step: number
  * with Beta pill, up to four contextual chips (short label, fuller prompt), a frosted prompt box,
  * task-flavoured thinking copy, a word-by-word reply, and the "review before you send" disclosure.
  */
-export function LeoWrite({ role, brandName, count, disabled, onInsert }: Props) {
+export function LeoWrite({ role, brandName, count, disabled, contentSide = 'bottom', contentAlign = 'start', onInsert }: Props) {
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>({ name: 'idle' });
   const [text, setText] = useState('');
@@ -96,7 +98,7 @@ export function LeoWrite({ role, brandName, count, disabled, onInsert }: Props) 
           <LeoBetaBadge className="uppercase tracking-wide" />
         </button>
       </PopoverTrigger>
-      <PopoverContent side="bottom" align="start" className="w-[440px] p-0" onOpenAutoFocus={(event) => { event.preventDefault(); area.current?.focus(); }}>
+      <PopoverContent side={contentSide} align={contentAlign} className="w-[440px] p-0" onOpenAutoFocus={(event) => { event.preventDefault(); area.current?.focus(); }}>
         <div className="flex max-h-[420px] flex-col">
         <div className="flex items-center gap-2 border-b px-3 py-2.5">
           <LeoAIIconAnimation size={20} autoPlay={false} />

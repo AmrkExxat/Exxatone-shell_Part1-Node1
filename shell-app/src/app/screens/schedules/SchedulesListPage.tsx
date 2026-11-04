@@ -32,7 +32,8 @@ import { schedulesTableGrid } from './schedulesTable';
 import { Checkbox } from '../../components/ui/checkbox';
 import { BulkEmailSheet } from './bulk-email/BulkEmailSheet';
 import { BulkEmailHistoryDialog } from './bulk-email/BulkEmailHistoryDialog';
-import { EmailActions, buildScheduleContext } from '../../features/email-composer';
+import { EmailActions, buildScheduleContext, useEmailComposer } from '../../features/email-composer';
+import { useEmailHistoryAction } from './SchedulesModuleChrome';
 import { prototypeSite } from '../../data/prototype/site';
 import { useSession } from '../../data/SessionContext';
 import '../availability/availabilityTablePins.css';
@@ -66,6 +67,7 @@ export function SchedulesListPage({ listKind }: Props) {
   const [bulkEmailOpen, setBulkEmailOpen] = useState(false);
   const [emailHistoryOpen, setEmailHistoryOpen] = useState(false);
   const { session } = useSession();
+  const { openHistory } = useEmailComposer();
 
   const filtered = useMemo(
     () =>
@@ -122,6 +124,14 @@ export function SchedulesListPage({ listKind }: Props) {
     () => filtered.filter((row) => selectedIds.has(row.id)),
     [filtered, selectedIds],
   );
+  const openEmailHistory = useCallback(() => {
+    if (session.emailExperience === 'stepper') {
+      setEmailHistoryOpen(true);
+      return;
+    }
+    openHistory(buildScheduleContext(selectedRows.length ? selectedRows : filtered, prototypeSite.name));
+  }, [session.emailExperience, openHistory, selectedRows, filtered]);
+  useEmailHistoryAction(openEmailHistory);
 
   return (
     <>
@@ -169,14 +179,12 @@ export function SchedulesListPage({ listKind }: Props) {
                 }}
                 selectedCount={selectedIds.size}
                 onComposeEmail={() => setBulkEmailOpen(true)}
-                onEmailHistory={() => setEmailHistoryOpen(true)}
                 emailExperience={session.emailExperience}
                 composerActions={
                   <EmailActions
                     selectedCount={selectedIds.size}
                     noun="schedules"
                     getSelected={() => buildScheduleContext(selectedRows, prototypeSite.name)}
-                    getAll={() => buildScheduleContext(filtered, prototypeSite.name)}
                   />
                 }
               />

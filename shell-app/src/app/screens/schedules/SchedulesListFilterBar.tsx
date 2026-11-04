@@ -4,7 +4,6 @@ import {
   ChevronUp,
   CirclePlus,
   FileOutput,
-  History,
   Mail,
   PencilLine,
   RotateCcw,
@@ -33,7 +32,6 @@ type Props = {
   onQueryChange: (value: string) => void;
   selectedCount?: number;
   onComposeEmail?: () => void;
-  onEmailHistory?: () => void;
   /** Set from the profile menu. The 3-step drawer is unchanged. */
   emailExperience?: EmailExperience;
   composerActions?: ReactNode;
@@ -45,7 +43,6 @@ export function SchedulesListFilterBar({
   onQueryChange,
   selectedCount = 0,
   onComposeEmail,
-  onEmailHistory,
   emailExperience = 'composer',
   composerActions,
 }: Props) {
@@ -82,7 +79,6 @@ export function SchedulesListFilterBar({
           showBulkEmail={listKind !== 'all'}
           selectedCount={selectedCount}
           onComposeEmail={onComposeEmail}
-          onEmailHistory={onEmailHistory}
           emailExperience={emailExperience}
           composerActions={composerActions}
           onToggleExpanded={() => setExpanded((v) => !v)}
@@ -115,7 +111,6 @@ function FilterToolbarActions({
   showBulkEmail,
   selectedCount,
   onComposeEmail,
-  onEmailHistory,
   emailExperience = 'composer',
   composerActions,
   onToggleExpanded,
@@ -125,7 +120,6 @@ function FilterToolbarActions({
   showBulkEmail: boolean;
   selectedCount: number;
   onComposeEmail?: () => void;
-  onEmailHistory?: () => void;
   emailExperience?: EmailExperience;
   composerActions?: ReactNode;
   onToggleExpanded: () => void;
@@ -139,7 +133,6 @@ function FilterToolbarActions({
           <BulkEmailMenu
             selectedCount={selectedCount}
             onComposeEmail={onComposeEmail}
-            onEmailHistory={onEmailHistory}
           />
         )
       ) : null}
@@ -164,11 +157,9 @@ function FilterToolbarActions({
 function BulkEmailMenu({
   selectedCount,
   onComposeEmail,
-  onEmailHistory,
 }: {
   selectedCount: number;
   onComposeEmail?: () => void;
-  onEmailHistory?: () => void;
 }) {
   const canCompose = selectedCount > 0;
 
@@ -195,10 +186,6 @@ function BulkEmailMenu({
               </span>
             ) : null}
           </span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => onEmailHistory?.()}>
-          <History className="size-4 text-[#6b7280]" strokeWidth={1.75} aria-hidden />
-          Email History
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

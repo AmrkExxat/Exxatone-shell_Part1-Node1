@@ -22,7 +22,9 @@ export const schedulesChrome = {
   tabSegmentLast: 'rounded-r-lg',
   tabNewBadge:
     'ml-1.5 inline-flex rounded bg-[#fef08a] px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none text-[#713f12]',
-  addBtnWrap: 'flex shrink-0 lg:col-start-3 lg:justify-self-end',
+  addBtnWrap: 'flex shrink-0 items-center gap-2 lg:col-start-3 lg:justify-self-end',
+  historyBtn:
+    'inline-flex h-8 items-center justify-center rounded-[6px] border border-[#d1d5db] bg-white px-3 text-[14px] font-medium text-[#212121] hover:bg-[#f5f5f5]',
   addBtn:
     'inline-flex h-8 items-center justify-center rounded-[6px] bg-[#3f51b5] px-3 text-[14px] font-medium text-white hover:bg-[#3544a5]',
   /** List kind: All Schedules | Group | Individual */

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Outlet } from 'react-router';
-import { SchedulesModuleChrome } from './SchedulesModuleChrome';
+import { SchedulesHeaderProvider, SchedulesModuleChrome } from './SchedulesModuleChrome';
 import { partnersFont, partnersSurfaces, schedulesChrome } from './schedulesTypography';
 
 function syncModuleChromeHeight(el: HTMLElement | null) {
@@ -26,10 +26,12 @@ export function SchedulesLayout() {
       data-schedules-layout
       className={`min-h-full ${partnersSurfaces.page} ${partnersFont}`}
     >
-      <div ref={moduleChromeRef} className={schedulesChrome.moduleSticky}>
-        <SchedulesModuleChrome />
-      </div>
-      <Outlet />
+      <SchedulesHeaderProvider>
+        <div ref={moduleChromeRef} className={schedulesChrome.moduleSticky}>
+          <SchedulesModuleChrome />
+        </div>
+        <Outlet />
+      </SchedulesHeaderProvider>
     </div>
   );
 }

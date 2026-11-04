@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { Sheet } from '../../components/ui/sheet';
-import { Toaster } from '../../components/ui/sonner';
 import { EmailComposerDrawer } from './EmailComposerDrawer';
 import { EmailHistoryDrawer } from './EmailHistoryDrawer';
 import type { ComposerContext } from './types';
@@ -21,7 +20,7 @@ export function useEmailComposer(): ComposerApi {
   return api;
 }
 
-/** Mount once in a shell. Renders the drawer and the toast host. */
+/** Mount once in a shell. Renders the composer and history drawers. Toasts use the app host. */
 export function ComposerProvider({ children }: { children: ReactNode }) {
   const [ctx, setCtx] = useState<ComposerContext | null>(null);
   const [session, setSession] = useState(0);
@@ -42,13 +41,12 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider value={api}>
       {children}
-      <Sheet open={!!ctx} onOpenChange={(o) => !o && setCtx(null)}>
+      <Sheet open={!!ctx} onOpenChange={() => { /* The composer confirms before it calls closeComposer. */ }}>
         {ctx && <EmailComposerDrawer key={session} ctx={ctx} onClose={closeComposer} />}
       </Sheet>
       <Sheet open={!!hist} onOpenChange={(o) => !o && setHist(null)}>
         {hist && <EmailHistoryDrawer ctx={hist} onCompose={(prefill) => openComposer({ ...hist, prefill })} />}
       </Sheet>
-      <Toaster position="bottom-right" />
     </Ctx.Provider>
   );
 }
