@@ -151,6 +151,7 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-11-04 — Composer: To, Cc, and Bcc use removable chips; Add recipients is an icon; Write with Leo floats off the formatting bar; template list drops Write your own and removes with an X; one toast host`
 - `Part1_Node-1a — 2026-11-04 — Composer: selected template is a chip and a highlighted row; remove asks first and can clear the letter; closing the drawer asks before discarding`
 - `Part1_Node-1a — 2026-11-04 — Schedules: Email history moves beside Add Schedule; To accepts a name or email like Cc and Bcc`
+- `Part1_Node-1a — 2026-11-04 — Composer template list shows each predefined attachment, in the menu and in the expanded list`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
 

@@ -157,7 +157,18 @@ function Row({ label, children, className, required }: { label: string; children
 /** Matches the "Default" badge on Email Templates cards. */
 const defaultBadge = 'inline-flex items-center rounded-full bg-[#e8f5e9] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#2e7d32]';
 const selectedBadge = 'inline-flex items-center rounded-full bg-[#e8eaf6] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#283593]';
+
+function AttachmentHints({ files }: { files?: { name: string }[] }) {
+  const count = files?.length ?? 0;
+  if (!count) return null;
+  return (
+    <small className="mt-0.5 block text-xs leading-4 text-[#5c6bc0]">
+      {count} {count === 1 ? 'attachment' : 'attachments'}
+    </small>
+  );
+}
 const letterText = (html: string) => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+const attachmentNames = (files: { name: string }[]) => files.map((file) => file.name).sort().join('\0');
 
 function PersonChips({
   people,
@@ -206,7 +217,7 @@ function PersonChips({
  */
 export function EmailComposerDrawer({ ctx, onClose }: Props) {
   const brand = ctx.sender.brand;
-  const [emailTemplates] = useEmailTemplates();
+  const [emailTemplates, setEmailTemplates] = useEmailTemplates();
   const TPL = useMemo(() => templatesFor(emailTemplates, ctx.kind ?? 'individual'), [emailTemplates, ctx.kind]);
   const rolesAvail = useMemo(() => COMPOSER_ROLES.filter((r) => ctx.recipients.some((p) => p.role === r)), [ctx]);
 
@@ -326,7 +337,14 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
   const subject = locked ? '' : fp ? shownFor(fp).subject : subjectBy[role!];
   const body = locked ? '' : fp ? shownFor(fp).body : bodyBy[role!];
   const tpl = role && tplBy[role] ? TPL[role].find((t) => t.id === tplBy[role]) : undefined;
-  const dirty = !!role && !fp && (tpl ? tpl.id === 'blank' || tpl.body !== body || tpl.subject !== subject : letterText(subject) !== '' || letterText(body) !== '');
+  const attachments = role ? attBy[role] ?? [] : [];
+  const attachmentsDirty = !!tpl && tpl.id !== 'blank' && attachmentNames(attachments) !== attachmentNames(tpl.attachments ?? []);
+  const dirty =
+    !!role &&
+    !fp &&
+    (tpl
+      ? tpl.id === 'blank' || tpl.body !== body || tpl.subject !== subject || attachmentsDirty
+      : letterText(subject) !== '' || letterText(body) !== '' || attachments.length > 0);
 
   const setSubject = (v: string) => {
     if (!role) return;
@@ -430,7 +448,6 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
     } else setBcc((b) => b.filter((x) => x !== ctx.sender.me));
   };
 
-  const attachments = role ? attBy[role] ?? [] : [];
   const previewPerson = fp ?? people.find((p) => p.id === previewId) ?? eligible[0] ?? people[0];
   /** What a merge tag turns into for the person being previewed (shown in the tag's details). */
   const describe: DescribeTag = (tag) => {
@@ -502,6 +519,37 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
     });
     setDlg(null);
     onClose();
+  };
+
+  const saveTemplate = () => {
+    if (!role || !tpl || tpl.id === 'blank') {
+      toast.success('Saved as a template');
+      return;
+    }
+    const templateId = tplBy[role];
+    const at = new Date().toISOString();
+    const savedAttachments = attachments.map((file, index) => ({
+      id: file.id.startsWith('att-') ? file.id : `att-${templateId}-${index}-${Date.now()}`,
+      name: file.name,
+      size: file.size,
+    }));
+    setEmailTemplates((prev) =>
+      prev.map((item) =>
+        item.id === templateId
+          ? {
+              ...item,
+              subject,
+              body,
+              attachments: savedAttachments,
+              kind: 'customized' as const,
+              lastUpdatedBy: 'You',
+              lastUpdatedAt: at,
+              history: [...item.history, { id: `hist-${Date.now()}`, type: 'edited' as const, actor: 'You', at }],
+            }
+          : item,
+      ),
+    );
+    toast.success('Template saved.');
   };
 
   return (
@@ -762,6 +810,7 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
                               {t.isDefault && <span className={defaultBadge}>Default</span>}
                             </span>
                             {t.subject && <small className="line-clamp-1 block text-xs text-muted-foreground">{t.subject}</small>}
+                            <AttachmentHints files={t.attachments} />
                           </span>
                         </CheckItem>
                         <IconButton
@@ -913,7 +962,7 @@ export function EmailComposerDrawer({ ctx, onClose }: Props) {
           Send test email
         </Button>
         {dirty && (
-          <Button variant="ghost" className="ml-auto" onClick={() => toast.success('Saved as a template')}>
+          <Button variant="ghost" className="ml-auto" onClick={saveTemplate}>
             Save as template
           </Button>
         )}
@@ -1091,6 +1140,7 @@ function TemplateLibrary({
               {item.isDefault && <span className={defaultBadge}>Default</span>}
             </span>
             <span className="line-clamp-2 text-xs text-[#616161]">{item.subject || 'No subject'}</span>
+            <AttachmentHints files={item.attachments} />
           </button>
           <IconButton
             label={`Remove ${item.label} from list`}
