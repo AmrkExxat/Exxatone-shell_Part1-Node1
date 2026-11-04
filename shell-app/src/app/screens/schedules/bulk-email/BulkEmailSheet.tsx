@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { X } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { Sheet, SheetContent, SheetTitle } from '../../../components/ui/sheet';
 import { partnersDrawer, partnersFont } from '../../partners/partnersTypography';
 import {
   BULK_EMAIL_PERSONAS,
   deriveBulkEmailRecipients,
+  groupedLetterFor,
+  isGroupedTemplateId,
   type BulkEmailPersonaId,
   type BulkEmailRecipient,
+  type BulkEmailSendMode,
 } from '../../../config/bulkEmail';
 import type { ScheduleListKind, ScheduleRecord } from '../../../config/schedules';
 import { BULK_EMAIL_STEPS, bulkEmailDrawer } from './bulkEmailDrawer';
@@ -29,7 +33,10 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
   const [currentStep, setCurrentStep] = useState(0);
   const [maxVisitedStep, setMaxVisitedStep] = useState(0);
 
-  const [tickedPersonas, setTickedPersonas] = useState<Set<BulkEmailPersonaId>>(new Set());
+  const [selectedPersona, setSelectedPersona] = useState<BulkEmailPersonaId | null>(null);
+  const [sendMode, setSendMode] = useState<BulkEmailSendMode>('perPerson');
+  const [excludedIds, setExcludedIds] = useState<Set<string>>(new Set());
+  const [scheduleListOpen, setScheduleListOpen] = useState(false);
   const [replyTo, setReplyTo] = useState('');
   const [cc, setCc] = useState('');
   const [bcc, setBcc] = useState('');
@@ -52,7 +59,10 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
     if (!open) {
       setCurrentStep(0);
       setMaxVisitedStep(0);
-      setTickedPersonas(new Set());
+      setSelectedPersona(null);
+      setSendMode('perPerson');
+      setExcludedIds(new Set());
+      setScheduleListOpen(false);
       setReplyTo('');
       setCc('');
       setBcc('');
@@ -89,21 +99,47 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
     return counts;
   }, [recipientsByPersona]);
 
+  const personaRecipients = useMemo(
+    () => (selectedPersona ? recipientsByPersona[selectedPersona] : []),
+    [selectedPersona, recipientsByPersona],
+  );
   const recipients = useMemo(
-    () =>
-      BULK_EMAIL_PERSONAS.filter((p) => tickedPersonas.has(p.id)).flatMap(
-        (p) => recipientsByPersona[p.id],
-      ),
-    [tickedPersonas, recipientsByPersona],
+    () => personaRecipients.filter((r) => !excludedIds.has(r.id)),
+    [personaRecipients, excludedIds],
   );
 
-  const togglePersona = (id: BulkEmailPersonaId) => {
-    setTickedPersonas((prev) => {
+  const clearComposeDraft = () => {
+    setTemplateId(null);
+    setSubject('');
+    setBody('');
+  };
+
+  const selectPersona = (id: BulkEmailPersonaId) => {
+    if (id === selectedPersona) return;
+    setSelectedPersona(id);
+    setSendMode('perPerson');
+    setExcludedIds(new Set());
+    clearComposeDraft();
+  };
+
+  const changeSendMode = (mode: BulkEmailSendMode) => {
+    setSendMode(mode);
+    if (mode !== 'perPerson' && isGroupedTemplateId(templateId)) {
+      clearComposeDraft();
+    }
+  };
+
+  const toggleRecipient = (id: string) => {
+    setExcludedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
+  };
+
+  const toggleAllRecipients = (include: boolean) => {
+    setExcludedIds(include ? new Set() : new Set(personaRecipients.map((r) => r.id)));
   };
 
   const isStep1 = currentStep === 0;
@@ -122,12 +158,20 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
       : 'Send email'
     : 'Next';
 
+  const letter = groupedLetterFor(selectedPersona, sendMode, selectedRows);
+
   const goNext = () => {
     if (isNextDisabled) return;
+    if (isStep1 && letter && subject.trim() === '' && body.trim() === '') {
+      setTemplateId(letter.template.id);
+      setSubject(letter.template.subject);
+      setBody(letter.template.body);
+    }
     if (isLastStep) {
       console.log('Bulk email send stub', {
         listKind,
         recipients,
+        sendMode,
         subject,
         body,
         replyTo,
@@ -150,8 +194,8 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
 
   const goPrevious = () => setCurrentStep((s) => Math.max(0, s - 1));
 
-  const stepHeading =
-    listKind === 'group' ? 'Group' : listKind === 'individual' ? 'Individual' : 'All';
+  const scheduleNoun = selectedRows.length === 1 ? 'schedule' : 'schedules';
+  const scheduleKind = listKind === 'group' ? 'group ' : listKind === 'individual' ? 'individual ' : '';
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -174,9 +218,38 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
 
         <div className={bulkEmailDrawer.metaRow}>
           <span className={bulkEmailDrawer.metaLabel}>
-            <span className={bulkEmailDrawer.metaValue}>{selectedRows.length}</span>{' '}
-            {selectedRows.length === 1 ? 'schedule' : 'schedules'} selected · {stepHeading}
+            <span className={bulkEmailDrawer.metaValue}>
+              {selectedRows.length} {scheduleKind}
+              {scheduleNoun}
+            </span>{' '}
+            selected
           </span>
+          {selectedRows.length > 0 ? (
+            <Popover open={scheduleListOpen} onOpenChange={setScheduleListOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={bulkEmailDrawer.metaLink}>
+                  View
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-[380px] p-0" aria-label={`Selected ${scheduleNoun}`}>
+                <p className="border-b border-[#eceef1] px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.03em] text-[#616161]">
+                  Selected {scheduleNoun}
+                </p>
+                <ul className="max-h-[280px] overflow-y-auto py-1">
+                  {selectedRows.map((row) => (
+                    <li key={row.id} className="flex gap-3 px-3 py-2 text-[13px] leading-5">
+                      <span className="w-[72px] shrink-0 font-semibold text-[#212121]">
+                        {row.scheduleId}
+                      </span>
+                      <span className="min-w-0 text-[#424242]">
+                        {row.primaryName} — {row.availability}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </PopoverContent>
+            </Popover>
+          ) : null}
         </div>
 
         <div className={bulkEmailDrawer.stepperRow}>
@@ -196,10 +269,14 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
             {isStep1 ? (
               <BulkEmailRecipientsStep
                 personaCounts={personaCounts}
-                tickedPersonas={tickedPersonas}
-                onTogglePersona={togglePersona}
-                recipients={recipients}
-                validRecipientCount={recipients.length}
+                selectedPersona={selectedPersona}
+                onSelectPersona={selectPersona}
+                sendMode={sendMode}
+                onSendModeChange={changeSendMode}
+                recipients={personaRecipients}
+                excludedIds={excludedIds}
+                onToggleRecipient={toggleRecipient}
+                onToggleAllRecipients={toggleAllRecipients}
                 replyTo={replyTo}
                 onReplyToChange={setReplyTo}
                 cc={cc}
@@ -229,11 +306,15 @@ export function BulkEmailSheet({ open, onOpenChange, listKind, selectedRows }: B
                 }
                 headerFooterLayout={headerFooterLayout}
                 onHeaderFooterLayoutChange={setHeaderFooterLayout}
+                sendMode={sendMode}
+                letter={letter}
               />
             ) : null}
             {isLastStep ? (
               <BulkEmailPreviewStep
                 recipients={recipients}
+                selectedRows={selectedRows}
+                sendMode={sendMode}
                 subject={subject}
                 body={body}
                 replyTo={replyTo}

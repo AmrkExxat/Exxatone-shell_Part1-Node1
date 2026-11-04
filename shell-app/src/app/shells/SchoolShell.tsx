@@ -16,7 +16,7 @@ export function SchoolShell() {
   const { schoolId } = useParams<{ schoolId: string }>();
 
   const school = schoolId ? findSchool(session, schoolId) : undefined;
-  const schoolName = school ? schoolLabel(school) : 'Abilene Christine University - DPT';
+  const schoolName = school ? schoolLabel(school) : 'Eastwood State University - DPT';
 
   const handleNavigate = (href: string) => {
     if (!schoolId) return;

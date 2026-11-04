@@ -38,6 +38,7 @@ export function EmailTemplatesPage() {
   const groupId = searchParams.get('group') ?? DEFAULT_EMAIL_TEMPLATE_SELECTION.groupId;
   const categoryId = searchParams.get('category') ?? DEFAULT_EMAIL_TEMPLATE_SELECTION.categoryId;
   const eventId = searchParams.get('event') ?? DEFAULT_EMAIL_TEMPLATE_SELECTION.eventId;
+  const audienceId = searchParams.get('audience') ?? DEFAULT_EMAIL_TEMPLATE_SELECTION.audienceId;
 
   const selection = useMemo(
     () => findEventSelection(groupId, categoryId, eventId),
@@ -45,8 +46,8 @@ export function EmailTemplatesPage() {
   );
 
   const eventTemplates = useMemo(
-    () => templatesForEvent(templates, groupId, categoryId, eventId),
-    [templates, groupId, categoryId, eventId],
+    () => templatesForEvent(templates, groupId, categoryId, eventId, audienceId),
+    [templates, groupId, categoryId, eventId, audienceId],
   );
 
   const [cloneTarget, setCloneTarget] = useState<EmailTemplateRecord | null>(null);
@@ -54,24 +55,22 @@ export function EmailTemplatesPage() {
   const [previewTarget, setPreviewTarget] = useState<EmailTemplateRecord | null>(null);
 
   const syncSelection = useCallback(
-    (g: string, c: string, e: string) => {
-      setSearchParams(
-        { group: g, category: c, event: e },
-        { replace: true },
-      );
+    (audience: string, g: string, c: string, e: string) => {
+      setSearchParams({ audience, group: g, category: c, event: e }, { replace: true });
     },
     [setSearchParams],
   );
 
   useEffect(() => {
-    if (!selection) {
+    if (!selection || !searchParams.get('audience')) {
       syncSelection(
+        DEFAULT_EMAIL_TEMPLATE_SELECTION.audienceId,
         DEFAULT_EMAIL_TEMPLATE_SELECTION.groupId,
         DEFAULT_EMAIL_TEMPLATE_SELECTION.categoryId,
         DEFAULT_EMAIL_TEMPLATE_SELECTION.eventId,
       );
     }
-  }, [selection, syncSelection]);
+  }, [selection, searchParams, syncSelection]);
 
   const upsertHistory = (
     entry: EmailTemplateHistoryEntry,
@@ -82,7 +81,7 @@ export function EmailTemplatesPage() {
     const at = nowIso();
     setTemplates((prev) =>
       prev.map((t) => {
-        if (t.groupId !== groupId || t.categoryId !== categoryId || t.eventId !== eventId) {
+        if (t.groupId !== groupId || t.categoryId !== categoryId || t.eventId !== eventId || t.audienceId !== audienceId) {
           return t;
         }
         if (t.id === templateId) {
@@ -139,6 +138,7 @@ export function EmailTemplatesPage() {
   const openEditor = (mode: 'create' | 'edit', templateId?: string) => {
     const params = new URLSearchParams({
       mode,
+      audience: audienceId,
       group: groupId,
       category: categoryId,
       event: eventId,
@@ -149,20 +149,19 @@ export function EmailTemplatesPage() {
     );
   };
 
-  const showAudience = groupId === 'bulk';
-
   return (
     <div className={`${sc.font} pb-1 pt-1`}>
       <header className="mb-4 space-y-2">
         <h1 className={sc.cardTitle}>Email Templates</h1>
         <p className={et.pageIntro}>
-          Manage the emails Exxat One sends, and the Bulk Email templates people send by hand.
+          Manage letters by who they are for. Each audience holds Automated notifications and Bulk Email.
         </p>
       </header>
 
       <div className={et.layout}>
         <EmailTemplatesEventTree
           templates={templates}
+          audienceId={audienceId}
           groupId={groupId}
           categoryId={categoryId}
           eventId={eventId}
@@ -202,7 +201,6 @@ export function EmailTemplatesPage() {
                       key={tpl.id}
                       template={tpl}
                       siblings={eventTemplates}
-                      showAudience={showAudience}
                       onSetDefault={() => handleSetDefault(tpl.id)}
                       onPreview={() => setPreviewTarget(tpl)}
                       onClone={() => setCloneTarget(tpl)}

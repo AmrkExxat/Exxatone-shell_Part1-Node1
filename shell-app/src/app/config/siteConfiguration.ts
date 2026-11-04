@@ -1,3 +1,5 @@
+import { prototypeSite } from '../data/prototype/site';
+
 /** Site Configuration — secondary nav IA (prod reference) + mock Bedlam site profile. */
 
 export type SiteConfigNavLeaf = {
@@ -69,11 +71,7 @@ export const SITE_CONFIG_NAV_SECTIONS: SiteConfigNavSection[] = [
     children: [
       { id: 'email-setup', label: 'Email Setup', segment: 'notification/email-setup' },
       { id: 'email-templates', label: 'Email Templates', segment: 'notification/email-templates' },
-      {
-        id: 'attachment-templates',
-        label: 'Attachment Templates',
-        segment: 'notification/attachment-templates',
-      },
+      // Attachment Templates: hidden from the nav for now. Route still exists; see routes.tsx.
       {
         id: 'notification-configuration',
         label: 'Notification Configuration',
@@ -95,25 +93,17 @@ export function siteConfigPath(siteId: string, segment: string) {
 }
 
 export const MOCK_SITE_BASIC_DETAILS = {
-  name: 'Bedlam-Hospital',
-  aliasName: 'ED',
-  website: 'https://www.exxat.com',
-  ein: '11042',
-  totalLocations: 133,
-  addressLines: [
-    '11801 Seven Seas Dr, Suite 401',
-    'Orlando, California',
-    '32839, US',
-  ],
-  phoneNumber: '12345',
-  siteDescriptionHint: 'This description will be shown to students as part of your job postings',
-  aboutUsParagraphs: [
-    'Bedlam Hospital is a modern, multidisciplinary healthcare facility committed to delivering high-quality, patient-centered care. With a strong focus on clinical excellence, innovation, and compassionate service, we provide a wide range of medical services across acute care, outpatient treatment, and specialized programs.',
-    'Our team of experienced physicians, clinicians, and support staff work collaboratively to ensure the best outcomes for our patients. Equipped with advanced medical technology and a supportive learning environment, Bedlam Hospital also serves as a training ground for students and early-career professionals seeking hands-on clinical experience.',
-    'We take pride in fostering a culture of continuous learning, inclusivity, and excellence—making Bedlam Hospital a trusted partner in both patient care and professional development.',
-  ],
-  footerLinkLabel: 'exxat.com',
-  footerLinkHref: 'https://www.exxat.com',
-  lastUpdatedBy: 'darp_test@mailinator.com',
-  lastUpdatedAt: 'Oct 26, 2026 17:27 PM IST',
+  name: prototypeSite.name,
+  aliasName: prototypeSite.aliasName,
+  website: prototypeSite.website,
+  ein: prototypeSite.ein,
+  totalLocations: prototypeSite.totalLocations,
+  addressLines: [...prototypeSite.addressLines],
+  phoneNumber: prototypeSite.phone,
+  siteDescriptionHint: 'Shown to students when they review this site before a placement.',
+  aboutUsParagraphs: [...prototypeSite.aboutUsParagraphs],
+  footerLinkLabel: prototypeSite.websiteLabel,
+  footerLinkHref: prototypeSite.website,
+  lastUpdatedBy: prototypeSite.lastUpdatedBy,
+  lastUpdatedAt: prototypeSite.lastUpdatedAt,
 };

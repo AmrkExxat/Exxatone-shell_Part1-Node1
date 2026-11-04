@@ -1,0 +1,52 @@
+import { prototypeSite } from './site';
+
+/** Sample merge values shared by email preview, attachment preview, and bulk send. */
+export const prototypePreviewSamples: Record<string, string> = {
+  siteName: prototypeSite.hospitalName,
+  hospitalName: prototypeSite.hospitalName,
+  senderName: prototypeSite.senderName,
+  senderOrganization: prototypeSite.clinicalEducationName,
+  loginUrl: prototypeSite.loginUrl,
+  schoolName: 'Eastwood State University',
+  recipientName: 'Maya Chen',
+  firstName: 'Maya',
+  lastName: 'Chen',
+  studentName: 'Maya Chen',
+  messageText: 'Could we move the start date by one week?',
+  messagePreview: 'Could we move the start date by one week?',
+  messageUrl: 'https://one.exxat.com/messages',
+  messagesLink: 'https://one.exxat.com/messages',
+  approvedSlotCount: '2',
+  slotsApproved: '2',
+  rotationName: 'Acute Inpatient PT',
+  reviewUrl: 'https://one.exxat.com/schedules/6427314',
+  assignedScheduleRef: '6427314',
+  studentRosterRef: 'Eastwood State University · Spring 2027',
+  startDate: 'Jan 12, 2027',
+  availabilityName: 'Acute Inpatient PT',
+  locationName: 'Bedlam Hospital — Rehabilitation Center',
+  rotationDates: 'Jan 12, 2027 – Mar 6, 2027',
+  preceptorName: 'Lisa Hammond, PT',
+  preceptorEmail: 'lisa.hammond@bedlamhospital.org',
+  onboardingStatus: 'Compliant',
+  daysUntilStart: '14',
+};
+
+/** Org-level tokens. A missing value on a person still stays missing. */
+export const PROTOTYPE_GLOBAL_SAMPLE_TOKENS = new Set([
+  'siteName',
+  'rotationName',
+  'reviewUrl',
+  'approvedSlotCount',
+  'slotsApproved',
+  'messageText',
+  'messagePreview',
+  'messageUrl',
+  'messagesLink',
+  'assignedScheduleRef',
+  'studentRosterRef',
+  'availabilityName',
+  'locationName',
+  'rotationDates',
+  'daysUntilStart',
+]);

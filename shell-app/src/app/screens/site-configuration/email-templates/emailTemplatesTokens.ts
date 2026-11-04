@@ -2,17 +2,18 @@ export const et = {
   pageIntro: 'text-[14px] font-normal leading-5 text-[#4a5565]',
   layout: 'flex min-h-0 flex-col gap-4 lg:flex-row lg:items-start',
   treeCard:
-    'w-full shrink-0 overflow-hidden rounded-[8px] bg-white shadow-[0_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] lg:w-[320px]',
+    'w-full shrink-0 overflow-hidden rounded-[8px] bg-white shadow-[0_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] lg:w-[360px]',
   treeScroll: 'max-h-[min(720px,calc(100vh-220px))] overflow-y-auto',
   /** Quiet indigo wash; #283593 on #eef0fb meets WCAG AA for this size. */
   groupBar:
-    'sticky z-20 flex h-9 items-center border-b border-[#d5daf5] bg-[#eef0fb] px-3 text-[12px] font-semibold leading-4 text-[#283593]',
-  groupBarFirst: 'top-0 z-30',
-  groupBarNext: 'top-9 z-20',
+    'flex h-8 w-full items-center gap-2 border-b border-[#d5daf5] bg-[#eef0fb] px-3 pl-6 text-left text-[12px] font-semibold leading-4 text-[#283593] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#3f51b5]',
+  audienceBtn:
+    'flex w-full items-center gap-2 border-b border-[#eceef1] px-3 py-2.5 text-left text-[13px] font-semibold text-[#111827] hover:bg-[#f5f5f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#3f51b5]',
+  audienceBtnOpen: 'bg-[#fafafa]',
   categoryRow:
-    'relative z-0 flex items-center gap-2 border-b border-[#eceef1] bg-[#fafafa] px-3 py-2 text-[13px] font-semibold text-[#364153]',
+    'relative z-0 flex items-center gap-2 border-b border-[#eceef1] bg-[#fafafa] py-2 pl-8 pr-3 text-[13px] font-semibold text-[#364153]',
   eventBtn:
-    'relative z-0 flex w-full items-start justify-between gap-2 border-b border-[#f3f4f6] px-3 py-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#3f51b5]',
+    'relative z-0 flex w-full items-start justify-between gap-2 border-b border-[#f3f4f6] py-2.5 pl-10 pr-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#3f51b5]',
   eventBtnIdle: 'bg-white text-[12px] font-normal leading-4 text-[#4a5565] hover:bg-[#f5f5f5]',
   /** Bold indigo + left bar. No row fill, so it does not match the group band. #283593 on white is 10.4:1. */
   eventBtnActive:
@@ -35,6 +36,7 @@ export const et = {
   badgeDefault: 'bg-[#e8f5e9] text-[#2e7d32]',
   badgeAudience: 'bg-[#f3f4f6] text-[#616161]',
   subjectPreview: 'mt-2 text-[14px] font-normal leading-5 text-[#4a5565]',
+  bodyPreview: 'mt-1 text-[13px] font-normal leading-5 text-[#757575]',
   actionsRow: 'mt-3 flex flex-wrap items-center justify-end gap-2',
   linkAction: 'text-[13px] font-medium text-[#3f51b5] hover:underline disabled:pointer-events-none disabled:text-[#9e9e9e]',
   iconActions: 'flex items-center gap-1',

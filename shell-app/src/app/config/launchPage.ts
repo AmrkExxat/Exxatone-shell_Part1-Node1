@@ -1,3 +1,5 @@
+import { prototypeLauncherSites } from '../data/prototype/site';
+
 /**
  * Launch Page (/sites) — Network Layer + Sites secondary tabs.
  * // TODO(pm-feedback): card fields & pagination copy from Figma 370:624 / 370:245
@@ -30,12 +32,10 @@ export interface LaunchSiteCard {
   initial: string;
 }
 
-/** Extra site cards to match Figma Sites tab density */
-export const launchSiteCards: LaunchSiteCard[] = [
-  { id: 'bedlam-hospital', name: 'Bedlam-Hospital', location: 'Oklahoma City, OK', initial: 'B' },
-  { id: 'baptist-health', name: 'Baptist Health', location: 'Louisville, KY', initial: 'B' },
-  { id: 'happy-clinic', name: 'Happy Clinic', location: 'Austin, TX', initial: 'H' },
-  { id: 'metro-health', name: 'Metro Health Partners', location: 'Baltimore, MD', initial: 'M' },
-  { id: 'riverside-medical', name: 'Riverside Medical Center', location: 'Washington, DC', initial: 'R' },
-  { id: 'capitol-care', name: 'Capitol Care Clinic', location: 'Washington, DC', initial: 'C' },
-];
+/** Sites a coordinator can open. Same list as the signed-in session. */
+export const launchSiteCards: LaunchSiteCard[] = prototypeLauncherSites.map((site) => ({
+  id: site.id,
+  name: site.name,
+  location: site.location,
+  initial: site.name.charAt(0),
+}));

@@ -1,4 +1,7 @@
 import type { BulkEmailRecipient, HeaderFooterLayoutId } from './bulkEmail';
+import { audienceLabel, type EmailAudienceId } from './emailAudiences';
+import { prototypePreviewSamples } from '../data/prototype/previewSamples';
+import { prototypeSite } from '../data/prototype/site';
 
 export type EmailTemplateGroupId = 'automated' | 'bulk';
 
@@ -23,8 +26,10 @@ export type EmailTemplateRecord = {
   name: string;
   kind: EmailTemplateKind;
   isDefault: boolean;
-  /** Bulk Email audience label (e.g. School Contact). */
-  audience?: string;
+  /** Who this letter is for. Parent of Automated notifications and Bulk Email. */
+  audienceId: EmailAudienceId;
+  /** Opens first in the composer for this audience and schedule kind. */
+  composerDefault?: boolean;
   subject: string;
   body: string;
   headerFooterLayout?: HeaderFooterLayoutId;
@@ -158,6 +163,37 @@ export const EMAIL_TEMPLATE_GROUPS: EmailTemplateGroup[] = [
           { id: 'change-notification', label: 'Change Notification' },
           { id: 'reminder', label: 'Reminder' },
           { id: 'schedule-published', label: 'Schedule Published' },
+          { id: 'group-clinical-orientation', label: 'Group clinical orientation' },
+          { id: 'group-placement-preceptor', label: 'Group schedule briefing' },
+          { id: 'group-placement-site', label: 'Group placement — location coordinator' },
+          { id: 'group-onboarding-ci', label: 'Group onboarding — clinical instructor' },
+          { id: 'ci-logistics', label: 'Clinical instructor logistics' },
+          { id: 'ci-roster', label: 'Roster and shift confirmation' },
+          { id: 'group-faculty-update', label: 'Group placement update' },
+          { id: 'group-first-day', label: 'First day' },
+          { id: 'group-uniform', label: 'Uniform and ID' },
+          { id: 'group-parking', label: 'Parking and arrival' },
+          { id: 'group-absence', label: 'Absence reporting' },
+          { id: 'group-evaluation', label: 'Group evaluation' },
+          { id: 'group-thanks', label: 'Thank you' },
+          { id: 'group-ci-welcome', label: 'Welcome your group' },
+          { id: 'group-ci-midpoint', label: 'Midpoint check-in' },
+          { id: 'group-ci-incident', label: 'Incident reporting' },
+          { id: 'group-ci-complete', label: 'Group completion' },
+          { id: 'group-preceptor-intro', label: 'Meet your group' },
+          { id: 'group-preceptor-skills', label: 'Skills to expect' },
+          { id: 'group-preceptor-safety', label: 'Unit safety' },
+          { id: 'group-preceptor-change', label: 'Schedule change' },
+          { id: 'group-preceptor-eval', label: 'Student evaluation' },
+          { id: 'group-preceptor-thanks', label: 'Thank you' },
+          { id: 'group-faculty-roster', label: 'Roster shared' },
+          { id: 'group-faculty-start', label: 'Groups starting' },
+          { id: 'group-faculty-attendance', label: 'Attendance' },
+          { id: 'group-faculty-concern', label: 'Concern to review' },
+          { id: 'group-faculty-complete', label: 'Groups completed' },
+          { id: 'group-faculty-eval', label: 'Evaluation window' },
+          { id: 'ice-feedback', label: 'ICE feedback' },
+          { id: 'ice-overdue', label: 'ICE feedback overdue' },
         ],
       },
       {
@@ -193,10 +229,57 @@ export const EMAIL_TEMPLATE_GROUPS: EmailTemplateGroup[] = [
 ];
 
 export const DEFAULT_EMAIL_TEMPLATE_SELECTION = {
-  groupId: 'automated' as EmailTemplateGroupId,
-  categoryId: 'messages',
-  eventId: 'message-from-schools-students-ci',
+  audienceId: 'student' as EmailAudienceId,
+  groupId: 'bulk' as EmailTemplateGroupId,
+  categoryId: 'onboarding',
+  eventId: 'welcome',
 };
+
+/** Which schedules letters the composer offers for a group selection, an individual selection, or both. */
+export const SCHEDULE_EVENT_KIND: Record<string, 'group' | 'individual' | 'both'> = {
+  confirmation: 'individual',
+  'change-notification': 'individual',
+  reminder: 'individual',
+  'schedule-published': 'individual',
+  'ice-feedback': 'individual',
+  'ice-overdue': 'individual',
+  'group-clinical-orientation': 'group',
+  'group-placement-preceptor': 'group',
+  'group-placement-site': 'group',
+  'group-onboarding-ci': 'group',
+  'group-faculty-update': 'group',
+  'group-first-day': 'group',
+  'group-uniform': 'group',
+  'group-parking': 'group',
+  'group-absence': 'group',
+  'group-evaluation': 'group',
+  'group-thanks': 'group',
+  'group-ci-welcome': 'group',
+  'group-ci-midpoint': 'group',
+  'group-ci-incident': 'group',
+  'group-ci-complete': 'group',
+  'group-preceptor-intro': 'group',
+  'group-preceptor-skills': 'group',
+  'group-preceptor-safety': 'group',
+  'group-preceptor-change': 'group',
+  'group-preceptor-eval': 'group',
+  'group-preceptor-thanks': 'group',
+  'group-faculty-roster': 'group',
+  'group-faculty-start': 'group',
+  'group-faculty-attendance': 'group',
+  'group-faculty-concern': 'group',
+  'group-faculty-complete': 'group',
+  'group-faculty-eval': 'group',
+  'ci-logistics': 'both',
+  'ci-roster': 'both',
+};
+
+export function categoryChain(audienceId: string, groupId: string, categoryId: string, eventId: string): string {
+  const selection = findEventSelection(groupId, categoryId, eventId);
+  const audience = audienceLabel(audienceId);
+  if (!selection) return audience;
+  return [audience, selection.group.label, selection.category.label, selection.event.label].join(' \\ ');
+}
 
 export function eventKey(
   groupId: string,
@@ -227,11 +310,15 @@ export function templatesForEvent(
   groupId: string,
   categoryId: string,
   eventId: string,
+  audienceId?: string,
 ): EmailTemplateRecord[] {
   return templates
     .filter(
       (t) =>
-        t.groupId === groupId && t.categoryId === categoryId && t.eventId === eventId,
+        t.groupId === groupId &&
+        t.categoryId === categoryId &&
+        t.eventId === eventId &&
+        (!audienceId || t.audienceId === audienceId),
     )
     .sort((a, b) => {
       if (a.isDefault !== b.isDefault) return a.isDefault ? -1 : 1;
@@ -308,51 +395,26 @@ export const BULK_TEMPLATE_PREVIEW_RECIPIENT: BulkEmailRecipient = {
   personaId: 'schools',
   roleLabel: 'School Contact',
   details: ['Bowie State University'],
+  schedules: [],
   fields: {
     firstName: 'Renee',
     lastName: 'Blackwell',
     recipientName: 'Dr. Renee Blackwell',
     email: 'renee.blackwell@bowiestate.edu',
-    studentName: 'Jordan Lee',
-    startDate: 'April 1, 2026',
-    hospitalName: 'MedStar Health',
-    preceptorName: 'Dr. Sam Chen',
-    preceptorEmail: 'sam.chen@medstar.net',
-    loginUrl: 'https://app.exxat.com/login',
-    onboardingStatus: 'Complete',
+    studentName: prototypePreviewSamples.studentName,
+    startDate: prototypePreviewSamples.startDate,
+    hospitalName: prototypeSite.hospitalName,
+    preceptorName: prototypePreviewSamples.preceptorName,
+    preceptorEmail: prototypePreviewSamples.preceptorEmail,
+    loginUrl: prototypeSite.loginUrl,
+    onboardingStatus: prototypePreviewSamples.onboardingStatus,
   },
 };
 
 /** Shared sample record so preview values stay consistent across events. */
-export const EMAIL_PREVIEW_DISPLAY_NAME = 'MedStar Health Clinical Education';
+export const EMAIL_PREVIEW_DISPLAY_NAME = prototypeSite.clinicalEducationName;
 
-export const PREVIEW_SAMPLES: Record<string, string> = {
-  siteName: 'Bedlam-Hospital',
-  schoolName: 'Eastwood State University',
-  recipientName: 'Maya Chen',
-  firstName: 'Maya',
-  studentName: 'Jordan Lee',
-  messageText: 'Could we move the start date by a week?',
-  messageUrl: 'https://one.exxat.com/messages',
-  approvedSlotCount: '2',
-  rotationName: 'Fall 2026 Rotation',
-  reviewUrl: 'https://one.exxat.com/requests/3558157000',
-  assignedScheduleRef: 'MS-ICU-2026-014',
-  studentRosterRef: 'Eastwood State · Fall 2026',
-  startDate: 'April 1, 2026',
-  senderName: 'Jordan Lee',
-  messagePreview: 'Could we move the start date by a week?',
-  messagesLink: 'https://one.exxat.com/messages',
-  hospitalName: 'Bedlam-Hospital',
-  loginUrl: 'https://app.exxat.com/login',
-  onboardingStatus: 'In progress',
-  availabilityName: 'Fall 2026 Rotation',
-  locationName: 'Bedlam-Hospital · ICU',
-  rotationDates: 'April 1, 2026 – July 30, 2026',
-  slotsApproved: '2',
-  preceptorName: 'Dr. Sam Chen',
-  preceptorEmail: 'sam.chen@bedlam.example',
-};
+export const PREVIEW_SAMPLES: Record<string, string> = prototypePreviewSamples;
 
 export function resolvePreviewToken(
   _groupId: EmailTemplateGroupId,

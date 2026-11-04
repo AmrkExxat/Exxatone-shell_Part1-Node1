@@ -1,3 +1,5 @@
+import { prototypePartnerCategories, prototypeSchools } from '../data/prototype/directory';
+
 /** Create Availability — step 5 (Figma publish preference flow; not full PRD yet). */
 
 export type PublishAudience = 'public' | 'all-partners' | 'school-partners' | 'tiered-partners';
@@ -29,17 +31,17 @@ export const PUBLISH_AUDIENCE_OPTIONS: { id: PublishAudience; label: string }[] 
   { id: 'tiered-partners', label: 'Tiered Partners' },
 ];
 
-/** Prototype school list for School Partners audience (Figma ref). */
-export const PUBLISH_SCHOOL_PARTNER_OPTIONS = [
-  { id: 'bowie-state', label: 'Bowie State University' },
-  { id: 'eastwood-state', label: 'Eastwood State University' },
-  { id: 'exxat-qa-pt', label: 'Exxat-QA-PT' },
-  { id: 'cedar-valley', label: 'Cedar Valley College' },
-  { id: 'harbor-point', label: 'Harbor Point University' },
-  { id: 'northgate', label: 'Northgate Institute' },
-] as const;
+/** School partners audience — the same schools as the Partners page. */
+export const PUBLISH_SCHOOL_PARTNER_OPTIONS = prototypeSchools.map((school) => ({
+  id: school.id,
+  label: school.name,
+}));
 
-export const DEFAULT_SCHOOL_PARTNER_IDS: string[] = ['bowie-state', 'eastwood-state', 'exxat-qa-pt'];
+export const DEFAULT_SCHOOL_PARTNER_IDS: string[] = [
+  'eastwood-state-university',
+  'riverside-college-of-nursing',
+  'bowie-state-university',
+];
 
 export function schoolPartnerLabel(schoolId: string): string {
   return PUBLISH_SCHOOL_PARTNER_OPTIONS.find((s) => s.id === schoolId)?.label ?? schoolId;
@@ -59,17 +61,11 @@ export const DEFAULT_SCHEDULED_PUBLISH_ON = 'Oct 01, 2026';
 
 export const PUBLISH_ON_SCHEDULE_TOOLTIP = 'Will be published at 12:00 AM CDT';
 
-/** Tier labels shown under Tiered Partners (prototype-safe demo names). */
-export const PUBLISH_TIER_CATEGORY_OPTIONS = [
-  { id: 'dzfgxgc', label: 'dzfgxgc' },
-  { id: 'gold', label: 'gold' },
-  { id: 'demo-tier-a', label: 'Demo Tier A' },
-  { id: 'international-demo-1', label: 'International Partner (Demo 1)' },
-  { id: 'international-demo-2', label: 'International Partner (Demo 2)' },
-  { id: 'silver', label: 'Silver' },
-  { id: 'tier-1', label: 'Tier 1' },
-  { id: 'tier-2', label: 'Tier 2' },
-] as const;
+/** Same category names as School Partners. */
+export const PUBLISH_TIER_CATEGORY_OPTIONS = prototypePartnerCategories.map((label) => ({
+  id: label.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+  label,
+}));
 
 export function allTierCategoryIds(): string[] {
   return PUBLISH_TIER_CATEGORY_OPTIONS.map((tier) => tier.id);

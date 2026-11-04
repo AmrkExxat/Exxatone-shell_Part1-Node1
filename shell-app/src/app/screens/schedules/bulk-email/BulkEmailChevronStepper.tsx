@@ -42,15 +42,6 @@ export function BulkEmailChevronStepper({
           const canClick = index <= maxVisitedStep;
           const clip = stepClipPath(index, total);
 
-          let label: React.ReactNode;
-          if (isActive) {
-            label = step.numberedLabel;
-          } else if (isCompleted) {
-            label = step.label;
-          } else {
-            label = step.numberedLabel;
-          }
-
           return (
             <button
               key={step.id}
@@ -73,10 +64,10 @@ export function BulkEmailChevronStepper({
                 paddingLeft: index === 0 ? 16 : 22,
                 paddingRight: index === total - 1 ? 20 : 22,
                 backgroundColor: isActive ? '#3f51b5' : '#ffffff',
-                minWidth: index === total - 1 ? 150 : 132,
+                minWidth: index === total - 1 ? 160 : 156,
               }}
             >
-              <span className="relative z-[1] whitespace-nowrap">{label}</span>
+              <span className="relative z-[1] whitespace-nowrap">{step.numberedLabel}</span>
             </button>
           );
         })}

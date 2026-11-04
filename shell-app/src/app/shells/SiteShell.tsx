@@ -5,6 +5,7 @@ import { RubixSidebar } from '../components/RubixSidebar';
 import { useSession } from '../data/SessionContext';
 import { findSite } from '../data/session';
 import { siteNavGroups } from '../config/siteNav';
+import { ComposerProvider } from '../features/email-composer';
 
 /**
  * Site-admin shell — RubixHeader + RubixSidebar; screens render via <Outlet/>.
@@ -14,7 +15,7 @@ export function SiteShell() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [showEmptyStates, setShowEmptyStates] = useState(false);
   const [emptyStateCase, setEmptyStateCase] = useState<'no-jobs' | 'has-jobs'>('has-jobs');
-  const { session, setRole, setSiteCountMode, logout } = useSession();
+  const { session, setRole, setSiteCountMode, setEmailExperience, logout } = useSession();
   const navigate = useNavigate();
   const location = useLocation();
   const { siteId } = useParams<{ siteId: string }>();
@@ -50,6 +51,7 @@ export function SiteShell() {
   }, [inSiteConfiguration]);
 
   return (
+    <ComposerProvider>
     <div className="flex flex-col h-screen w-full overflow-hidden bg-neutral-50">
       <RubixHeader
         siteName={siteName}
@@ -71,6 +73,8 @@ export function SiteShell() {
         onRoleChange={setRole}
         siteCountMode={session.siteCountMode}
         onSiteCountModeChange={setSiteCountMode}
+        emailExperience={session.emailExperience}
+        onEmailExperienceChange={setEmailExperience}
       />
       <div className="flex flex-1 overflow-hidden">
         <RubixSidebar
@@ -92,5 +96,6 @@ export function SiteShell() {
         </main>
       </div>
     </div>
+    </ComposerProvider>
   );
 }

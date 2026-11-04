@@ -1,11 +1,8 @@
-export type AttachmentAudienceId =
-  | 'student'
-  | 'school-contact'
-  | 'partner-contact'
-  | 'staff-personnel'
-  | 'candidate'
-  | 'preceptor'
-  | 'placement-faculty-ci';
+import { prototypePreviewSamples } from '../data/prototype/previewSamples';
+import { prototypeSite } from '../data/prototype/site';
+import { EMAIL_AUDIENCES, audienceLabel, type EmailAudienceId } from './emailAudiences';
+
+export type AttachmentAudienceId = EmailAudienceId;
 
 export type AttachmentTemplate = {
   id: string;
@@ -15,15 +12,9 @@ export type AttachmentTemplate = {
   createdAt: string;
 };
 
-export const ATTACHMENT_AUDIENCES: { id: AttachmentAudienceId; label: string }[] = [
-  { id: 'student', label: 'Student' },
-  { id: 'school-contact', label: 'School Contact' },
-  { id: 'partner-contact', label: 'Partner Contact' },
-  { id: 'staff-personnel', label: 'Staff-Personnel' },
-  { id: 'candidate', label: 'Candidate' },
-  { id: 'preceptor', label: 'Preceptor' },
-  { id: 'placement-faculty-ci', label: 'Placement Faculty/CI' },
-];
+export const ATTACHMENT_AUDIENCES = EMAIL_AUDIENCES;
+
+export { audienceLabel };
 
 export const ATTACHMENT_FIELD_GROUPS: {
   label: string;
@@ -126,15 +117,15 @@ export function allowedAttachmentTokens(): Set<string> {
 }
 
 export const ATTACHMENT_SAMPLES: Record<string, string> = {
-  studentName: 'Maya Chen',
-  hospitalName: 'Bedlam-Hospital',
-  rotationName: 'Fall 2026 Rotation',
-  preceptorName: 'Jordan Lee',
-  school: 'Eastwood State University',
-  schoolName: 'Eastwood State University',
-  siteName: 'Bedlam-Hospital',
+  studentName: prototypePreviewSamples.studentName,
+  hospitalName: prototypeSite.hospitalName,
+  rotationName: prototypePreviewSamples.rotationName,
+  preceptorName: prototypePreviewSamples.preceptorName,
+  school: prototypePreviewSamples.schoolName,
+  schoolName: prototypePreviewSamples.schoolName,
+  siteName: prototypeSite.hospitalName,
   recipientName: 'Dr. Renee Blackwell',
-  senderName: 'Jordan Lee',
+  senderName: prototypeSite.senderName,
 };
 
 export const SEED_ATTACHMENT_TEMPLATES: AttachmentTemplate[] = [
@@ -172,10 +163,6 @@ Warm regards,
 This certificate recognizes your supervision of {{studentName}} during {{rotationName}}. Thank you for the time and teaching you gave this term.`,
   },
 ];
-
-export function audienceLabel(id: AttachmentAudienceId): string {
-  return ATTACHMENT_AUDIENCES.find((item) => item.id === id)?.label ?? id;
-}
 
 export function tokensInBody(body: string): string[] {
   const found = body.matchAll(/\{\{(\w+)\}\}/g);

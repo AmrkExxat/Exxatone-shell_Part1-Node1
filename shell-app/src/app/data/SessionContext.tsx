@@ -10,6 +10,7 @@ import {
   defaultSession,
   type CountMode,
   type MockSession,
+  type EmailExperience,
   type SessionRole,
   type SiteCountMode,
 } from '../data/session';
@@ -19,6 +20,7 @@ interface SessionContextValue {
   setAuthenticated: (value: boolean) => void;
   setRole: (role: SessionRole) => void;
   setSiteCountMode: (mode: SiteCountMode) => void;
+  setEmailExperience: (experience: EmailExperience) => void;
   setSchoolCountMode: (mode: CountMode) => void;
   updateSession: (patch: Partial<MockSession>) => void;
   login: () => void;
@@ -46,6 +48,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setSession((prev) => ({ ...prev, siteCountMode }));
   }, []);
 
+  const setEmailExperience = useCallback((emailExperience: EmailExperience) => {
+    setSession((prev) => ({ ...prev, emailExperience }));
+  }, []);
+
   const setSchoolCountMode = useCallback((schoolCountMode: CountMode) => {
     setSession((prev) => ({ ...prev, schoolCountMode }));
   }, []);
@@ -64,6 +70,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setAuthenticated,
       setRole,
       setSiteCountMode,
+      setEmailExperience,
       setSchoolCountMode,
       updateSession,
       login,
@@ -74,6 +81,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setAuthenticated,
       setRole,
       setSiteCountMode,
+      setEmailExperience,
       setSchoolCountMode,
       updateSession,
       login,

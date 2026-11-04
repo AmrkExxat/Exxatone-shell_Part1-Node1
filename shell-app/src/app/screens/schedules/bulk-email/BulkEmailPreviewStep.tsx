@@ -1,13 +1,21 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, ChevronDown, ChevronRight, OctagonAlert, Paperclip } from 'lucide-react';
 import {
+  bulkEmailCount,
   extractMergeTokens,
   getHeaderFooterLayout,
+  GROUP_SUMMARY_COLUMNS,
+  groupSummaryRows,
+  mergeTokenLabel,
   MOCK_SENDER,
   resolveMergeToken,
+  SCHEDULE_TABLE_COLUMNS,
+  scheduleTableRows,
   type BulkEmailRecipient,
+  type BulkEmailSendMode,
   type HeaderFooterLayoutId,
 } from '../../../config/bulkEmail';
+import type { ScheduleRecord } from '../../../config/schedules';
 import { EmailFooterLogoBand, EmailHeaderLogoBand } from './BulkEmailLogoBands';
 import { PublishPreferenceDatePickerField } from '../../availability/create/publishPreferenceDatePickerField';
 import type { Attachment } from './BulkEmailComposeStep';
@@ -17,6 +25,8 @@ export type DeliveryMode = 'now' | 'scheduled';
 
 type Props = {
   recipients: BulkEmailRecipient[];
+  selectedRows: ScheduleRecord[];
+  sendMode: BulkEmailSendMode;
   subject: string;
   body: string;
   replyTo: string;
@@ -36,6 +46,126 @@ type Props = {
   /** Null when composing from a template — logo bands apply to scratch emails only. */
   headerFooterLayout: HeaderFooterLayoutId | null;
 };
+
+function PreviewBody({
+  body,
+  recipient,
+  rows,
+}: {
+  body: string;
+  recipient: BulkEmailRecipient | null;
+  rows: ScheduleRecord[];
+}) {
+  const parts = body.split(/(\{\{\w+\}\})/g);
+  return parts.map((part, index) => {
+    const match = part.match(/^\{\{(\w+)\}\}$/);
+    if (!match) return <Fragment key={index}>{part}</Fragment>;
+    if (match[1] === 'scheduleTable' || match[1] === 'groupSummaryTable') {
+      return (
+        <SampleTable
+          key={index}
+          token={match[1]}
+          recipient={recipient}
+          rows={rows}
+        />
+      );
+    }
+    return (
+      <Fragment key={index}>{renderTokenized(`{{${match[1]}}}`, recipient)}</Fragment>
+    );
+  });
+}
+
+function SampleTable({
+  token,
+  recipient,
+  rows,
+}: {
+  token: 'scheduleTable' | 'groupSummaryTable';
+  recipient: BulkEmailRecipient | null;
+  rows: ScheduleRecord[];
+}) {
+  if (token === 'groupSummaryTable') {
+    return (
+      <SampleTableFrame
+        token={token}
+        columns={GROUP_SUMMARY_COLUMNS}
+        rows={recipient ? groupSummaryRows(recipient, rows) : []}
+      />
+    );
+  }
+  return (
+    <SampleTableFrame
+      token={token}
+      columns={SCHEDULE_TABLE_COLUMNS}
+      rows={recipient ? scheduleTableRows(recipient, rows) : []}
+    />
+  );
+}
+
+function SampleTableFrame<T extends Record<string, string>>({
+  token,
+  columns,
+  rows,
+}: {
+  token: 'scheduleTable' | 'groupSummaryTable';
+  columns: { key: keyof T; label: string }[];
+  rows: T[];
+}) {
+  return (
+    <div className={`${d.scheduleTableWrap} my-2 whitespace-normal`}>
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#e5e7eb] px-3 py-2">
+        <span className={d.sampleBadge}>Sample</span>
+        <span className={d.tokenDraft}>@{mergeTokenLabel(token)}</span>
+        <span className="text-[12px] leading-4 text-[#616161]">
+          Rows will be personalized per recipient
+        </span>
+      </div>
+      {rows.length === 0 ? (
+        <p className="px-3 py-3 text-[13px] text-[#616161]">No placements for this person.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table
+            className="w-full border-collapse text-left"
+            aria-label={`Sample ${mergeTokenLabel(token)}. Rows will be personalized per recipient.`}
+          >
+            <thead>
+              <tr>
+                {columns.map((column) => (
+                  <th key={String(column.key)} scope="col" className={`${d.scheduleTh} whitespace-nowrap text-left`}>
+                    {column.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={`${String(row[columns[0].key])}-${index}`}>
+                  {columns.map((column) => (
+                    <td key={String(column.key)} className={`${d.scheduleTd} min-w-[120px]`}>
+                      {column.key === 'detailsUrl' ? (
+                        <a
+                          href={String(row[column.key])}
+                          className="break-all text-[#3f51b5] underline"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {row[column.key]}
+                        </a>
+                      ) : (
+                        row[column.key]
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function renderTokenized(text: string, recipient: BulkEmailRecipient | null) {
   const parts = text.split(/(\{\{\w+\}\})/g);
@@ -68,6 +198,8 @@ function renderTokenized(text: string, recipient: BulkEmailRecipient | null) {
 
 export function BulkEmailPreviewStep({
   recipients,
+  selectedRows,
+  sendMode,
   subject,
   body,
   replyTo,
@@ -87,7 +219,6 @@ export function BulkEmailPreviewStep({
   headerFooterLayout,
 }: Props) {
   const layout = headerFooterLayout ? getHeaderFooterLayout(headerFooterLayout) : null;
-  const [previewingAsId, setPreviewingAsId] = useState<string | null>(recipients[0]?.id ?? null);
   const [warningExpanded, setWarningExpanded] = useState(false);
 
   const analysis = useMemo(() => {
@@ -115,15 +246,15 @@ export function BulkEmailPreviewStep({
     onBlockingChange(isBlocked);
   }, [isBlocked, onBlockingChange]);
 
-  const previewingAs =
-    recipients.find((r) => r.id === previewingAsId) ?? recipients[0] ?? null;
+  const previewingAs = recipients[0] ?? null;
   const previewingAsMissingData =
     previewingAs && analysis.excluded.some((e) => e.recipient.id === previewingAs.id);
 
+  const emailCount = bulkEmailCount(analysis.valid, sendMode);
   const finalSendTarget =
     testAddressEnabled && testAddress
       ? `the test address (${testAddress})`
-      : `${analysis.valid.length} ${analysis.valid.length === 1 ? 'recipient' : 'recipients'}`;
+      : `${analysis.valid.length} ${analysis.valid.length === 1 ? 'person' : 'people'} · ${emailCount} ${emailCount === 1 ? 'email' : 'emails'}`;
 
   return (
     <div className={d.previewGrid}>
@@ -178,20 +309,53 @@ export function BulkEmailPreviewStep({
           </div>
         ) : null}
 
-        <div className={d.previewingAsRow}>
-          <span className="text-[12px] font-normal leading-4 text-[#757575]">Previewing as</span>
-          <select
-            value={previewingAs?.id ?? ''}
-            onChange={(e) => setPreviewingAsId(e.target.value)}
-            className="h-8 rounded border border-[#d1d5db] bg-white px-2 text-[13px] text-[#212121]"
-          >
-            {recipients.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-                {analysis.excluded.some((e) => e.recipient.id === r.id) ? ' — missing data' : ''}
-              </option>
-            ))}
-          </select>
+        <div className="border-b border-[#eceef1] px-4 py-3">
+          <h3 className={d.cardTitle}>Select email delivery time</h3>
+          <p className={`${d.cardSubtitle} mb-3`}>Will send to {finalSendTarget}.</p>
+          <div className={d.deliveryOptionRow}>
+            <label className={d.deliveryOption}>
+              <input
+                type="radio"
+                name="bulk-email-delivery"
+                checked={delivery === 'now'}
+                onChange={() => onDeliveryChange('now')}
+                className="size-4 accent-[#3f51b5]"
+              />
+              Send email now
+            </label>
+            <label className={d.deliveryOption}>
+              <input
+                type="radio"
+                name="bulk-email-delivery"
+                checked={delivery === 'scheduled'}
+                onChange={() => onDeliveryChange('scheduled')}
+                className="size-4 accent-[#3f51b5]"
+              />
+              Send email at specific date and time
+            </label>
+          </div>
+          {delivery === 'scheduled' ? (
+            <div className="mt-3">
+              <label htmlFor="bulk-email-schedule-date" className={d.fieldLabel}>
+                Date Time (UTC) <span className="text-[#c62828]">*</span>
+              </label>
+              <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                <PublishPreferenceDatePickerField
+                  id="bulk-email-schedule-date"
+                  value={scheduleDate}
+                  onChange={onScheduleDateChange}
+                  showClear
+                />
+                <input
+                  type="time"
+                  aria-label="Delivery time (UTC)"
+                  value={scheduleTime}
+                  onChange={(e) => onScheduleTimeChange(e.target.value)}
+                  className="h-[38px] rounded-[6px] border border-[#888888] bg-white px-2.5 text-[14px] text-[#212121]"
+                />
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <div className={d.previewFrame}>
@@ -201,8 +365,10 @@ export function BulkEmailPreviewStep({
               <span className="min-w-0 flex-1">
                 <span className={`block ${d.previewFromName}`}>{MOCK_SENDER.senderOrganization}</span>
                 <span className={d.previewFromMeta}>
-                  From: {MOCK_SENDER.senderOrganization} {'<noreply@exxat.com>'} · Reply-To:{' '}
-                  {replyTo || '—'}
+                  to {previewingAs?.email ?? '—'}
+                </span>
+                <span className={d.previewFromMeta}>
+                  from: noreply@exxat.com · reply-to: {replyTo || '—'}
                 </span>
               </span>
             </div>
@@ -211,7 +377,9 @@ export function BulkEmailPreviewStep({
               <span className={d.previewSubjectLabel}>Subject</span>
               <p className={d.previewSubjectText}>{renderTokenized(subject, previewingAs)}</p>
             </div>
-            <div className={d.previewBody}>{renderTokenized(body, previewingAs)}</div>
+            <div className={d.previewBody}>
+              <PreviewBody body={body} recipient={previewingAs} rows={selectedRows} />
+            </div>
             <EmailFooterLogoBand show={layout?.exxatFooter ?? false} variant="preview" />
             {attachments.length > 0 ? (
               <div className={d.previewAttachments}>
@@ -259,6 +427,16 @@ export function BulkEmailPreviewStep({
               <span className={d.summaryValue}>{analysis.excluded.length}</span>
             </div>
             <div className={d.summaryRow}>
+              <span className={d.summaryLabel}>Sent as</span>
+              <span className={d.summaryValue}>
+                {sendMode === 'perPerson' ? 'One email per person' : 'One email per schedule'}
+              </span>
+            </div>
+            <div className={d.summaryRow}>
+              <span className={d.summaryLabel}>Emails to send</span>
+              <span className={d.summaryValue}>{emailCount}</span>
+            </div>
+            <div className={d.summaryRow}>
               <span className={d.summaryLabel}>CC</span>
               <span className={d.summaryValue}>{cc || '—'}</span>
             </div>
@@ -287,52 +465,6 @@ export function BulkEmailPreviewStep({
           </div>
         </section>
 
-        <section className={d.card}>
-          <div className={d.cardHeader}>
-            <h3 className={d.cardTitle}>Delivery</h3>
-            <p className={d.cardSubtitle}>Will send to {finalSendTarget}.</p>
-          </div>
-          <div className={`${d.cardBody} flex flex-col gap-3`}>
-            <div className={d.deliveryOptionRow}>
-              <label className={d.deliveryOption}>
-                <input
-                  type="radio"
-                  name="bulk-email-delivery"
-                  checked={delivery === 'now'}
-                  onChange={() => onDeliveryChange('now')}
-                  className="size-4 accent-[#3f51b5]"
-                />
-                Send email now
-              </label>
-              <label className={d.deliveryOption}>
-                <input
-                  type="radio"
-                  name="bulk-email-delivery"
-                  checked={delivery === 'scheduled'}
-                  onChange={() => onDeliveryChange('scheduled')}
-                  className="size-4 accent-[#3f51b5]"
-                />
-                Send at a specific date and time
-              </label>
-            </div>
-            {delivery === 'scheduled' ? (
-              <div className="flex flex-wrap items-center gap-2">
-                <PublishPreferenceDatePickerField
-                  id="bulk-email-schedule-date"
-                  value={scheduleDate}
-                  onChange={onScheduleDateChange}
-                  showClear
-                />
-                <input
-                  type="time"
-                  value={scheduleTime}
-                  onChange={(e) => onScheduleTimeChange(e.target.value)}
-                  className="h-[38px] rounded-[6px] border border-[#888888] bg-white px-2.5 text-[14px] text-[#212121]"
-                />
-              </div>
-            ) : null}
-          </div>
-        </section>
       </div>
     </div>
   );

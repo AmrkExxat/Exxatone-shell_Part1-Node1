@@ -1,3 +1,5 @@
+import { prototypeSchools } from '../data/prototype/directory';
+
 /**
  * School launch cards (Figma 413:6334). Mirrors the live "895 results" density
  * without shipping a real catalog — enough rows to exercise search + pagination.
@@ -9,15 +11,14 @@ export interface LaunchSchoolCard {
 }
 
 export const schoolLaunchCards: LaunchSchoolCard[] = [
+  ...prototypeSchools.map((school) => ({
+    id: school.id,
+    name: `${school.name} - ${school.program}`,
+  })),
   { id: 'atsu-santa-maria-pa', name: 'A.T. Still University - Central Coast - Santa Maria Campus - PA' },
   { id: 'atsu-missouri-do', name: 'A.T. Still University - Missouri Campus - DO' },
   { id: 'atsu-missouri-md', name: 'A.T. Still University - Missouri Campus - MD' },
   { id: 'atsu-arizona-ot', name: 'A.T. Still University, Arizona Campus - OT' },
-  { id: 'abc-university-nursing', name: 'ABC University - Nursing' },
-  { id: 'abilene-nursing-bsn', name: 'Abilene Christian University - Nursing - BSN' },
-  { id: 'abilene-christian-ot', name: 'Abilene Christian University - OT' },
-  { id: 'abilene-christian-dpt', name: 'Abilene Christine University - DPT' },
-  { id: 'abilene-medical-assistant', name: 'Abilene Medical Assistant School - Medical Assistant' },
   { id: 'ace-surgical-assistant', name: 'ACE Surgical Assistant' },
   { id: 'adelphi-public-health', name: 'Adelphi University - Public Health' },
   { id: 'alabama-state-dpt', name: 'Alabama State University - DPT' },

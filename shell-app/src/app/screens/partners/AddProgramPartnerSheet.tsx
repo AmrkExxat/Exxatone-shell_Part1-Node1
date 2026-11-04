@@ -1,22 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Check, ChevronDown, ChevronUp, GraduationCap, Search, X } from 'lucide-react';
 import { Input } from '../../components/ui/input';
+import { prototypeSchools } from '../../data/prototype/directory';
 import { PARTNER_CATEGORY_OPTIONS } from '../../config/schoolPartners';
 import { Sheet, SheetContent, SheetTitle } from '../../components/ui/sheet';
 import { partnersDrawer, partnersFont } from './partnersTypography';
 
-/** Programs available to link (mock — replace with API). */
-const PROGRAM_SEARCH_OPTIONS = [
-  'ABC University - Nursing',
-  'California State University, Bakersfield',
-  'Central City College',
-  'De Homecaremo',
-  'Demo School TJU',
-  'Eastwood State University',
-  'Exxat-QA-PT',
-  'SB University of California',
-  'Utopia College',
-] as const;
+/** Programs available to link — the same school partners used everywhere else. */
+const PROGRAM_SEARCH_OPTIONS = prototypeSchools.map(
+  (school) => `${school.name} - ${school.program}`,
+);
 
 interface AddProgramPartnerSheetProps {
   open: boolean;

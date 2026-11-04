@@ -86,6 +86,9 @@ export const schedulesChrome = {
     'inline-flex items-center rounded-full bg-[#fff3e0] px-2.5 py-0.5 text-[12px] font-medium text-[#e65100]',
   statusPillGray:
     'inline-flex items-center rounded-full bg-[#E5E7EB] px-2.5 py-0.5 text-[12px] font-medium text-[#333333]',
+  /** "To be Scheduled" — matches the needs-attention strip's yellow, darkened for AA text contrast. */
+  statusPillYellow:
+    'inline-flex items-center rounded-full bg-[#fef9c3] px-2.5 py-0.5 text-[12px] font-medium text-[#854d0e]',
   onboardingPillRed:
     'inline-flex items-center rounded-full bg-[#ffebee] px-2.5 py-0.5 text-[12px] font-medium text-[#c62828]',
   onboardingPillBlue:

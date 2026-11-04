@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Copy, Eye, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Copy, Eye, Paperclip, Pencil, Trash2 } from 'lucide-react';
 import {
   canDeleteTemplate,
   canEditTemplate,
@@ -15,10 +15,23 @@ import {
 } from '../../../components/ui/tooltip';
 import { et } from './emailTemplatesTokens';
 
+/** Short, plain-text taste of the body for the card — not the full rendered email. */
+function bodyPreview(body: string, max = 140): string {
+  const text = body
+    .replace(/<\/(p|div|li|h[1-6])>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\{\{\s*(\w+)\s*\}\}/g, '{$1}')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= max) return text;
+  return `${text.slice(0, max).trimEnd()}…`;
+}
+
 type Props = {
   template: EmailTemplateRecord;
   siblings: EmailTemplateRecord[];
-  showAudience: boolean;
   onSetDefault: () => void;
   onPreview: () => void;
   onClone: () => void;
@@ -68,7 +81,6 @@ function IconAction({
 export function EmailTemplateCard({
   template,
   siblings,
-  showAudience,
   onSetDefault,
   onPreview,
   onClone,
@@ -94,11 +106,22 @@ export function EmailTemplateCard({
             {template.isDefault ? (
               <span className={`${et.badgeBase} ${et.badgeDefault}`}>Default</span>
             ) : null}
-            {showAudience && template.audience ? (
-              <span className={`${et.badgeBase} ${et.badgeAudience}`}>{template.audience}</span>
-            ) : null}
           </div>
           <p className={et.subjectPreview}>{template.subject}</p>
+          {template.body ? <p className={et.bodyPreview}>{bodyPreview(template.body)}</p> : null}
+          {template.attachments?.length ? (
+            <ul className="mt-2 flex flex-wrap gap-1.5">
+              {template.attachments.map((file) => (
+                <li
+                  key={file.id}
+                  className="inline-flex h-7 max-w-full items-center gap-1.5 rounded-full border border-[#c5cae9] bg-[#eef0fb] px-2.5 text-[13px] text-[#3f51b5]"
+                >
+                  <Paperclip className="size-3.5 shrink-0" aria-hidden />
+                  <span className="truncate">{file.name}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
       </div>
 

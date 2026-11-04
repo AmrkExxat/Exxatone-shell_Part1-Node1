@@ -1,3 +1,4 @@
+import { prototypeSite } from '../data/prototype/site';
 import { EMAIL_TEMPLATE_GROUPS } from './emailTemplates';
 
 export type NotificationChannels = { inApp: boolean; email: boolean };
@@ -78,41 +79,41 @@ export function createDefaultNotificationPrefs(): NotificationPrefs {
     channels,
     recipients: [
       {
-        id: 'rec-compliance',
-        name: 'compliance@bedlam-hospital.org',
-        email: 'compliance@bedlam-hospital.org',
+        id: 'rec-placements',
+        name: prototypeSite.clinicalEducationName,
+        email: prototypeSite.replyTo,
         kind: 'external',
         selected: true,
         blocked: false,
       },
       {
-        id: 'rec-abcd',
-        name: 'abcd test',
-        email: 'abcdtest@mailinator.com',
+        id: 'rec-kierra',
+        name: prototypeSite.senderName,
+        email: prototypeSite.senderEmail,
         kind: 'site-admin',
         selected: true,
         blocked: false,
       },
       {
         id: 'rec-blocked',
-        name: 'All Notification Blocked',
-        email: 'allnotificationandemaildisabled@exxat.testinator.com',
+        name: 'Luis Ortega',
+        email: 'luis.ortega@bedlamhospital.org',
         kind: 'site-admin',
         selected: false,
         blocked: true,
       },
       {
-        id: 'rec-maya',
-        name: 'Maya Chen',
-        email: 'maya.chen@mailinator.com',
+        id: 'rec-danielle',
+        name: 'Danielle Price',
+        email: 'danielle.price@bedlamhospital.org',
         kind: 'site-admin',
         selected: true,
         blocked: false,
       },
       {
-        id: 'rec-luis',
-        name: 'Luis Ortega',
-        email: 'luis.ortega@mailinator.com',
+        id: 'rec-nina',
+        name: 'Nina Patel',
+        email: 'nina.patel@bedlamhospital.org',
         kind: 'site-admin',
         selected: true,
         blocked: false,

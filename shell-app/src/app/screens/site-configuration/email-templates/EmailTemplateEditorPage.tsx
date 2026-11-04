@@ -17,12 +17,14 @@ import { HEADER_FOOTER_LAYOUTS, getHeaderFooterLayout, type HeaderFooterLayoutId
 import { linksForEvent, mergeFieldsForEvent, type MergeField } from '../../../config/emailTemplateFields';
 import {
   EMAIL_PREVIEW_DISPLAY_NAME,
+  categoryChain,
   deleteBlockedReason,
   findEventSelection,
   formatTemplateTimestamp,
   historyTypeLabel,
   type EmailTemplateRecord,
 } from '../../../config/emailTemplates';
+import type { EmailAudienceId } from '../../../config/emailAudiences';
 import { useEmailTemplates } from '../../../config/emailTemplateStore';
 import { siteConfigPath } from '../../../config/siteConfiguration';
 import {
@@ -71,6 +73,7 @@ export function EmailTemplateEditorPage() {
   const categoryId = params.get('category') ?? '';
   const eventId = params.get('event') ?? '';
   const source = templates.find((item) => item.id === templateId) ?? null;
+  const audienceId = (params.get('audience') ?? source?.audienceId ?? '') as EmailAudienceId;
   const selection = findEventSelection(groupId, categoryId, eventId);
   const editing = mode === 'edit' && source?.kind === 'customized' ? source : null;
   const prefill = mode === 'create' ? source : null;
@@ -103,12 +106,16 @@ export function EmailTemplateEditorPage() {
   const layoutDef = getHeaderFooterLayout(layout);
   const showDisplayName = !layoutDef.header;
   const siblings = templates.filter(
-    (item) => item.groupId === groupId && item.categoryId === categoryId && item.eventId === eventId,
+    (item) =>
+      item.groupId === groupId &&
+      item.categoryId === categoryId &&
+      item.eventId === eventId &&
+      item.audienceId === audienceId,
   );
   const deleteReason = editing ? deleteBlockedReason(editing, siblings) : null;
 
   const back = () => {
-    const query = new URLSearchParams({ group: groupId, category: categoryId, event: eventId });
+    const query = new URLSearchParams({ audience: audienceId, group: groupId, category: categoryId, event: eventId });
     navigate(`${siteConfigPath(siteId, 'notification/email-templates')}?${query.toString()}`);
   };
 
@@ -202,6 +209,7 @@ export function EmailTemplateEditorPage() {
       name: name || 'Untitled template',
       kind: 'customized',
       isDefault,
+      audienceId,
       subject,
       body,
       headerFooterLayout: layout,
@@ -209,9 +217,8 @@ export function EmailTemplateEditorPage() {
       lastUpdatedBy: editing?.lastUpdatedBy ?? 'You',
       lastUpdatedAt: editing?.lastUpdatedAt ?? new Date().toISOString(),
       history: editing?.history ?? [],
-      audience: editing?.audience ?? prefill?.audience,
     }),
-    [attachments, body, categoryId, editing, eventId, groupId, isDefault, layout, name, prefill, subject],
+    [attachments, audienceId, body, categoryId, editing, eventId, groupId, isDefault, layout, name, subject],
   );
 
   const save = () => {
@@ -226,7 +233,8 @@ export function EmailTemplateEditorPage() {
           const sameEvent =
             item.groupId === editing.groupId &&
             item.categoryId === editing.categoryId &&
-            item.eventId === editing.eventId;
+            item.eventId === editing.eventId &&
+            item.audienceId === editing.audienceId;
           if (item.id === editing.id) {
             return {
               ...item,
@@ -280,7 +288,8 @@ export function EmailTemplateEditorPage() {
           const sameEvent =
             item.groupId === created.groupId &&
             item.categoryId === created.categoryId &&
-            item.eventId === created.eventId;
+            item.eventId === created.eventId &&
+            item.audienceId === created.audienceId;
           if (!sameEvent) return item;
           return { ...item, isDefault: item.id === created.id };
         });
@@ -381,209 +390,213 @@ export function EmailTemplateEditorPage() {
         </div>
       </div>
 
-      <div className={`${sc.infoCard} space-y-6 p-6`}>
-        <div className="max-w-[640px] space-y-4">
-          <label className="block space-y-1.5">
-            <span className={es.fieldLabel}>Template name</span>
-            <div className={es.controlShell}>
-              <input value={name} onChange={(e) => setName(e.target.value)} className={es.textInputInner} />
-            </div>
-          </label>
-          <div>
-            <p className={es.fieldLabel}>Category</p>
-            <p className="text-[14px] text-[#4a5565]">
-              {selection ? `${selection.category.label} · ${selection.event.label}` : '—'}
-            </p>
-          </div>
-        </div>
-
-        <div className={`rounded-[8px] border border-[#eceef1] ${mention ? 'relative z-20' : ''}`}>
-          {layoutDef.header || showDisplayName ? (
-            <div className="flex flex-col items-center gap-2 border-b border-[#eceef1] px-4 py-4">
-              {layoutDef.header ? <EmailHeaderLogoBand logo={layoutDef.header} variant="preview" compact /> : null}
-              {showDisplayName ? (
-                <p className="text-[14px] font-semibold text-[#212121]">{EMAIL_PREVIEW_DISPLAY_NAME}</p>
-              ) : null}
-            </div>
-          ) : null}
-          <div className="space-y-4 px-4 py-4">
-            <label className={`relative block w-full max-w-[640px] space-y-1.5 ${mention?.field === 'subject' ? 'z-10' : ''}`}>
-              <span className={es.fieldLabel}>Subject</span>
-              <div className={es.controlShell}>
-                <input
-                  ref={subjectRef}
-                  value={subject}
-                  aria-expanded={mention?.field === 'subject'}
-                  aria-controls="merge-field-menu"
-                  aria-autocomplete="list"
-                  onChange={(e) => {
-                    setSubject(e.target.value);
-                    trackMention('subject', e.target.value, e.target.selectionStart ?? e.target.value.length);
-                  }}
-                  onClick={(e) => trackMention('subject', subject, e.currentTarget.selectionStart ?? subject.length)}
-                  onKeyDown={(e) => onMentionKeyDown(e, 'subject')}
-                  onBlur={closeMentionOnBlur}
-                  className={es.textInputInner}
-                />
-              </div>
-              {mention?.field === 'subject' ? (
-                <MentionMenu
-                  menuRef={mentionMenuRef}
-                  fields={filteredFields}
-                  activeIndex={mentionIndex}
-                  onHover={setMentionIndex}
-                  onPick={insertToken}
-                />
-              ) : null}
-              <p className="text-[12px] text-[#757575]">Type @ in the subject to pick a merge field.</p>
-            </label>
-            <div className={`relative space-y-1.5 ${mention?.field === 'body' ? 'z-10' : ''}`}>
-              <span className={es.fieldLabel}>Body</span>
-              <div className={es.controlShell}>
-              <div className="flex flex-wrap gap-1 rounded-t-[4px] border-b border-[#e5e7eb] bg-[#fafafa] px-2 py-1.5">
-                <ToolbarButton label="Bold" onClick={() => applyWrap('<strong>', '</strong>')}>
-                  <Bold className="size-4" />
-                </ToolbarButton>
-                <ToolbarButton label="Italic" onClick={() => applyWrap('<em>', '</em>')}>
-                  <Italic className="size-4" />
-                </ToolbarButton>
-                <ToolbarButton label="Underline" onClick={() => applyWrap('<u>', '</u>')}>
-                  <Underline className="size-4" />
-                </ToolbarButton>
-                <ToolbarButton label="Bulleted list" onClick={() => applyWrap('\n• ', '')}>
-                  <List className="size-4" />
-                </ToolbarButton>
-                <ToolbarButton label="Numbered list" onClick={() => applyWrap('\n1. ', '')}>
-                  <ListOrdered className="size-4" />
-                </ToolbarButton>
-                <ToolbarButton label="Link" onClick={() => applyWrap('<a href="https://">', '</a>')}>
-                  <Link2 className="size-4" />
-                </ToolbarButton>
-                <ToolbarButton
-                  label="Clear formatting"
-                  onClick={() => setBody(body.replace(/<\/?(strong|em|u|a)[^>]*>/gi, ''))}
-                >
-                  <RemoveFormatting className="size-4" />
-                </ToolbarButton>
-              </div>
-              <textarea
-                ref={bodyRef}
-                value={body}
-                aria-expanded={mention?.field === 'body'}
-                aria-controls="merge-field-menu"
-                aria-autocomplete="list"
-                onChange={(e) => {
-                  setBody(e.target.value);
-                  trackMention('body', e.target.value, e.target.selectionStart ?? e.target.value.length);
-                }}
-                onClick={(e) => trackMention('body', body, e.currentTarget.selectionStart ?? body.length)}
-                onKeyDown={(e) => onMentionKeyDown(e, 'body')}
-                onBlur={closeMentionOnBlur}
-                className="min-h-[180px] w-full resize-y rounded-b-[4px] border-0 bg-transparent px-3 py-2 text-[14px] leading-6 text-[#111827] outline-none"
-              />
-              </div>
-              {mention?.field === 'body' ? (
-                <MentionMenu
-                  menuRef={mentionMenuRef}
-                  fields={filteredFields}
-                  activeIndex={mentionIndex}
-                  onHover={setMentionIndex}
-                  onPick={insertToken}
-                />
-              ) : null}
-              <p className="text-[12px] text-[#757575]">Type @ in the body to pick a merge field.</p>
-            </div>
-          </div>
-          {layoutDef.exxatFooter ? <EmailFooterLogoBand show variant="preview" /> : null}
-        </div>
-
-        <section className="max-w-[640px] space-y-2">
-          <h2 className="text-[14px] font-semibold text-[#111827]">Attachments</h2>
-          <p className="text-[13px] text-[#616161]">Files are sent with this email template.</p>
-          <input
-            ref={fileRef}
-            type="file"
-            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.gif,.webp,image/*,application/pdf"
-            multiple
-            className="hidden"
-            onChange={(e) => {
-              addFiles(e.target.files);
-              e.target.value = '';
-            }}
-          />
-          <button
-            type="button"
-            className={es.uploadZone}
-            onClick={() => fileRef.current?.click()}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              addFiles(e.dataTransfer.files);
-            }}
-          >
-            <span className={sc.uploadStack}>
-              <img src={uploadCloudIcon} alt="" className="size-8" aria-hidden />
-              <span className={es.uploadTitle}>Click to upload or drag &amp; drop</span>
-              <span className={es.uploadHint}>PDF, DOC, or image · Up to 10 MB · Up to 5 files</span>
-            </span>
-          </button>
-          {attachments.length > 0 ? (
-            <ul className="space-y-1">
-              {attachments.map((file) => (
-                <li key={file.id} className="flex items-center justify-between text-[13px] text-[#212121]">
-                  <span>{file.name}</span>
-                  <button
-                    type="button"
-                    className="text-[#3f51b5] hover:underline"
-                    onClick={() => setAttachments((current) => current.filter((item) => item.id !== file.id))}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </section>
-
-        <section className="max-w-[640px] space-y-4">
-          <fieldset className="space-y-2">
-            <legend className="text-[14px] font-semibold text-[#111827]">Header and footer layouts</legend>
-            {HEADER_FOOTER_LAYOUTS.map((option) => (
-              <label key={option.id} className="flex items-center gap-2 text-[14px] text-[#212121]">
-                <input
-                  type="radio"
-                  name="header-footer"
-                  checked={layout === option.id}
-                  onChange={() => setLayout(option.id)}
-                  className="accent-[#3f51b5]"
-                />
-                {option.label}
+      <div className={`${sc.infoCard} space-y-8 p-6`}>
+        <div className="grid items-start gap-8 xl:grid-cols-[minmax(0,1.4fr)_minmax(360px,1fr)]">
+          <div className="min-w-0 space-y-6">
+            <div className="space-y-4">
+              <label className="block space-y-1.5">
+                <span className={es.fieldLabel}>Template name</span>
+                <div className={es.controlShell}>
+                  <input value={name} onChange={(e) => setName(e.target.value)} className={es.textInputInner} />
+                </div>
               </label>
-            ))}
-          </fieldset>
-        </section>
+              <div>
+                <p className={es.fieldLabel}>Category</p>
+                <p className="text-[14px] text-[#4a5565]">
+                  {categoryChain(audienceId, groupId, categoryId, eventId)}
+                </p>
+              </div>
+            </div>
 
-        <section className="max-w-[720px] space-y-2">
-          <h2 className="text-[14px] font-semibold text-[#111827]">Merge fields</h2>
-          <p className="text-[13px] text-[#616161]">Type @ in a field to pick a merge field, or use the list below.</p>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {fields.map((field) => (
-              <FieldChip key={field.token} field={field} onInsert={() => insertAtBody(field.token)} />
-            ))}
-          </div>
-        </section>
+            <div className={`rounded-[8px] border border-[#eceef1] ${mention ? 'relative z-20' : ''}`}>
+              {layoutDef.header || showDisplayName ? (
+                <div className="flex flex-col items-center gap-2 border-b border-[#eceef1] px-4 py-4">
+                  {layoutDef.header ? <EmailHeaderLogoBand logo={layoutDef.header} variant="preview" compact /> : null}
+                  {showDisplayName ? (
+                    <p className="text-[14px] font-semibold text-[#212121]">{EMAIL_PREVIEW_DISPLAY_NAME}</p>
+                  ) : null}
+                </div>
+              ) : null}
+              <div className="space-y-4 px-4 py-4">
+                <label className={`relative block w-full space-y-1.5 ${mention?.field === 'subject' ? 'z-10' : ''}`}>
+                  <span className={es.fieldLabel}>Subject</span>
+                  <div className={es.controlShell}>
+                    <input
+                      ref={subjectRef}
+                      value={subject}
+                      aria-expanded={mention?.field === 'subject'}
+                      aria-controls="merge-field-menu"
+                      aria-autocomplete="list"
+                      onChange={(e) => {
+                        setSubject(e.target.value);
+                        trackMention('subject', e.target.value, e.target.selectionStart ?? e.target.value.length);
+                      }}
+                      onClick={(e) => trackMention('subject', subject, e.currentTarget.selectionStart ?? subject.length)}
+                      onKeyDown={(e) => onMentionKeyDown(e, 'subject')}
+                      onBlur={closeMentionOnBlur}
+                      className={es.textInputInner}
+                    />
+                  </div>
+                  {mention?.field === 'subject' ? (
+                    <MentionMenu
+                      menuRef={mentionMenuRef}
+                      fields={filteredFields}
+                      activeIndex={mentionIndex}
+                      onHover={setMentionIndex}
+                      onPick={insertToken}
+                    />
+                  ) : null}
+                  <p className="text-[12px] text-[#757575]">Type @ in the subject to pick a merge field.</p>
+                </label>
+                <div className={`relative space-y-1.5 ${mention?.field === 'body' ? 'z-10' : ''}`}>
+                  <span className={es.fieldLabel}>Body</span>
+                  <div className={es.controlShell}>
+                  <div className="flex flex-wrap gap-1 rounded-t-[4px] border-b border-[#e5e7eb] bg-[#fafafa] px-2 py-1.5">
+                    <ToolbarButton label="Bold" onClick={() => applyWrap('<strong>', '</strong>')}>
+                      <Bold className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton label="Italic" onClick={() => applyWrap('<em>', '</em>')}>
+                      <Italic className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton label="Underline" onClick={() => applyWrap('<u>', '</u>')}>
+                      <Underline className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton label="Bulleted list" onClick={() => applyWrap('\n• ', '')}>
+                      <List className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton label="Numbered list" onClick={() => applyWrap('\n1. ', '')}>
+                      <ListOrdered className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton label="Link" onClick={() => applyWrap('<a href="https://">', '</a>')}>
+                      <Link2 className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton
+                      label="Clear formatting"
+                      onClick={() => setBody(body.replace(/<\/?(strong|em|u|a)[^>]*>/gi, ''))}
+                    >
+                      <RemoveFormatting className="size-4" />
+                    </ToolbarButton>
+                  </div>
+                  <textarea
+                    ref={bodyRef}
+                    value={body}
+                    aria-expanded={mention?.field === 'body'}
+                    aria-controls="merge-field-menu"
+                    aria-autocomplete="list"
+                    onChange={(e) => {
+                      setBody(e.target.value);
+                      trackMention('body', e.target.value, e.target.selectionStart ?? e.target.value.length);
+                    }}
+                    onClick={(e) => trackMention('body', body, e.currentTarget.selectionStart ?? body.length)}
+                    onKeyDown={(e) => onMentionKeyDown(e, 'body')}
+                    onBlur={closeMentionOnBlur}
+                    className="min-h-[180px] w-full resize-y rounded-b-[4px] border-0 bg-transparent px-3 py-2 text-[14px] leading-6 text-[#111827] outline-none"
+                  />
+                  </div>
+                  {mention?.field === 'body' ? (
+                    <MentionMenu
+                      menuRef={mentionMenuRef}
+                      fields={filteredFields}
+                      activeIndex={mentionIndex}
+                      onHover={setMentionIndex}
+                      onPick={insertToken}
+                    />
+                  ) : null}
+                  <p className="text-[12px] text-[#757575]">Type @ in the body to pick a merge field.</p>
+                </div>
+              </div>
+              {layoutDef.exxatFooter ? <EmailFooterLogoBand show variant="preview" /> : null}
+            </div>
 
-        <section className="max-w-[720px] space-y-2">
-          <h2 className="text-[14px] font-semibold text-[#111827]">Links</h2>
-          <p className="text-[13px] text-[#616161]">
-            Type @ in the body to pick a deep link, or use the list below. Links become hyperlinks in preview.
-          </p>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {links.map((field) => (
-              <FieldChip key={field.token} field={field} onInsert={() => insertAtBody(field.token)} />
-            ))}
+            <section className="space-y-2">
+              <h2 className="text-[14px] font-semibold text-[#111827]">Attachments</h2>
+              <p className="text-[13px] text-[#616161]">Files are sent with this email template.</p>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.gif,.webp,image/*,application/pdf"
+                multiple
+                className="hidden"
+                onChange={(e) => {
+                  addFiles(e.target.files);
+                  e.target.value = '';
+                }}
+              />
+              <button
+                type="button"
+                className={es.uploadZone}
+                onClick={() => fileRef.current?.click()}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  addFiles(e.dataTransfer.files);
+                }}
+              >
+                <span className={sc.uploadStack}>
+                  <img src={uploadCloudIcon} alt="" className="size-8" aria-hidden />
+                  <span className={es.uploadTitle}>Click to upload or drag &amp; drop</span>
+                  <span className={es.uploadHint}>PDF, DOC, or image · Up to 10 MB · Up to 5 files</span>
+                </span>
+              </button>
+              {attachments.length > 0 ? (
+                <ul className="space-y-1">
+                  {attachments.map((file) => (
+                    <li key={file.id} className="flex items-center justify-between text-[13px] text-[#212121]">
+                      <span>{file.name}</span>
+                      <button
+                        type="button"
+                        className="text-[#3f51b5] hover:underline"
+                        onClick={() => setAttachments((current) => current.filter((item) => item.id !== file.id))}
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </section>
           </div>
-        </section>
+
+          <div className="min-w-0 space-y-6">
+            <fieldset className="space-y-2">
+              <legend className="text-[14px] font-semibold text-[#111827]">Header and footer layouts</legend>
+              {HEADER_FOOTER_LAYOUTS.map((option) => (
+                <label key={option.id} className="flex items-center gap-2 text-[14px] text-[#212121]">
+                  <input
+                    type="radio"
+                    name="header-footer"
+                    checked={layout === option.id}
+                    onChange={() => setLayout(option.id)}
+                    className="accent-[#3f51b5]"
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </fieldset>
+
+            <section className="space-y-2">
+              <h2 className="text-[14px] font-semibold text-[#111827]">Merge fields</h2>
+              <p className="text-[13px] text-[#616161]">Type @ in a field to pick a merge field, or use the list below.</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {fields.map((field) => (
+                  <FieldChip key={field.token} field={field} onInsert={() => insertAtBody(field.token)} />
+                ))}
+              </div>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="text-[14px] font-semibold text-[#111827]">Links</h2>
+              <p className="text-[13px] text-[#616161]">
+                Type @ in the body to pick a deep link, or use the list below. Links become hyperlinks in preview.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {links.map((field) => (
+                  <FieldChip key={field.token} field={field} onInsert={() => insertAtBody(field.token)} />
+                ))}
+              </div>
+            </section>
+          </div>
+        </div>
 
         {editing && editing.history.length > 0 ? (
           <section className="max-w-[640px] space-y-2">

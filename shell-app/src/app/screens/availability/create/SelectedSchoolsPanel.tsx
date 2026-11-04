@@ -70,8 +70,7 @@ export function SchoolPartnersPickerContent({ selectedIds, onChange }: PickerPro
       </div>
 
       <p className={availabilityCreateDrawer.selectedSchoolsHint}>
-        School partners associated with the selected discipline(s) and program type(s) — Art Therapy ·
-        Masters
+        School partners for this availability — Nursing cohorts or individual Physical Therapy students
       </p>
 
       {selectedInView.length > 0 ? (

@@ -32,6 +32,9 @@ import { schedulesTableGrid } from './schedulesTable';
 import { Checkbox } from '../../components/ui/checkbox';
 import { BulkEmailSheet } from './bulk-email/BulkEmailSheet';
 import { BulkEmailHistoryDialog } from './bulk-email/BulkEmailHistoryDialog';
+import { EmailActions, buildScheduleContext } from '../../features/email-composer';
+import { prototypeSite } from '../../data/prototype/site';
+import { useSession } from '../../data/SessionContext';
 import '../availability/availabilityTablePins.css';
 import {
   partnersListChrome,
@@ -62,6 +65,7 @@ export function SchedulesListPage({ listKind }: Props) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkEmailOpen, setBulkEmailOpen] = useState(false);
   const [emailHistoryOpen, setEmailHistoryOpen] = useState(false);
+  const { session } = useSession();
 
   const filtered = useMemo(
     () =>
@@ -166,6 +170,15 @@ export function SchedulesListPage({ listKind }: Props) {
                 selectedCount={selectedIds.size}
                 onComposeEmail={() => setBulkEmailOpen(true)}
                 onEmailHistory={() => setEmailHistoryOpen(true)}
+                emailExperience={session.emailExperience}
+                composerActions={
+                  <EmailActions
+                    selectedCount={selectedIds.size}
+                    noun="schedules"
+                    getSelected={() => buildScheduleContext(selectedRows, prototypeSite.name)}
+                    getAll={() => buildScheduleContext(filtered, prototypeSite.name)}
+                  />
+                }
               />
             </div>
 
@@ -494,6 +507,9 @@ function ScheduleStatusPill({ status }: { status: string }) {
   if (status === 'Ongoing') {
     return <span className={schedulesChrome.statusPillAmber}>{status}</span>;
   }
+  if (status === 'To be Scheduled') {
+    return <span className={schedulesChrome.statusPillYellow}>{status}</span>;
+  }
   return <span className={schedulesChrome.statusPillGray}>{status}</span>;
 }
 
@@ -503,6 +519,9 @@ function OnboardingStatusPill({ status }: { status: string }) {
   }
   if (status === 'In Progress') {
     return <span className={schedulesChrome.onboardingPillBlue}>{status}</span>;
+  }
+  if (status === 'Not Applicable') {
+    return <span className={schedulesChrome.statusPillGray}>{status}</span>;
   }
   return <span className={schedulesChrome.statusPillGreen}>{status}</span>;
 }

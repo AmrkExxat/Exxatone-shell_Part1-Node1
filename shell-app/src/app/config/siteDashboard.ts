@@ -13,6 +13,7 @@ import qaTrackAvailabilitiesIcon from '../../assets/dashboard/qa-track-availabil
 import qaSchoolRequestsIcon from '../../assets/dashboard/qa-school-requests.svg';
 import qaSchedulesIcon from '../../assets/dashboard/qa-schedules.svg';
 import qaReportsIcon from '../../assets/dashboard/qa-reports.svg';
+import { prototypeRecentActivities } from '../data/prototype/scheduleRecords';
 
 export interface SiteKpiTile {
   id: string;
@@ -157,82 +158,9 @@ export const siteQuickActions: SiteQuickAction[] = [
   },
 ];
 
-export const siteRecentActivities: SiteActivityItem[] = [
-  {
-    id: 'a1',
-    text: 'Central City College confirmed schedule for May 1, 2026 - May 12, 2026. (Individual)',
-    discipline: 'Audiology',
-    location: '0011 test no phone no discipline',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a2',
-    text: 'Schedule updated for Eastwood State University for Feb 25, 2026 - Apr 4, 2026. (Individual)',
-    location: '004 Location_Automation_WGCWLC35290120263613',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a3',
-    text: 'Schedule updated for Eastwood State University for Jul 28, 2025 - Aug 28, 2025. (Individual)',
-    discipline: 'Physical Therapy +1',
-    location: 'Ruchita - Johns Hopkins Hospital',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a4',
-    text: 'Schedule updated for Eastwood State University for Jul 2, 2026 - Aug 1, 2026. (Group)',
-    location: 'XYZ',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a5',
-    text: 'Schedule updated for Eastwood State University for Oct 27, 2024 - Nov 1, 2024. (Individual)',
-    location: 'Ruchita - ACMH - Hospital',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a6',
-    text: 'Schedule updated for Eastwood State University for Jul 13, 2026 - Aug 1, 2026. (Individual)',
-    location: 'XYZ',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Exxat One',
-  },
-  {
-    id: 'a7',
-    text: 'Schedule updated for Eastwood State University for Jul 8, 2026 - Jul 31, 2026. (Group)',
-    location: 'XYZ',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a8',
-    text: 'Eastwood State University confirmed schedule for Feb 1, 2026 - Feb 28, 2026. (Individual)',
-    discipline: 'Anesthesia Assistant',
-    location: 'Concussion Management Unit',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a9',
-    text: 'Eastwood State University confirmed schedule for Sep 17, 2024 - Sep 26, 2024. (Individual)',
-    discipline: 'Medicine - MD +2',
-    location: 'Ruchita - Exxat Demo - Location1',
-    updatedOn: 'Jul 28, 2026',
-    updatedBy: 'Mr Darp Dhameliya',
-  },
-  {
-    id: 'a10',
-    text: 'Schedule updated for ABC University - Nursing for Jul 28, 2026 - Aug 26, 2026. (Individual)',
-    location: 'XYZ',
-    updatedOn: 'Jul 27, 2026',
-    updatedBy: 'Jordan Osman',
-  },
-];
+export const siteRecentActivities: SiteActivityItem[] = prototypeRecentActivities.map(
+  ({ variant: _variant, ...activity }) => activity,
+);
 
 export const siteSchedulePeriodOptions = [
   { id: 'next-30', label: 'Next 30 Days' },

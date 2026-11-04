@@ -129,7 +129,7 @@ export function EmailFooterLogoBand({ show, variant }: { show: boolean; variant:
   if (variant === 'preview') {
     return (
       <div className={d.previewLogoFooter}>
-        <img src={exxatLogo} alt="Exxat logo" className="h-6 w-auto" />
+        <img src={exxatLogo} alt="Exxat logo" className="h-10 w-auto" />
       </div>
     );
   }
@@ -138,7 +138,7 @@ export function EmailFooterLogoBand({ show, variant }: { show: boolean; variant:
     <div className={d.logoBand}>
       <p className={d.logoBandCaption}>Footer · Exxat logo</p>
       <div className={d.logoBandFrame}>
-        <img src={exxatLogo} alt="Exxat logo" className="h-8 w-auto" />
+        <img src={exxatLogo} alt="Exxat logo" className="h-10 w-auto" />
       </div>
     </div>
   );

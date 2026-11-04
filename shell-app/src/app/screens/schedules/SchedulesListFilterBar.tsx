@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   ChevronDown,
   ChevronUp,
@@ -25,6 +25,7 @@ import {
   type ScheduleFilterFacetId,
 } from './schedulesListFilters';
 import { schedulesChrome } from './schedulesTypography';
+import type { EmailExperience } from '../../data/session';
 
 type Props = {
   listKind: ScheduleListKind;
@@ -33,6 +34,9 @@ type Props = {
   selectedCount?: number;
   onComposeEmail?: () => void;
   onEmailHistory?: () => void;
+  /** Set from the profile menu. The 3-step drawer is unchanged. */
+  emailExperience?: EmailExperience;
+  composerActions?: ReactNode;
 };
 
 export function SchedulesListFilterBar({
@@ -42,6 +46,8 @@ export function SchedulesListFilterBar({
   selectedCount = 0,
   onComposeEmail,
   onEmailHistory,
+  emailExperience = 'composer',
+  composerActions,
 }: Props) {
   const config = schedulesListFilterConfig[listKind];
   const [expanded, setExpanded] = useState(false);
@@ -77,6 +83,8 @@ export function SchedulesListFilterBar({
           selectedCount={selectedCount}
           onComposeEmail={onComposeEmail}
           onEmailHistory={onEmailHistory}
+          emailExperience={emailExperience}
+          composerActions={composerActions}
           onToggleExpanded={() => setExpanded((v) => !v)}
         />
       </div>
@@ -108,6 +116,8 @@ function FilterToolbarActions({
   selectedCount,
   onComposeEmail,
   onEmailHistory,
+  emailExperience = 'composer',
+  composerActions,
   onToggleExpanded,
 }: {
   expanded: boolean;
@@ -116,16 +126,22 @@ function FilterToolbarActions({
   selectedCount: number;
   onComposeEmail?: () => void;
   onEmailHistory?: () => void;
+  emailExperience?: EmailExperience;
+  composerActions?: ReactNode;
   onToggleExpanded: () => void;
 }) {
   return (
     <div className={schedulesChrome.filterToolbarCluster}>
       {showBulkEmail ? (
-        <BulkEmailMenu
-          selectedCount={selectedCount}
-          onComposeEmail={onComposeEmail}
-          onEmailHistory={onEmailHistory}
-        />
+        emailExperience === 'composer' ? (
+          composerActions
+        ) : (
+          <BulkEmailMenu
+            selectedCount={selectedCount}
+            onComposeEmail={onComposeEmail}
+            onEmailHistory={onEmailHistory}
+          />
+        )
       ) : null}
       <button type="button" className={schedulesChrome.addFilterBtn}>
         <CirclePlus className="size-4 shrink-0" strokeWidth={1.75} aria-hidden />

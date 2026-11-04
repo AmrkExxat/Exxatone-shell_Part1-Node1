@@ -1,3 +1,6 @@
+import { prototypeSchools } from './prototype/directory';
+import { prototypeLauncherSites, prototypeSite } from './prototype/site';
+
 /**
  * Mock session — flip these (or use header Dev Options) to preview every entry path.
  *
@@ -16,6 +19,9 @@ export type SessionRole = 'super-admin' | 'site-only' | 'school-only';
 export type CountMode = 'single' | 'multiple';
 /** Back-compat alias — header Dev Options still speak "site count" */
 export type SiteCountMode = CountMode;
+
+/** Which bulk-email experience the schedules toolbar opens. */
+export type EmailExperience = 'stepper' | 'composer';
 
 export type ProductKind = 'site' | 'school';
 
@@ -52,6 +58,8 @@ export interface MockSession {
   userInitials: string;
   email: string;
   notificationCount: number;
+  /** Schedules bulk email. The new composer is the default; "3 steps" stays in the profile menu. */
+  emailExperience: EmailExperience;
   sites: MockSite[];
   schools: MockSchool[];
   /** Kept for the parked Network Layer work; unused by the live-product flow. */
@@ -63,42 +71,18 @@ export const defaultSession: MockSession = {
   role: 'super-admin',
   siteCountMode: 'multiple',
   schoolCountMode: 'multiple',
-  userDisplayName: 'Snehal Gajbhiye',
-  userInitials: 'SG',
-  email: 'snehal@exxat.com',
-  notificationCount: 372,
-  sites: [
-    { id: 'bedlam-hospital', name: 'Bedlam-Hospital', location: 'Oklahoma City, OK' },
-    { id: 'happy-clinic', name: 'Happy Clinic', location: 'Austin, TX' },
-    { id: 'metro-health', name: 'Metro Health Partners', location: 'Baltimore, MD' },
-    { id: 'riverside-medical', name: 'Riverside Medical Center', location: 'Washington, DC' },
-  ],
-  schools: [
-    {
-      id: 'abilene-christian-dpt',
-      name: 'Abilene Christine University',
-      program: 'DPT',
-      location: 'Abilene, TX',
-    },
-    {
-      id: 'atsu-santa-maria-pa',
-      name: 'A.T. Still University - Central Coast - Santa Maria Campus',
-      program: 'PA',
-      location: 'Santa Maria, CA',
-    },
-    {
-      id: 'abc-university-nursing',
-      name: 'ABC University',
-      program: 'Nursing',
-      location: 'Boston, MA',
-    },
-    {
-      id: 'adelphi-public-health',
-      name: 'Adelphi University',
-      program: 'Public Health',
-      location: 'Garden City, NY',
-    },
-  ],
+  userDisplayName: prototypeSite.senderName,
+  userInitials: 'KM',
+  email: prototypeSite.senderEmail,
+  notificationCount: 4,
+  emailExperience: 'composer',
+  sites: prototypeLauncherSites.map((site) => ({ ...site })),
+  schools: prototypeSchools.map((school) => ({
+    id: school.id,
+    name: school.name,
+    program: school.program,
+    location: school.cityLabel,
+  })),
   consortiums: [
     {
       id: 'mddc-nursing',

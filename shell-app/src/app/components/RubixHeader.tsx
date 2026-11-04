@@ -12,7 +12,7 @@ import {
   DropdownMenuRadioItem,
 } from './ui/dropdown-menu';
 import { ExxatOneLogo } from './ExxatOneLogo';
-import type { SessionRole, SiteCountMode } from '../data/session';
+import type { EmailExperience, SessionRole, SiteCountMode } from '../data/session';
 
 function VerticalSeparator() {
   return <div className="h-6 w-px bg-neutral-200 shrink-0" aria-hidden />;
@@ -35,6 +35,8 @@ export interface RubixHeaderProps {
   onRoleChange?: (role: SessionRole) => void;
   siteCountMode?: SiteCountMode;
   onSiteCountModeChange?: (mode: SiteCountMode) => void;
+  emailExperience?: EmailExperience;
+  onEmailExperienceChange?: (experience: EmailExperience) => void;
 }
 
 /**
@@ -43,7 +45,7 @@ export interface RubixHeaderProps {
  */
 export function RubixHeader({
   siteName = 'Bedlam-Hospital',
-  userDisplayName = 'Darp Dhameliya',
+  userDisplayName = 'Kierra Mango',
   notificationCount = 278,
   showAskLeo = true,
   showAllSites = false,
@@ -57,6 +59,8 @@ export function RubixHeader({
   onRoleChange,
   siteCountMode,
   onSiteCountModeChange,
+  emailExperience,
+  onEmailExperienceChange,
 }: RubixHeaderProps) {
   return (
     <div className="bg-neutral-0 border-b border-neutral-200 shrink-0">
@@ -153,6 +157,21 @@ export function RubixHeader({
                 <FontAwesomeIcon name="settings" className="w-4 h-4 mr-2" />
                 Settings
               </DropdownMenuItem>
+              {onEmailExperienceChange && emailExperience ? (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel className="text-xs text-neutral-600 font-normal px-2">
+                    Bulk email
+                  </DropdownMenuLabel>
+                  <DropdownMenuRadioGroup
+                    value={emailExperience}
+                    onValueChange={(v) => onEmailExperienceChange(v as EmailExperience)}
+                  >
+                    <DropdownMenuRadioItem value="stepper">3 steps</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="composer">New composer</DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </>
+              ) : null}
               <DropdownMenuSeparator />
               <DropdownMenuLabel className="text-xs text-neutral-700 font-normal">
                 Developer Options

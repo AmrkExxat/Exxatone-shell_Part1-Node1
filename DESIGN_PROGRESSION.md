@@ -116,7 +116,38 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-10-29 — Digest Notifications default to in-app off; lock veil lightened; notification screens named, focusable, and described`
 - `Part1_Node-1a — 2026-10-29 — Lock tooltips are two lines; My Notifications uses the Locked badge and has no lock control`
 - `Part1_Node-1a — 2026-10-29 — My Notifications: one content scroll; lock text no longer stretches the page`
+- `Part1_Node-1a — 2026-10-30 — Bulk Email: stepper keeps the step number on completed steps; Preview drops “Previewing as” and puts delivery time at the top of the email`
+- `Part1_Node-1a — 2026-10-30 — Bulk Email Compose: grouped letters open directly in edit mode (no lock, no Add Template, no side Merge Fields panel); Subject and Email content support an @ mention overlay, fields scoped to the selected recipient group, reusing the Attachment/Email Template @ interaction`
+- `Part1_Node-1a — 2026-10-30 — Bulk Email: Site Personnel and Clinical Instructor grouped letters, summary table (one row per group), and a merge-field list that follows the letter`
+- `Part1_Node-1a — 2026-10-30 — Bulk Email: @ merge-field chips use indigo, so they read as fields rather than errors`
+- `Part1_Node-1a — 2026-10-30 — Bulk Email Compose/Preview: grouped preceptor template (read-only letter, Add Template copies it for this send); Preview renders @Schedule Table as that preceptor’s placement rows`
+- `Part1_Node-1a — 2026-11-03 — Email opens on a recipients review (counts, attention filters, row actions), then a compact compose step. Template lists have 7+ letters per audience, search, a Default tag, Write your own, and session show/hide in the expanded list`
+- `Part1_Node-1a — 2026-11-03 — Send and Schedule confirmations share a final-check summary (template, audience, email count, subject, from, and a hint when a selected group schedule has no students)`
+- `Part1_Node-1a — 2026-11-03 — Empty-roster preceptor rows stay unchecked and disabled with a persistent "no students assigned" hint; split-by-schedule sends only emailable schedules (3 emails for the all-group preceptor case)`
+- `Part1_Node-1a — 2026-11-03 — Group schedules table gets a "to be scheduled" row with a preceptor but no roster yet; the composer surfaces it under that preceptor with a "no students assigned to this schedule" hint, including a warning when splitting into one email per schedule`
+- `Part1_Node-1a — 2026-11-03 — Email Templates card attachment chips match the composer's indigo wash`
+- `Part1_Node-1a — 2026-11-03 — Email Templates cards show a body snippet and attachment chips`
+- `Part1_Node-1a — 2026-11-03 — Attachments sits under the letter, same width, with no divider`
+- `Part1_Node-1a — 2026-11-03 — Template editor puts header, merge fields, and links on the right; Attachments is last`
+- `Part1_Node-1a — 2026-11-03 — Email template editor hides the Configuration nav and uses full width; Attachment Templates hidden from the nav for now`
+- `Part1_Node-1a — 2026-11-03 — Email Templates opens on Student, Bulk Email, Onboarding, Welcome`
+- `Part1_Node-1a — 2026-11-03 — Email template category chain uses backslash breadcrumbs`
+- `Part1_Node-1a — 2026-11-03 — Email template audiences and their notification libraries expand and collapse on click`
+- `Part1_Node-1a — 2026-11-03 — Email Templates are grouped by audience, then Automated notifications or Bulk Email, and the composer reads those letters`
+- `Part1_Node-1a — 2026-11-03 — Expanded schedule list shows each id once, with the students on that schedule`
+- `Part1_Node-1a — 2026-11-03 — Group schedules use “Group schedule briefing” and say schedules, not placements, in recipients`
+- `Part1_Node-1a — 2026-11-03 — New email opens with “Select who to send to” expanded`
+- `Part1_Node-1a — 2026-11-02 — Bulk email review switch (3 steps / New composer) lives in the profile menu`
+- `Part1_Node-1a — 2026-11-02 — Schedules toolbar can switch to the new email composer (from exxat-one-email-composer) without changing the 3-step bulk email drawer`
+- `Part1_Node-1a — 2026-11-02 — Prototype mock data is one Bedlam Hospital set (site, schools, people, locations). Group schedules are Nursing; individual schedules are Physical Therapy. Email templates are one catalog used by Email Templates, Bulk Email, previews, and attachment samples`
+- `Part1_Node-1a — 2026-10-30 — Bulk Email Recipients: "N group schedules selected" + View popover; persona radio list with per-schedule switch (one email per person default) and live email count; recipient list with tri-state select, schedule pill expanding Schedule / Student and rotation table; up-front alerts for multi-schedule people and duplicate name/email; Compose note and Preview email count follow send mode`
 - `Part1_Node-1a — 2026-10-28 — Email Templates tree: selected event is bold only (no band fill); count pills meet WCAG AA contrast`
+- `Part1_Node-1a — 2026-11-03 — Email composer polish: underline audience tabs w/ neutral count badges (replaces pills); header badge reflects live selection/emails; Default tag matches Email Templates green; expanded template list selected state uses a legible indigo wash; predefined templates default header=logo/footer=Exxat, Write your own clears both to +Add`
+- `Part1_Node-1a — 2026-11-04 — Composer: Send to dropdown and compact switches; Compose CTA; From/Reply-to as two rows; To lists names (3 lines) with Edit recipients; Cc Add recipients drawer for other audiences; Preview/Edit swap; letter beside Write with Leo; @ Insert merge field with search`
+- `Part1_Node-1a — 2026-11-04 — Composer follow-up: bordered Send to field; Edit recipients and Add recipients return to the recipients step (no nested drawer; edit hides the counts); formatting bar sits under the subject with the small Write with Leo button`
+- `Part1_Node-1a — 2026-11-04 — Schedules email opens the new composer by default; the 3-step flow remains available from the profile menu`
+- `Part1_Node-1a — 2026-11-04 — Write with Leo shows the finished mark, label, and BETA pill on one line (no draw-in on open)`
+- `Part1_Node-1a — 2026-11-04 — Clearing a template body shows "Write email content, or enter @ to insert a merge field" between the header and footer`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
 
