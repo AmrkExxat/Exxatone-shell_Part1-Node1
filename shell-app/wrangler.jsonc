@@ -1,0 +1,8 @@
+{
+  "name": "part1-node-2-schedule-site-clearance",
+  "compatibility_date": "2026-11-12",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}

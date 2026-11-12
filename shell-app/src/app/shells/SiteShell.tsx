@@ -5,6 +5,8 @@ import { RubixSidebar } from '../components/RubixSidebar';
 import { useSession } from '../data/SessionContext';
 import { findSite } from '../data/session';
 import { siteNavGroups } from '../config/siteNav';
+import { Toaster } from 'sonner';
+import { ClearanceRecordsProvider } from '../data/ClearanceRecordsContext';
 
 /**
  * Site-admin shell — RubixHeader + RubixSidebar; screens render via <Outlet/>.
@@ -74,7 +76,10 @@ export function SiteShell() {
           siteName={siteName}
         />
         <main className="flex-1 overflow-y-auto bg-neutral-50">
-          <Outlet context={{ showEmptyStates, emptyStateCase, siteName }} />
+          <ClearanceRecordsProvider>
+            <Outlet context={{ showEmptyStates, emptyStateCase, siteName }} />
+            <Toaster position="top-center" />
+          </ClearanceRecordsProvider>
         </main>
       </div>
     </div>

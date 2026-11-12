@@ -2,6 +2,9 @@
 /** Matches Figma / live Exxat One partner screens (loaded in index.html). */
 export const partnersFont = "font-['Source_Sans_3',sans-serif]";
 
+/** WCAG AA on white — avoid #9ca3af (~2.5:1). */
+export const partnersSearchFieldIcon = 'text-[#616161]' as const;
+
 export const partnersType = {
   pageTitle: 'text-lg font-medium leading-6 text-[#212121]',
   primaryButton:

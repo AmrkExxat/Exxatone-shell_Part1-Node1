@@ -6,7 +6,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "dev:1a": "SHELL_DEV_PORT=5175 vite"
+    "dev:1a": "SHELL_DEV_PORT=5175 vite",
+    "dev:clearance": "SHELL_DEV_PORT=5176 vite"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -73,6 +74,7 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "4.7.0",
     "playwright": "^1.49.1",
+    "sass-embedded": "^1.105.1",
     "tailwindcss": "4.1.12",
     "typescript": "^5.8.2",
     "vite": "6.3.5"

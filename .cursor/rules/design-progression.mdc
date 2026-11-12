@@ -1,27 +1,23 @@
 ---
-description: Part1 design nodes (Node-1 frozen vs Node-1a active), ports, and review workflow
+description: Schedule and Site Clearance prototype — local review URL and scope
 alwaysApply: true
 ---
 
-# Design progression (Part 1)
+# Schedule and Site Clearance
 
-Read **`DESIGN_PROGRESSION.md`** (repo root) for the full manifest, checklist, and changelog.
+Read **`DESIGN_PROGRESSION.md`** (repo root) for the local review links and scope.
 
 ## Defaults
 
-- **Active node:** `Part1_Node-1a` (branch `part1/node-1a`, this workspace).
-- **Frozen baseline:** tag `Part1_Node-1`, git worktree `../Exxat-UI-Shell-Part1_Node-1` — product edits only when the user names **Part1_Node-1**.
-- **Dev URLs:** active `http://localhost:5175` (`shell-app`: `npm run dev:1a`); baseline `http://localhost:5174` (worktree: `npm run dev`).
+- This workspace is the **Schedule and Site Clearance** prototype. It is not a Part 1 design node.
+- **Dev URL:** `http://localhost:5176/login` — `cd shell-app && npm run dev:clearance`.
+- Git stays local until a separate `exxat-schedule-site-clearance` remote is requested. Do not push, and do not treat this history as Part 1 work.
 
 ## Shell work
 
 - Product work stays in `shell-app/` per `workspace-shell.mdc`.
-- Do not edit the frozen original ExxatOne UI shell path.
+- Do not edit the frozen original ExxatOne UI shell, and do not edit the look-alike shell that serves port 5174. Copy from it only when bringing screens into this workspace.
 
-## IA-changing partner work
+## Early explorations
 
-For `shell-app/src/app/screens/partners/**` when the job is more than a one-line fix: load **exxat-senior-ux**, post the design brief, wait for **Ready to build — confirm or edit** before code changes.
-
-## After each review batch on 1a
-
-Append a dated bullet to the **Changelog** section in `DESIGN_PROGRESSION.md`.
+HTML prototypes and screenshots in the parent `Schedule Clearance Checklist` folder are reference only. Final prototype changes belong in this shell.
