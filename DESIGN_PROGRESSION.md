@@ -10,7 +10,7 @@ HTML prototypes and screenshots in the parent `Schedule Clearance Checklist` fol
 |---|---|
 | Dev command | `cd shell-app && npm run dev:clearance` |
 | Login | http://localhost:5176/login |
-| Shared review | https://part1-node-2-schedule-site-clearance.exxat-amreek.workers.dev/login |
+| Shared review | https://part1-node2.pages.dev/login |
 | Site | `bedlam-hospital` |
 
 **Schedules and Onboarding**
