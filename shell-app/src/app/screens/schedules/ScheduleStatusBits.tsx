@@ -1,4 +1,4 @@
-import { ChevronRight, ClipboardCheck, Clock, User, Users } from 'lucide-react';
+import { ChevronRight, Clipboard, ClipboardCheck, User, Users } from 'lucide-react';
 import type { ClearanceIconState } from '../../data/prototype/clearanceLogic';
 import { clearanceTip } from '../../data/prototype/clearanceLogic';
 import type { OnboardingStatus } from '../../data/prototype/scheduleRecords';
@@ -89,7 +89,7 @@ export function ClearanceIconButton({
 }) {
   if (state === 'na') return null;
   const label = clearanceTip(state, target);
-  const Icon = state === 'complete' ? ClipboardCheck : Clock;
+  const Icon = state === 'complete' ? ClipboardCheck : Clipboard;
   const tone =
     state === 'complete'
       ? 'border-[#a5d6a7] bg-[#e8f5e9] text-[#1b5e20]'

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronDown, Clock, ClipboardCheck, Info, Paperclip, X } from 'lucide-react';
+import { ChevronDown, Clipboard, ClipboardCheck, Info, Paperclip, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle } from '../../components/ui/dialog';
 import { useClearanceRecords } from '../../data/ClearanceRecordsContext';
 import type { ClearanceChecklistItem } from '../../data/prototype/clearanceChecklist';
@@ -87,7 +87,7 @@ function ClearanceDialogBody({
   const complete = items.length > 0 && done === items.length;
   const title = isGroup ? 'Group Clearance' : subject?.role === 'ci' ? 'Instructor Clearance' : 'Student Clearance';
   const who = isGroup ? schedule.title || schedule.scheduleId : subject?.name;
-  const StatusIcon = complete ? ClipboardCheck : Clock;
+  const StatusIcon = complete ? ClipboardCheck : Clipboard;
   const chip = isGroup
     ? complete
       ? `Group is cleared · ${done} of ${items.length} items`

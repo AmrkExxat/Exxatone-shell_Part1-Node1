@@ -95,6 +95,7 @@ function EditorSheet({
 }) {
   const [name, setName] = useState(initial.name);
   const [active, setActive] = useState(initial.active);
+  const [scope, setScope] = useState<'all' | 'limit'>(initial.conditions.length ? 'limit' : 'all');
   const [conditions, setConditions] = useState<EditorCondition[]>(() => editorRows(initial.conditions));
   const [summaryOpen, setSummaryOpen] = useState(true);
   const [bannerOpen, setBannerOpen] = useState(true);
@@ -103,8 +104,8 @@ function EditorSheet({
   const [submitted, setSubmitted] = useState(false);
 
   const item = useMemo<Draft>(
-    () => ({ ...initial, name, active, conditions: savedConditions(conditions) }),
-    [active, conditions, initial, name],
+    () => ({ ...initial, name, active, conditions: scope === 'all' ? [] : savedConditions(conditions) }),
+    [active, conditions, initial, name, scope],
   );
   const dirty = snapshot({ ...item, conditions: conditions.filter((row) => row.field !== '').map((row) => ({ field: row.field, values: row.values })) }) !== snapshot(initial);
   const impact = useMemo(() => countImpact(item, records), [item, records]);
@@ -113,10 +114,20 @@ function EditorSheet({
   const individualOnly = conditions.some(
     (row) => row.field === 'exp' && row.values.length === 1 && row.values[0] === 'Individual',
   );
-  const problems = submitted ? collectIssues(name, conditions) : [];
+  const problems = submitted ? collectIssues(name, conditions, scope === 'limit') : [];
+
+  function chooseAll() {
+    setScope('all');
+    setConditions([]);
+  }
+
+  function chooseLimit() {
+    setScope('limit');
+    setConditions((current) => (current.length ? current : [{ field: '', values: [] }]));
+  }
 
   function commit() {
-    const found = collectIssues(name, conditions);
+    const found = collectIssues(name, conditions, scope === 'limit');
     if (found.length) {
       setSubmitted(true);
       return;
@@ -253,6 +264,34 @@ function EditorSheet({
                   </span>
                 </div>
 
+                <fieldset className="mt-3">
+                  <legend className="sr-only">How this item applies</legend>
+                  <label className="flex items-start gap-2">
+                    <input
+                      type="radio"
+                      name="applies-scope"
+                      checked={scope === 'all'}
+                      onChange={chooseAll}
+                      className="mt-0.5 size-3.5 accent-[#3f51b5]"
+                    />
+                    <span>
+                      <span className="block text-[13px] font-medium leading-5 text-[#212121]">Applicable to all</span>
+                      <span className="block text-[12px] leading-4 text-[#616161]">This item applies to every upcoming schedule.</span>
+                    </span>
+                  </label>
+                  <label className="mt-3 flex items-start gap-2">
+                    <input
+                      type="radio"
+                      name="applies-scope"
+                      checked={scope === 'limit'}
+                      onChange={chooseLimit}
+                      className="mt-0.5 size-3.5 accent-[#3f51b5]"
+                    />
+                    <span className="text-[13px] font-medium leading-5 text-[#212121]">Apply condition</span>
+                  </label>
+                </fieldset>
+
+                {scope === 'limit' ? (
                 <div className="mt-3 rounded-lg border border-[#e5e7eb] px-3 py-3">
                   <ul className="flex flex-col gap-3">
                     {conditions.map((condition, index) => {
@@ -325,6 +364,12 @@ function EditorSheet({
                         {rowIssue ? (
                           <p className="mt-1.5 ml-[52px] text-[12px] leading-4 text-[#c62828]">{rowIssue.message}</p>
                         ) : null}
+                        {condition.field === 'exp' && condition.values.includes('Group') ? (
+                          <p className="mt-1.5 ml-[52px] flex items-start gap-1.5 text-[12px] leading-4 text-[#616161]">
+                            <Info className="mt-0.5 size-3.5 shrink-0 text-[#757575]" aria-hidden />
+                            This applies to the overall group.
+                          </p>
+                        ) : null}
                         {individualOnly && condition.field === 'persona' ? (
                           <p className="mt-1.5 ml-[52px] flex items-start gap-1.5 text-[12px] leading-4 text-[#616161]">
                             <Info className="mt-0.5 size-3.5 shrink-0 text-[#757575]" aria-hidden />
@@ -344,6 +389,7 @@ function EditorSheet({
                     + Add condition
                   </button>
                 </div>
+                ) : null}
 
                 <div className="mt-3 overflow-hidden rounded-lg bg-[#f5f6fc]">
                   <button
@@ -532,11 +578,15 @@ function countImpact(item: Draft, records: PrototypeScheduleRecord[]) {
   };
 }
 
-type EditorIssue = { kind: 'name' | 'field' | 'values'; index?: number; message: string };
+type EditorIssue = { kind: 'name' | 'scope' | 'field' | 'values'; index?: number; message: string };
 
-function collectIssues(name: string, conditions: EditorCondition[]): EditorIssue[] {
+function collectIssues(name: string, conditions: EditorCondition[], limit: boolean): EditorIssue[] {
   const found: EditorIssue[] = [];
   if (!name.trim()) found.push({ kind: 'name', message: 'Enter an item name.' });
+  if (!limit) return found;
+  if (!savedConditions(conditions).length) {
+    found.push({ kind: 'scope', message: 'Add a condition, or choose Applicable to all.' });
+  }
   conditions.forEach((row, index) => {
     if (!row.field) found.push({ kind: 'field', index, message: 'Choose a field, or remove this condition.' });
     else if (!row.values.length) found.push({ kind: 'values', index, message: 'Choose at least one value, or remove this condition.' });
@@ -546,6 +596,7 @@ function collectIssues(name: string, conditions: EditorCondition[]): EditorIssue
 
 function issueHeadline(issue: EditorIssue) {
   if (issue.kind === 'name') return 'Enter an item name';
+  if (issue.kind === 'scope') return 'Add a condition, or choose Applicable to all';
   if (issue.kind === 'field') return 'Choose a field for every condition, or remove it';
   return 'Choose at least one value for every condition, or remove it';
 }
