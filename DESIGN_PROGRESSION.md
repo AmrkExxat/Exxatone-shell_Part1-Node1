@@ -153,6 +153,7 @@ Append one line per completed review batch on **Part1_Node-1a**:
 - `Part1_Node-1a — 2026-11-04 — Schedules: Email history moves beside Add Schedule; To accepts a name or email like Cc and Bcc`
 - `Part1_Node-1a — 2026-11-04 — Composer template list shows each predefined attachment, in the menu and in the expanded list`
 - `Part1_Node-1a — 2026-11-24 — All Schedules list: row checkboxes and Email CTA in the filter bar (after +N more), aligned with Group and Individual`
+- `Part1_Node-1a — 2026-11-24 — Schedules filter bar: Email returns to the right cluster before Add Filter on every tab; All shows the same four inline filters as Individual, with Schedule Type under +3 more`
 - `Part1_Node-1 — 2026-09-30 — Tag advanced from partners-only baseline to include availability module through Create Availability step 1 (merged from part1/node-1a)`
 - `Part1_Node-1 — 2026-09-30 — Create Availability step 5 Publish Preferences merged (tiered scheduled flow, date pickers, modal; School Partners audience excluded)`
 

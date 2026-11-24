@@ -63,8 +63,8 @@ export const schedulesListFilterConfig: Record<ScheduleListKind, SchedulesListFi
   all: {
     searchScopeLabel: 'Schedule ID',
     searchPlaceholder: 'Search by Schedule ID',
-    inlineIds: ['scheduleType', 'discipline', 'schools', 'dates', 'locations'],
-    overflowIds: ['scheduleStatus', 'onboardingStatus'],
+    inlineIds: ['discipline', 'schools', 'dates', 'locations'],
+    overflowIds: ['scheduleType', 'scheduleStatus', 'onboardingStatus'],
   },
   individual: {
     searchScopeLabel: 'Schedule ID',
