@@ -89,8 +89,7 @@ export function SchedulesListPage({ listKind }: Props) {
 
   const studentHeader = listKind === 'group' ? 'Group' : 'Student';
 
-  /** Row-select checkbox column: Group + Individual lists only, hidden on All. */
-  const showSelectColumn = listKind !== 'all';
+  const showSelectColumn = true;
   const selectColW = schedulesSelectColumnWidth;
   const scheduleIdLeftPx = showSelectColumn ? selectColW : 0;
   const studentLeftPx = scheduleIdLeftPx + schedulesColumnWidths.scheduleId;

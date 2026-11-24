@@ -7,7 +7,8 @@
     "build": "vite build",
     "dev": "vite",
     "dev:1a": "SHELL_DEV_PORT=5175 vite",
-    "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=exxat-shell-part1-1a"
+    "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=exxat-shell-part1-1a",
+    "pages:deploy:email-framework": "npm run build && wrangler pages deploy dist --project-name=exxat-email-framework"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

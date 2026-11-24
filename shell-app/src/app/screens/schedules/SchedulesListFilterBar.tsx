@@ -72,15 +72,15 @@ export function SchedulesListFilterBar({
               +{overflowCount} more
             </button>
           ) : null}
+          {emailExperience === 'composer' ? (
+            composerActions
+          ) : (
+            <BulkEmailMenu selectedCount={selectedCount} onComposeEmail={onComposeEmail} />
+          )}
         </div>
         <FilterToolbarActions
           expanded={expanded}
           canExpand={overflowCount > 0}
-          showBulkEmail={listKind !== 'all'}
-          selectedCount={selectedCount}
-          onComposeEmail={onComposeEmail}
-          emailExperience={emailExperience}
-          composerActions={composerActions}
           onToggleExpanded={() => setExpanded((v) => !v)}
         />
       </div>
@@ -108,34 +108,14 @@ function ScheduleFacetBtn({ facetId }: { facetId: ScheduleFilterFacetId }) {
 function FilterToolbarActions({
   expanded,
   canExpand,
-  showBulkEmail,
-  selectedCount,
-  onComposeEmail,
-  emailExperience = 'composer',
-  composerActions,
   onToggleExpanded,
 }: {
   expanded: boolean;
   canExpand: boolean;
-  showBulkEmail: boolean;
-  selectedCount: number;
-  onComposeEmail?: () => void;
-  emailExperience?: EmailExperience;
-  composerActions?: ReactNode;
   onToggleExpanded: () => void;
 }) {
   return (
     <div className={schedulesChrome.filterToolbarCluster}>
-      {showBulkEmail ? (
-        emailExperience === 'composer' ? (
-          composerActions
-        ) : (
-          <BulkEmailMenu
-            selectedCount={selectedCount}
-            onComposeEmail={onComposeEmail}
-          />
-        )
-      ) : null}
       <button type="button" className={schedulesChrome.addFilterBtn}>
         <CirclePlus className="size-4 shrink-0" strokeWidth={1.75} aria-hidden />
         Add Filter
